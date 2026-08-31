@@ -633,56 +633,51 @@ only 12--32\% of the variance in the behavior actually realized.
 
 \section{Design Consequence: Generative Micro-Randomization}\label{sec:gmrt}
 
-Each failure in Section~\ref{sec:whynot} maps to a design element:
+The obstruction is created by the deployed policy, so no estimator removes
+it. Each failure above does, however, correspond to something a design can
+supply. Uniform turn-level randomization restores both support and overlap,
+which answers Sections~\ref{sec:1a} and \ref{sec:resultA}. Exogenous
+assignment of the turn's action removes sequential confounding.
+Regime-defined estimands resolve the ill-posedness of observational labels.
+And a fidelity protocol with assignment-level analysis handles the fact that
+the treatment is generated rather than administered.
 
-\begin{center}
-\begin{tabular}{ll}
-\toprule
-failure & design element \\
-\midrule
-support failure + bound collapse & uniform turn-level randomization
-$\rho(a \mid h) = 1/4 \geq \epsilon$ \\
-sequential confounding & exogenous assignment of $A_t$ \\
-ill-defined treatment & regime-defined (kernel-intervention) estimands \\
-generated-treatment noncompliance & assignment-ITT + fidelity protocol \\
-\bottomrule
-\end{tabular}
-\end{center}
+We call the resulting design a generative micro-randomized trial. Its
+substance is four commitments. The generator is randomized at the
+conversation level, with at least one open-weights arm for reproducibility.
+The turn action is randomized uniformly, with assignment, probability, and
+realization all logged. The evidence available to the generator is a locked
+bank of verified fact units, and the sampling rule over that bank is
+specified as part of the treatment regime rather than left to the
+generator. Finally, each utterance passes a fidelity gate before it is sent:
+inspect, regenerate once on mismatch, send with a log entry on second
+failure.
 
-The protocol: (1) conversation-level randomization of the generator $Z_i \in
-\{G_a, G_b\}$, at least one open-weights; (2) turn-level uniform
-randomization of $A_t$ with full logging of assignment, probability, and
-realization; (3) a locked evidence bank of $\geq 20$ verified fact units per
-issue with per-turn sub-banks or without-replacement sampling \emph{specified
-as part of the treatment regime}, dose is honestly named a
-high-information communication package (fact count covaries with length and
-cognitive load; length-controlled designs are a follow-up); (4) a fidelity
-gate that inspects each utterance before sending, regenerates once on
-mismatch, and sends-with-log on second failure. The gate is part of the
-treatment kernel: ITT identifies the effect of \emph{assignment to the
-generate-and-gate protocol} $\tilde{G}$, and the paper says so in those
-words. Differential noncompliance across cells (e.g., interrogative form
-failing more often) contaminates cell contrasts; we pre-register a fidelity
-floor of $\geq 80\%$ per cell with demotion of affected contrasts, publish
-gate-decision logs, and pre-specify a no-gate sensitivity analysis, since a
-gate classifier whose errors correlate with assignment would itself distort
-the treatment.
+The last commitment changes what is identified, and the change should be
+stated rather than absorbed. The gate is not quality control applied to a
+treatment; it is part of the treatment kernel. What an intention-to-treat
+analysis identifies is therefore the effect of assignment to a
+generate-and-check protocol, not the effect of a realized sentence. This is
+weaker than it first appears only if one expected the latter, which the
+argument of Section~\ref{sec:framework} says was never available.
 
-\paragraph{The price of identification (illustrative, not a theorem).}
-Mixing exploration into deployment, $\rho = (1-\epsilon)\pi_\tau +
-\epsilon\,\mathrm{Unif}$, caps the variance contribution at $\sigma^2
-K/(n\epsilon)$ at a per-turn regret cost scaling with $\epsilon$, a design
-corollary quantifying the trade-off, presented as an illustration because its
-exact form depends on outcome bounds, estimator, and horizon.
+Two design risks follow directly. Fidelity failures that differ across cells
+contaminate the contrast between them, so the pre-registration fixes a floor
+per cell and demotes contrasts that miss it. And a gate classifier whose
+errors correlate with assignment distorts the treatment it is supposed to
+protect, so gate decisions are logged and a no-gate sensitivity analysis is
+pre-specified. Naming the dose honestly is a third: manipulating the number
+of facts also moves length and cognitive load, so the manipulated quantity is
+a high-information communication package, not information as such.
 
-\paragraph{Estimation under the design.} Proximal excursions: WCLS with known randomization $\rho$
-\citep{boruvka2018assessing,qian2022microrandomized}. Distal excursions: DCEE
-estimators \citep{qian2025dcee}, not terminal-outcome WCLS. Policy values:
-cross-fitted doubly robust estimators for 2--3 pre-specified policy pairs
-only. Scope sentence: all guarantees are relative to the G-MRT's known
-$\rho$; nothing in this section rescues transcript-only analysis.
-Multiplicity: corrections for a pre-specified family, finalized after pilot;
-simultaneous confidence regions are companion-paper material.
+Estimation follows the design rather than the logs. Proximal excursions are
+estimated by weighted centered least squares under the known randomization
+\citep{boruvka2018assessing,qian2022microrandomized}; distal outcomes call
+for distal excursion estimators \citep{qian2025dcee} rather than
+terminal-outcome WCLS; policy values, if reported at all, are restricted to
+two or three pre-specified pairs with cross-fitted doubly robust estimation.
+Every guarantee here is relative to the design's known $\rho$. Nothing in
+this section rescues transcript-only analysis, which is the point.
 
 \section{Simulation}\label{sec:sims}
 
