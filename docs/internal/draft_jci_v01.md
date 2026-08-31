@@ -1,3 +1,12 @@
+> ⚠️ **역사 기록 — 현재 상태가 아님.** 원고 초안 v0.1
+>
+> **폐기됨.** 현재 원고는 `paper/tex/main.tex` (v0.3, 21쪽).
+>
+> 현재 진실 원천: `theory/formal_framework.md` (v0.5) · 현재 원고: `paper/tex/main.tex`
+> 이 디렉터리는 replication package가 아니다 (`docs/internal/README.md` 참조).
+
+---
+
 # When the Treatment Talks Back: Information Limits of Observational Logs from Adaptive Generative Political Communication
 
 **[HISTORICAL — superseded by draft_jci_v02.md (2026-07-30). 이 파일은 수정하지 않는다.]**

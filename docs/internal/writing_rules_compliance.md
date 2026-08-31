@@ -1,3 +1,12 @@
+> ⚠️ **역사 기록 — 현재 상태가 아님.** 내부 작성규율 메모
+>
+> 공개용 아님. 원고에서 분리된 내부 기록.
+>
+> 현재 진실 원천: `theory/formal_framework.md` (v0.5) · 현재 원고: `paper/tex/main.tex`
+> 이 디렉터리는 replication package가 아니다 (`docs/internal/README.md` 참조).
+
+---
+
 # Writing-rule compliance note (INTERNAL — do not publish)
 
 > `docs/internal/draft_jci_v02.md`에서 이동. 공개 레포에 두면 언어 선택을 전략적으로

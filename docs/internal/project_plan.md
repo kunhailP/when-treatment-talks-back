@@ -1,3 +1,12 @@
+> ⚠️ **역사 기록 — 현재 상태가 아님.** 프로젝트 계획 (2026-07-30)
+>
+> **폐기됨.** 일정·목표가 이후 변경되었다 (JCI 트랙 확정, Study 0 부록 강등).
+>
+> 현재 진실 원천: `theory/formal_framework.md` (v0.5) · 현재 원고: `paper/tex/main.tex`
+> 이 디렉터리는 replication package가 아니다 (`docs/internal/README.md` 참조).
+
+---
+
 # 실행 계획 v2 (2026-07-30 갱신 — W1–W2 완료, W3–W6 재편)
 
 원칙: P0 없이는 발표가 서지 않는다. **8/26 산출물 = JCI-형 working paper (arXiv v1)** — 관측 로그의 정보 한계가 몸통, G-MRT는 해법 절 (docs/publication_map.md). 구 5주 계획(W1–W2 골격·재현)은 완료되어 역사 기록.

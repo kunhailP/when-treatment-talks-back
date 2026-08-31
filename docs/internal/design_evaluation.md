@@ -1,3 +1,12 @@
+> ⚠️ **역사 기록 — 현재 상태가 아님.** 외부 설계평가 v1 (2026-07-22)
+>
+> 역사 기록. 이후 v2·v3와 v0.4/v0.5 framework가 대체.
+>
+> 현재 진실 원천: `theory/formal_framework.md` (v0.5) · 현재 원고: `paper/tex/main.tex`
+> 이 디렉터리는 replication package가 아니다 (`docs/internal/README.md` 참조).
+
+---
+
 # 연구 설계 평가서
 
 **When the Treatment Talks Back: Design-Based Causal Inference for Adaptive Generative Political Communication**

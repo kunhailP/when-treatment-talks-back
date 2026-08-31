@@ -2,7 +2,7 @@
 
 > **지위**: 신규. `formal_framework.md:71`이 "형식적 식별과 실용적 추정가능성은 다르다"고 서술만 하던 것,
 > 그리고 `temperature_collapse.md`/위상도가 시뮬레이션으로만 보이던 3국면을 **하한 정리**로 닫는다.
-> 이것이 초록의 "no regular estimator escapes the rate" 주장을 정당화하는 근거다 —
+> 이것이 초록의 "no estimator recovers turn-level effects at any rate" 주장을 정당화하는 근거다 —
 > `excursion_bound.md` §5.1이 미해결로 남겨둔 항목.
 >
 > **범위 주의 (§5)**: 이 정리는 **불가능성(하한)** 이다. 특정 추정량이 *언제 잘 되기 시작하는지*(달성)는

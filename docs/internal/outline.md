@@ -1,3 +1,12 @@
+> ⚠️ **역사 기록 — 현재 상태가 아님.** 원고 개요 (v0.3 시점)
+>
+> **폐기됨.** 현재 구조는 7절 + 부록 A–E이며 `paper/tex/main.tex` 참조.
+>
+> 현재 진실 원천: `theory/formal_framework.md` (v0.5) · 현재 원고: `paper/tex/main.tex`
+> 이 디렉터리는 replication package가 아니다 (`docs/internal/README.md` 참조).
+
+---
+
 # Working Paper Outline (v0.3 — JCI-형, 10–15쪽, 8/26 arXiv v1 목표)
 
 제목: When the Treatment Talks Back: Information Limits of Observational Logs from Adaptive Generative Political Communication (가제 — "Design-Based Causal Inference..." 부제 유지 여부는 W6 결정)

@@ -1,3 +1,13 @@
+> ⚠️ **역사 기록 — 현재 상태가 아님.** 2026-08-26 발표 슬라이드 계획
+>
+> 발표 시점 자료. 이 층은 8/25 감사를 반영했으나 **당시 원고는 반영하지 않은 상태**였다.
+수치는 현재 원고와 다를 수 있다.
+>
+> 현재 진실 원천: `theory/formal_framework.md` (v0.5) · 현재 원고: `paper/tex/main.tex`
+> 이 디렉터리는 replication package가 아니다 (`docs/internal/README.md` 참조).
+
+---
+
 # 슬라이드 구성안 — When the Treatment Talks Back (8/26 발표)
 
 대본 v4(presentation_script_20260826.md)와 1:1 대응 · 본편 18장 + 백업 8장

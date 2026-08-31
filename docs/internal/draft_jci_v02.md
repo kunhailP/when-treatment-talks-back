@@ -1,3 +1,17 @@
+> ⚠️ **역사 기록 — 현재 상태가 아님.** 원고 초안 v0.2 (2026-07-30)
+>
+> **폐기됨.** 현재 원고는 `paper/tex/main.tex`. 이 초안의 다음 주장은 이후 **반증되거나 철회**되었다:
+  - `(n,τ)` 위상경계의 닫힌형이 "exact boundary"라는 기술 → 그 선은 `n_eff=1` 등고선이며 실측 전이는 3–5 nats 위
+  - `E[1/p] ≥ 42` → 하한이 아니라 `k=20`의 산술 천장. 정당한 하한은 Clopper–Pearson으로 `≥ 7.2`
+  - `모든 소수전략 ≥ 1.1×10⁵` → 7개 전략의 *평균*이며 최솟값은 77,473. 게다가 Dirichlet α가 정하는 값
+  - `엔트로피 중앙값 0` → judge 아티팩트. 다른 judge에서는 0.286
+  - `no regular estimator escapes the rate` → 당시 미증명. 현재는 minimax 하한(Prop 4)으로 증명됨
+>
+> 현재 진실 원천: `theory/formal_framework.md` (v0.5) · 현재 원고: `paper/tex/main.tex`
+> 이 디렉터리는 replication package가 아니다 (`docs/internal/README.md` 참조).
+
+---
+
 # When the Treatment Talks Back: Information Limits of Observational Logs from Adaptive Generative Political Communication
 
 **Working paper draft v0.2 (2026-07-30) — JCI track (docs/publication_map.md). Structure = docs/internal/outline.md v0.3. All numbers are from executed runs in this repository; none are placeholders. v0.1 → v0.2 (심사 선제 대응 3건): (i) §4.2 Remark A′ — 단일턴 하한의 다턴 a fortiori 적용 (T=1 정리 ↔ T=3 동기의 내적 정합성 봉합); (ii) §2에 off-policy evaluation/deficient-support 문헌 단락 신설 (Sachdeva–Su–Joachims 2020 등) + 경계 긋기; (iii) §4.3에 β^ov의 실질적 의미(equipoise/한계 정책 모집단) 문단 신설. v0.1은 역사 기록 보존.**

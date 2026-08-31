@@ -1,3 +1,12 @@
+> ⚠️ **역사 기록 — 현재 상태가 아님.** 2026-07-30 리뷰 진입점
+>
+> **폐기됨.** 후속 감사 `review_packet_20260825.md`가 이 문서가 놓친 결함 17건을 추가로 확정했다.
+>
+> 현재 진실 원천: `theory/formal_framework.md` (v0.5) · 현재 원고: `paper/tex/main.tex`
+> 이 디렉터리는 replication package가 아니다 (`docs/internal/README.md` 참조).
+
+---
+
 # 리뷰 패킷 (2026-07-30) — 3차 비판 반영 완료 보고 · 현재 진입점
 
 이 문서 하나로 리포의 현재 상태를 파악한다. 구판(20260728)은 historical.

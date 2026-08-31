@@ -69,9 +69,12 @@ scripts/        validate_repo.sh
 companion/      design spec and draft preregistration for the experiment,
                 which has not been run
 docs/           publication_map.md (scope split with the companion paper)
-docs/internal/  research diary: review packets, errata, design history, slides,
-                reading notes. Not part of the replication package; kept
-                because the project's self-corrections are part of its record.
+docs/internal/  dated historical record: audits, superseded drafts, design
+                history, presentation materials, reading notes. Not part of
+                the replication package and not to be cited. Every file
+                carries a banner naming what superseded it, and
+                docs/internal/README.md lists the claims in there that are
+                known false.
 ```
 
 ## Data

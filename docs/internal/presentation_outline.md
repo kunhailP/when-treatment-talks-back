@@ -1,3 +1,12 @@
+> ⚠️ **역사 기록 — 현재 상태가 아님.** 발표 개요 (초기)
+>
+> **폐기됨.**
+>
+> 현재 진실 원천: `theory/formal_framework.md` (v0.5) · 현재 원고: `paper/tex/main.tex`
+> 이 디렉터리는 replication package가 아니다 (`docs/internal/README.md` 참조).
+
+---
+
 # 8/26 발표 아웃라인 (v2 — 2026-07-30 재작성, outline v0.3 = JCI-형 기준; 구판 v1은 git/역사 기록)
 
 **형식**: 20분 발표 + 10분 Q&A 가정. 중심 메시지 1개, 그림 4개.

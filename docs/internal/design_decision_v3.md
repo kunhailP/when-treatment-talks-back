@@ -1,3 +1,12 @@
+> ⚠️ **역사 기록 — 현재 상태가 아님.** 설계 결정 v3 (2026-07-27)
+>
+> 역사 기록.
+>
+> 현재 진실 원천: `theory/formal_framework.md` (v0.5) · 현재 원고: `paper/tex/main.tex`
+> 이 디렉터리는 replication package가 아니다 (`docs/internal/README.md` 참조).
+
+---
+
 # 설계 확정 v3 — Salvi·Imai&Nakamura 정독 + 딥리서치(87개 주장, 60건 적대검증) 종합
 
 작성일: 2026-07-27 · 선행: design_evaluation.md (v1), design_evaluation_v2.md

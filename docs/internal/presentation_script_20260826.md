@@ -1,3 +1,12 @@
+> ⚠️ **역사 기록 — 현재 상태가 아님.** 2026-08-26 발표 대본
+>
+> 발표 시점 자료. 위 슬라이드 계획과 같은 단서가 적용된다.
+>
+> 현재 진실 원천: `theory/formal_framework.md` (v0.5) · 현재 원고: `paper/tex/main.tex`
+> 이 디렉터리는 replication package가 아니다 (`docs/internal/README.md` 참조).
+
+---
+
 # 발표 대본 v5 — When the Treatment Talks Back
 
 **실제 발표자료(kmu_adv_research, 21장)에 1:1로 맞춘 최종 대본.** 20분 + Q&A 10분. (누적 시간 표기)
