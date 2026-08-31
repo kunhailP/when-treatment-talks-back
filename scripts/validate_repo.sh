@@ -72,6 +72,17 @@ check("0-c total n in text",
 for phrase in ["exact boundary", "escapes the rate", "tracks the exact"]:
     check(f"retracted phrase absent: '{phrase}'", phrase not in tex, "present")
 
+# Figures shipped with the manuscript must match the generated ones.
+# paper/tex/figs/ is a copy (LaTeX and arXiv need figures beside the source),
+# and it has silently gone stale before.
+import hashlib, os
+def md5(f): return hashlib.md5(open(f, "rb").read()).hexdigest()
+for fig in sorted(os.listdir("paper/tex/figs")):
+    src = os.path.join("simulation/results", fig)
+    check(f"figure in sync: {fig}",
+          os.path.exists(src) and md5(src) == md5(os.path.join("paper/tex/figs", fig)),
+          "differs from simulation/results/ or has no generated source")
+
 # No placeholders or TODO strings
 bib = open("paper/references.bib").read()
 check("bib has no TODO", "TODO" not in bib, "present")

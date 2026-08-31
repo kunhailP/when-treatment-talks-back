@@ -56,11 +56,6 @@ python analysis/src/12_effective_temperature.py
 python analysis/src/09_fidelity_audit.py        # needs pyreadr
 ```
 
-`simulation/results/v0.2_archive/` holds pre-2026-08-31 outputs, produced
-before a seeding bug was fixed (`continuous_h.py` drew population targets
-from `hash()`, which Python salts per process). They are kept for provenance
-and are not reproducible; do not cite them.
-
 ## Layout
 
 ```
