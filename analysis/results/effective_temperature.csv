@@ -1,0 +1,4 @@
+model,contexts,gap_median,gap_q25,gap_q75,censored_frac,implied_E_inv_p_median,implied_log_n_boundary
+qwen7b,200,3.71,3.71,3.71,0.895,42.0,3.74
+mistral7b,200,3.71,2.56,3.71,0.58,42.0,3.74
+phi35mini,200,3.71,3.71,3.71,0.755,42.0,3.74

@@ -1,0 +1,8 @@
+{
+  "model": "mistralai/Mistral-7B-Instruct-v0.3",
+  "temperature": 1.0,
+  "max_tokens": 400,
+  "k": 20,
+  "prompt_sha": "e1dbb46c5e7f",
+  "started": "2026-07-30T09:48:57"
+}

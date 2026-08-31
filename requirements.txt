@@ -1,0 +1,4 @@
+numpy>=1.26
+pandas>=2.0
+matplotlib>=3.8
+# Study 0 (추후): datasets, statsmodels, scikit-learn

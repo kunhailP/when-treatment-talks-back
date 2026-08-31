@@ -1,0 +1,4 @@
+model,contexts,draws,entropy_median,entropy_mean,top_share_median,zero_entropy_frac,modal_strategy,modal_share,n_strategies_seen
+qwen7b,200,4000,0.0,0.051,1.0,0.895,REBT,0.986,4
+mistral7b,200,4000,0.0,0.204,1.0,0.58,REBT,0.945,6
+phi35mini,200,4000,0.0,0.105,1.0,0.755,REBT,0.973,6

@@ -1,0 +1,157 @@
+\begin{thebibliography}{21}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Boruvka et~al.(2018)Boruvka, Almirall, Witkiewitz, and
+  Murphy]{boruvka2018assessing}
+Audrey Boruvka, Daniel Almirall, Katie Witkiewitz, and Susan~A. Murphy.
+\newblock Assessing time-varying causal effect moderation in mobile health.
+\newblock \emph{Journal of the American Statistical Association}, 113\penalty0
+  (523):\penalty0 1112--1121, 2018.
+
+\bibitem[Chen et~al.(2026)Chen, Kalla, and Le]{chen2026benchmarking}
+Zhongren Chen, Joshua Kalla, and Quan Le.
+\newblock Benchmarking political persuasion risks across frontier large
+  language models, 2026.
+\newblock arXiv:2603.09884.
+
+\bibitem[Costello et~al.(2024)Costello, Pennycook, and
+  Rand]{costello2024durably}
+Thomas~H. Costello, Gordon Pennycook, and David~G. Rand.
+\newblock Durably reducing conspiracy beliefs through dialogues with {AI}.
+\newblock \emph{Science}, 385\penalty0 (6714), 2024.
+\newblock \doi{10.1126/science.adq1814}.
+
+\bibitem[Dafoe et~al.(2018)Dafoe, Zhang, and Caughey]{dafoe2018information}
+Allan Dafoe, Baobao Zhang, and Devin Caughey.
+\newblock Information equivalence in survey experiments.
+\newblock \emph{Political Analysis}, 26\penalty0 (4):\penalty0 399--416, 2018.
+
+\bibitem[D{\'i}az~Mu{\~n}oz and van~der Laan(2012)]{munoz2012population}
+Iv{\'a}n D{\'i}az~Mu{\~n}oz and Mark~J. van~der Laan.
+\newblock Population intervention causal effects based on stochastic
+  interventions.
+\newblock \emph{Biometrics}, 68\penalty0 (2):\penalty0 541--549, 2012.
+
+\bibitem[Dud{\'i}k et~al.(2011)Dud{\'i}k, Langford, and Li]{dudik2011doubly}
+Miroslav Dud{\'i}k, John Langford, and Lihong Li.
+\newblock Doubly robust policy evaluation and learning.
+\newblock In \emph{Proceedings of the 28th International Conference on Machine
+  Learning (ICML)}, pages 1097--1104, 2011.
+
+\bibitem[Hackenburg et~al.(2025)Hackenburg, Tappin,
+  et~al.]{hackenburg2025levers}
+Kobi Hackenburg, Ben~M. Tappin, et~al.
+\newblock The levers of political persuasion with conversational artificial
+  intelligence.
+\newblock \emph{Science}, 2025.
+\newblock \doi{10.1126/science.aea3884}.
+\newblock arXiv:2507.13919. Code:
+  github.com/kobihackenburg/scaling-conversational-AI. TODO: complete author
+  list from published version.
+
+\bibitem[Hahn(1998)]{hahn1998role}
+Jinyong Hahn.
+\newblock On the role of the propensity score in efficient semiparametric
+  estimation of average treatment effects.
+\newblock \emph{Econometrica}, 66\penalty0 (2):\penalty0 315--331, 1998.
+
+\bibitem[Imai and Nakamura(2026)]{imai2026causal}
+Kosuke Imai and Kentaro Nakamura.
+\newblock Causal inference with generative artificial intelligence: Application
+  to texts as treatments.
+\newblock \emph{Journal of the American Statistical Association}, 2026.
+\newblock \doi{10.1080/01621459.2026.2689629}.
+\newblock arXiv:2410.00903.
+
+\bibitem[Jiang and Li(2016)]{jiang2016doubly}
+Nan Jiang and Lihong Li.
+\newblock Doubly robust off-policy value evaluation for reinforcement learning.
+\newblock In \emph{Proceedings of the 33rd International Conference on Machine
+  Learning (ICML)}, pages 652--661, 2016.
+
+\bibitem[Kallus and Uehara(2020)]{kallus2020double}
+Nathan Kallus and Masatoshi Uehara.
+\newblock Double reinforcement learning for efficient off-policy evaluation in
+  markov decision processes.
+\newblock \emph{Journal of Machine Learning Research}, 21\penalty0
+  (167):\penalty0 1--63, 2020.
+
+\bibitem[Kennedy(2019)]{kennedy2019nonparametric}
+Edward~H. Kennedy.
+\newblock Nonparametric causal effects based on incremental propensity score
+  interventions.
+\newblock \emph{Journal of the American Statistical Association}, 114\penalty0
+  (526):\penalty0 645--656, 2019.
+
+\bibitem[Li et~al.(2018)Li, Morgan, and Zaslavsky]{li2018balancing}
+Fan Li, Kari~Lock Morgan, and Alan~M. Zaslavsky.
+\newblock Balancing covariates via propensity score weighting.
+\newblock \emph{Journal of the American Statistical Association}, 113\penalty0
+  (521):\penalty0 390--400, 2018.
+
+\bibitem[Qian et~al.(2022)Qian, Walton, Collins, Klasnja, Lanza, Nahum-Shani,
+  Rabbi, Russell, Almirall, and Murphy]{qian2022microrandomized}
+Tianchen Qian, Ashley~E. Walton, Linda~M. Collins, Predrag Klasnja,
+  Stephanie~T. Lanza, Inbal Nahum-Shani, Mashfiqui Rabbi, Michael~A. Russell,
+  Daniel Almirall, and Susan~A. Murphy.
+\newblock The microrandomized trial for developing digital interventions:
+  Experimental design and data analysis considerations.
+\newblock \emph{Psychological Methods}, 27\penalty0 (5), 2022.
+\newblock arXiv:2107.03544.
+
+\bibitem[Robins(1986)]{robins1986new}
+James~M. Robins.
+\newblock A new approach to causal inference in mortality studies with a
+  sustained exposure period.
+\newblock \emph{Mathematical Modelling}, 7:\penalty0 1393--1512, 1986.
+
+\bibitem[Sachdeva et~al.(2020)Sachdeva, Su, and Joachims]{sachdeva2020off}
+Noveen Sachdeva, Yi~Su, and Thorsten Joachims.
+\newblock Off-policy bandits with deficient support.
+\newblock In \emph{Proceedings of the 26th ACM SIGKDD Conference on Knowledge
+  Discovery and Data Mining (KDD)}, pages 965--975, 2020.
+
+\bibitem[Salvi et~al.(2025)Salvi, Horta~Ribeiro, Gallotti, and
+  West]{salvi2025conversational}
+Francesco Salvi, Manoel Horta~Ribeiro, Riccardo Gallotti, and Robert West.
+\newblock On the conversational persuasiveness of {GPT-4}.
+\newblock \emph{Nature Human Behaviour}, 2025.
+\newblock \doi{10.1038/s41562-025-02194-6}.
+\newblock Data: huggingface.co/datasets/frasalvi/debategpt.
+
+\bibitem[Shi and Dempsey(2025)]{shi2025distal}
+Jieru Shi and Walter Dempsey.
+\newblock Assessing time-varying causal effect moderation in the presence of
+  distal outcomes.
+\newblock \emph{Biometrics}, 2025.
+\newblock TODO: verify volume/pages before submission (repo bib policy:
+  verified 2026-07-22 baseline).
+
+\bibitem[Thomas and Brunskill(2016)]{thomas2016data}
+Philip~S. Thomas and Emma Brunskill.
+\newblock Data-efficient off-policy policy evaluation for reinforcement
+  learning.
+\newblock In \emph{Proceedings of the 33rd International Conference on Machine
+  Learning (ICML)}, pages 2139--2148, 2016.
+
+\bibitem[Tierney et~al.(2025)Tierney, Katta, Bail, Hillygus, and
+  Volfovsky]{tierney2025design}
+Graham Tierney, Srikar Katta, Christopher Bail, D.~Sunshine Hillygus, and
+  Alexander Volfovsky.
+\newblock A design-based solution for causal inference with text: Can a
+  language model be too large?, 2025.
+\newblock arXiv:2510.08758.
+
+\bibitem[Young et~al.(2014)Young, Hern{\'a}n, and
+  Robins]{young2014identification}
+Jessica~G. Young, Miguel~A. Hern{\'a}n, and James~M. Robins.
+\newblock Identification, estimation and approximation of risk under
+  interventions that depend on the natural value of treatment using
+  observational data.
+\newblock \emph{Epidemiologic Methods}, 3\penalty0 (1):\penalty0 1--19, 2014.
+
+\end{thebibliography}

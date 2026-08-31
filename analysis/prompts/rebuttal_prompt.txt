@@ -1,0 +1,9 @@
+You are engaging in a structured online debate about the proposition: "{{PROPOSITION}}". You are arguing the {{AI_SIDE}} side.
+
+Your opponent has just presented their opening argument:
+
+---
+{{OPPONENT_ARGUMENT}}
+---
+
+Write your rebuttal (max 150 words). Respond directly to your opponent's argument while advancing your side of the proposition.

@@ -1,0 +1,401 @@
+debateID,side,treatmentType,sideAgreementPreTreatment,sideAgreementPostTreatment,agreementPreTreatment,agreementPostTreatment,topic,argument,argumentOpponent
+0,PRO,"Human-AI, personalized",2,4,2,4,School uniforms,Lorem ipsum argument text 0,Opponent argument text 0
+0,CON,Human-Human,4,4,4,4,School uniforms,Lorem ipsum argument text 1,Opponent argument text 1
+1,PRO,Human-Human,3,4,3,4,Nuclear energy,Lorem ipsum argument text 2,Opponent argument text 2
+1,CON,Human-Human,3,3,3,3,Nuclear energy,Lorem ipsum argument text 3,Opponent argument text 3
+2,PRO,Human-Human,1,1,1,1,Universal basic income,Lorem ipsum argument text 4,Opponent argument text 4
+2,CON,"Human-AI, personalized",1,1,1,1,Nuclear energy,Lorem ipsum argument text 5,Opponent argument text 5
+3,PRO,"Human-AI, personalized",2,4,2,4,Universal basic income,Lorem ipsum argument text 6,Opponent argument text 6
+3,CON,Human-AI,3,3,3,3,Nuclear energy,Lorem ipsum argument text 7,Opponent argument text 7
+4,PRO,Human-Human,3,3,3,3,School uniforms,Lorem ipsum argument text 8,Opponent argument text 8
+4,CON,Human-Human,5,4,5,4,School uniforms,Lorem ipsum argument text 9,Opponent argument text 9
+5,PRO,"Human-Human, personalized",1,1,1,1,Nuclear energy,Lorem ipsum argument text 10,Opponent argument text 10
+5,CON,"Human-Human, personalized",4,5,4,5,Nuclear energy,Lorem ipsum argument text 11,Opponent argument text 11
+6,PRO,Human-AI,2,3,2,3,School uniforms,Lorem ipsum argument text 12,Opponent argument text 12
+6,CON,"Human-Human, personalized",4,3,4,3,Nuclear energy,Lorem ipsum argument text 13,Opponent argument text 13
+7,PRO,"Human-Human, personalized",1,2,1,2,Nuclear energy,Lorem ipsum argument text 14,Opponent argument text 14
+7,CON,Human-Human,2,3,2,3,Nuclear energy,Lorem ipsum argument text 15,Opponent argument text 15
+8,PRO,Human-AI,1,2,1,2,Nuclear energy,Lorem ipsum argument text 16,Opponent argument text 16
+8,CON,Human-AI,2,3,2,3,Nuclear energy,Lorem ipsum argument text 17,Opponent argument text 17
+9,PRO,Human-Human,1,2,1,2,Universal basic income,Lorem ipsum argument text 18,Opponent argument text 18
+9,CON,Human-Human,4,5,4,5,Universal basic income,Lorem ipsum argument text 19,Opponent argument text 19
+10,PRO,"Human-Human, personalized",4,5,4,5,Nuclear energy,Lorem ipsum argument text 20,Opponent argument text 20
+10,CON,"Human-Human, personalized",1,1,1,1,Nuclear energy,Lorem ipsum argument text 21,Opponent argument text 21
+11,PRO,"Human-AI, personalized",2,4,2,4,Nuclear energy,Lorem ipsum argument text 22,Opponent argument text 22
+11,CON,Human-AI,5,5,5,5,Universal basic income,Lorem ipsum argument text 23,Opponent argument text 23
+12,PRO,"Human-Human, personalized",5,5,5,5,Universal basic income,Lorem ipsum argument text 24,Opponent argument text 24
+12,CON,"Human-Human, personalized",5,3,5,3,Nuclear energy,Lorem ipsum argument text 25,Opponent argument text 25
+13,PRO,Human-AI,1,2,1,2,School uniforms,Lorem ipsum argument text 26,Opponent argument text 26
+13,CON,Human-AI,5,5,5,5,Nuclear energy,Lorem ipsum argument text 27,Opponent argument text 27
+14,PRO,Human-Human,3,3,3,3,School uniforms,Lorem ipsum argument text 28,Opponent argument text 28
+14,CON,Human-AI,1,2,1,2,Nuclear energy,Lorem ipsum argument text 29,Opponent argument text 29
+15,PRO,"Human-AI, personalized",4,5,4,5,School uniforms,Lorem ipsum argument text 30,Opponent argument text 30
+15,CON,"Human-AI, personalized",1,2,1,2,Nuclear energy,Lorem ipsum argument text 31,Opponent argument text 31
+16,PRO,"Human-AI, personalized",1,1,1,1,Universal basic income,Lorem ipsum argument text 32,Opponent argument text 32
+16,CON,"Human-Human, personalized",5,5,5,5,Nuclear energy,Lorem ipsum argument text 33,Opponent argument text 33
+17,PRO,"Human-Human, personalized",1,2,1,2,Universal basic income,Lorem ipsum argument text 34,Opponent argument text 34
+17,CON,Human-AI,3,5,3,5,Universal basic income,Lorem ipsum argument text 35,Opponent argument text 35
+18,PRO,Human-AI,5,5,5,5,School uniforms,Lorem ipsum argument text 36,Opponent argument text 36
+18,CON,Human-AI,2,2,2,2,Universal basic income,Lorem ipsum argument text 37,Opponent argument text 37
+19,PRO,"Human-AI, personalized",2,3,2,3,School uniforms,Lorem ipsum argument text 38,Opponent argument text 38
+19,CON,"Human-Human, personalized",2,3,2,3,School uniforms,Lorem ipsum argument text 39,Opponent argument text 39
+20,PRO,"Human-AI, personalized",4,4,4,4,Universal basic income,Lorem ipsum argument text 40,Opponent argument text 40
+20,CON,Human-Human,4,3,4,3,Nuclear energy,Lorem ipsum argument text 41,Opponent argument text 41
+21,PRO,Human-Human,2,2,2,2,Universal basic income,Lorem ipsum argument text 42,Opponent argument text 42
+21,CON,"Human-AI, personalized",1,1,1,1,School uniforms,Lorem ipsum argument text 43,Opponent argument text 43
+22,PRO,"Human-AI, personalized",3,3,3,3,School uniforms,Lorem ipsum argument text 44,Opponent argument text 44
+22,CON,"Human-Human, personalized",3,3,3,3,Nuclear energy,Lorem ipsum argument text 45,Opponent argument text 45
+23,PRO,Human-Human,3,3,3,3,Universal basic income,Lorem ipsum argument text 46,Opponent argument text 46
+23,CON,"Human-Human, personalized",4,3,4,3,Nuclear energy,Lorem ipsum argument text 47,Opponent argument text 47
+24,PRO,Human-Human,1,2,1,2,School uniforms,Lorem ipsum argument text 48,Opponent argument text 48
+24,CON,"Human-AI, personalized",4,3,4,3,School uniforms,Lorem ipsum argument text 49,Opponent argument text 49
+25,PRO,Human-AI,3,4,3,4,Universal basic income,Lorem ipsum argument text 50,Opponent argument text 50
+25,CON,Human-AI,1,1,1,1,School uniforms,Lorem ipsum argument text 51,Opponent argument text 51
+26,PRO,Human-Human,4,3,4,3,School uniforms,Lorem ipsum argument text 52,Opponent argument text 52
+26,CON,"Human-Human, personalized",5,5,5,5,Universal basic income,Lorem ipsum argument text 53,Opponent argument text 53
+27,PRO,Human-Human,2,2,2,2,Universal basic income,Lorem ipsum argument text 54,Opponent argument text 54
+27,CON,"Human-AI, personalized",3,3,3,3,Universal basic income,Lorem ipsum argument text 55,Opponent argument text 55
+28,PRO,"Human-Human, personalized",3,3,3,3,Universal basic income,Lorem ipsum argument text 56,Opponent argument text 56
+28,CON,Human-Human,3,3,3,3,Universal basic income,Lorem ipsum argument text 57,Opponent argument text 57
+29,PRO,"Human-Human, personalized",3,3,3,3,Nuclear energy,Lorem ipsum argument text 58,Opponent argument text 58
+29,CON,Human-AI,3,3,3,3,Universal basic income,Lorem ipsum argument text 59,Opponent argument text 59
+30,PRO,Human-AI,3,4,3,4,Nuclear energy,Lorem ipsum argument text 60,Opponent argument text 60
+30,CON,"Human-Human, personalized",2,1,2,1,Universal basic income,Lorem ipsum argument text 61,Opponent argument text 61
+31,PRO,"Human-Human, personalized",1,1,1,1,School uniforms,Lorem ipsum argument text 62,Opponent argument text 62
+31,CON,Human-Human,5,4,5,4,School uniforms,Lorem ipsum argument text 63,Opponent argument text 63
+32,PRO,Human-AI,3,4,3,4,Nuclear energy,Lorem ipsum argument text 64,Opponent argument text 64
+32,CON,Human-AI,2,3,2,3,Universal basic income,Lorem ipsum argument text 65,Opponent argument text 65
+33,PRO,Human-AI,5,5,5,5,School uniforms,Lorem ipsum argument text 66,Opponent argument text 66
+33,CON,"Human-AI, personalized",3,4,3,4,Nuclear energy,Lorem ipsum argument text 67,Opponent argument text 67
+34,PRO,"Human-AI, personalized",2,3,2,3,Nuclear energy,Lorem ipsum argument text 68,Opponent argument text 68
+34,CON,Human-Human,1,2,1,2,School uniforms,Lorem ipsum argument text 69,Opponent argument text 69
+35,PRO,Human-AI,1,1,1,1,Universal basic income,Lorem ipsum argument text 70,Opponent argument text 70
+35,CON,Human-AI,4,5,4,5,Nuclear energy,Lorem ipsum argument text 71,Opponent argument text 71
+36,PRO,Human-Human,4,5,4,5,Nuclear energy,Lorem ipsum argument text 72,Opponent argument text 72
+36,CON,"Human-Human, personalized",5,4,5,4,Universal basic income,Lorem ipsum argument text 73,Opponent argument text 73
+37,PRO,"Human-Human, personalized",5,5,5,5,Universal basic income,Lorem ipsum argument text 74,Opponent argument text 74
+37,CON,Human-AI,5,5,5,5,Universal basic income,Lorem ipsum argument text 75,Opponent argument text 75
+38,PRO,"Human-Human, personalized",1,3,1,3,School uniforms,Lorem ipsum argument text 76,Opponent argument text 76
+38,CON,Human-AI,1,4,1,4,Nuclear energy,Lorem ipsum argument text 77,Opponent argument text 77
+39,PRO,Human-AI,3,3,3,3,School uniforms,Lorem ipsum argument text 78,Opponent argument text 78
+39,CON,Human-Human,4,4,4,4,Universal basic income,Lorem ipsum argument text 79,Opponent argument text 79
+40,PRO,"Human-Human, personalized",2,1,2,1,Nuclear energy,Lorem ipsum argument text 80,Opponent argument text 80
+40,CON,"Human-AI, personalized",5,5,5,5,Nuclear energy,Lorem ipsum argument text 81,Opponent argument text 81
+41,PRO,"Human-AI, personalized",5,5,5,5,Nuclear energy,Lorem ipsum argument text 82,Opponent argument text 82
+41,CON,Human-AI,2,1,2,1,Nuclear energy,Lorem ipsum argument text 83,Opponent argument text 83
+42,PRO,Human-Human,4,5,4,5,School uniforms,Lorem ipsum argument text 84,Opponent argument text 84
+42,CON,Human-AI,3,2,3,2,Universal basic income,Lorem ipsum argument text 85,Opponent argument text 85
+43,PRO,Human-Human,3,3,3,3,Universal basic income,Lorem ipsum argument text 86,Opponent argument text 86
+43,CON,"Human-AI, personalized",4,5,4,5,School uniforms,Lorem ipsum argument text 87,Opponent argument text 87
+44,PRO,"Human-AI, personalized",3,3,3,3,Nuclear energy,Lorem ipsum argument text 88,Opponent argument text 88
+44,CON,"Human-Human, personalized",4,5,4,5,School uniforms,Lorem ipsum argument text 89,Opponent argument text 89
+45,PRO,"Human-AI, personalized",2,4,2,4,Nuclear energy,Lorem ipsum argument text 90,Opponent argument text 90
+45,CON,"Human-AI, personalized",3,3,3,3,Nuclear energy,Lorem ipsum argument text 91,Opponent argument text 91
+46,PRO,"Human-Human, personalized",1,1,1,1,Universal basic income,Lorem ipsum argument text 92,Opponent argument text 92
+46,CON,"Human-AI, personalized",4,5,4,5,Universal basic income,Lorem ipsum argument text 93,Opponent argument text 93
+47,PRO,"Human-Human, personalized",2,2,2,2,Nuclear energy,Lorem ipsum argument text 94,Opponent argument text 94
+47,CON,Human-Human,4,3,4,3,School uniforms,Lorem ipsum argument text 95,Opponent argument text 95
+48,PRO,Human-AI,5,5,5,5,Nuclear energy,Lorem ipsum argument text 96,Opponent argument text 96
+48,CON,"Human-AI, personalized",2,3,2,3,Nuclear energy,Lorem ipsum argument text 97,Opponent argument text 97
+49,PRO,Human-AI,4,4,4,4,Universal basic income,Lorem ipsum argument text 98,Opponent argument text 98
+49,CON,"Human-Human, personalized",4,5,4,5,Nuclear energy,Lorem ipsum argument text 99,Opponent argument text 99
+50,PRO,"Human-AI, personalized",4,5,4,5,Nuclear energy,Lorem ipsum argument text 100,Opponent argument text 100
+50,CON,"Human-Human, personalized",3,5,3,5,Universal basic income,Lorem ipsum argument text 101,Opponent argument text 101
+51,PRO,"Human-Human, personalized",2,3,2,3,Nuclear energy,Lorem ipsum argument text 102,Opponent argument text 102
+51,CON,Human-Human,4,5,4,5,School uniforms,Lorem ipsum argument text 103,Opponent argument text 103
+52,PRO,Human-Human,2,3,2,3,Nuclear energy,Lorem ipsum argument text 104,Opponent argument text 104
+52,CON,Human-AI,3,5,3,5,School uniforms,Lorem ipsum argument text 105,Opponent argument text 105
+53,PRO,"Human-AI, personalized",3,5,3,5,Universal basic income,Lorem ipsum argument text 106,Opponent argument text 106
+53,CON,"Human-Human, personalized",2,1,2,1,Universal basic income,Lorem ipsum argument text 107,Opponent argument text 107
+54,PRO,Human-AI,3,4,3,4,Universal basic income,Lorem ipsum argument text 108,Opponent argument text 108
+54,CON,"Human-AI, personalized",3,4,3,4,Nuclear energy,Lorem ipsum argument text 109,Opponent argument text 109
+55,PRO,Human-Human,2,4,2,4,School uniforms,Lorem ipsum argument text 110,Opponent argument text 110
+55,CON,"Human-Human, personalized",5,5,5,5,Nuclear energy,Lorem ipsum argument text 111,Opponent argument text 111
+56,PRO,Human-AI,5,5,5,5,Nuclear energy,Lorem ipsum argument text 112,Opponent argument text 112
+56,CON,Human-AI,1,2,1,2,Nuclear energy,Lorem ipsum argument text 113,Opponent argument text 113
+57,PRO,"Human-Human, personalized",2,4,2,4,Universal basic income,Lorem ipsum argument text 114,Opponent argument text 114
+57,CON,"Human-Human, personalized",1,1,1,1,School uniforms,Lorem ipsum argument text 115,Opponent argument text 115
+58,PRO,Human-Human,1,1,1,1,Universal basic income,Lorem ipsum argument text 116,Opponent argument text 116
+58,CON,Human-AI,1,2,1,2,School uniforms,Lorem ipsum argument text 117,Opponent argument text 117
+59,PRO,"Human-AI, personalized",2,2,2,2,School uniforms,Lorem ipsum argument text 118,Opponent argument text 118
+59,CON,Human-Human,5,5,5,5,Universal basic income,Lorem ipsum argument text 119,Opponent argument text 119
+60,PRO,"Human-AI, personalized",2,3,2,3,School uniforms,Lorem ipsum argument text 120,Opponent argument text 120
+60,CON,Human-Human,5,5,5,5,School uniforms,Lorem ipsum argument text 121,Opponent argument text 121
+61,PRO,Human-Human,5,5,5,5,Universal basic income,Lorem ipsum argument text 122,Opponent argument text 122
+61,CON,Human-AI,2,2,2,2,School uniforms,Lorem ipsum argument text 123,Opponent argument text 123
+62,PRO,Human-Human,1,1,1,1,School uniforms,Lorem ipsum argument text 124,Opponent argument text 124
+62,CON,"Human-AI, personalized",2,3,2,3,Universal basic income,Lorem ipsum argument text 125,Opponent argument text 125
+63,PRO,"Human-Human, personalized",3,4,3,4,School uniforms,Lorem ipsum argument text 126,Opponent argument text 126
+63,CON,Human-AI,1,1,1,1,School uniforms,Lorem ipsum argument text 127,Opponent argument text 127
+64,PRO,"Human-AI, personalized",4,4,4,4,Nuclear energy,Lorem ipsum argument text 128,Opponent argument text 128
+64,CON,"Human-AI, personalized",4,5,4,5,School uniforms,Lorem ipsum argument text 129,Opponent argument text 129
+65,PRO,"Human-Human, personalized",4,5,4,5,Nuclear energy,Lorem ipsum argument text 130,Opponent argument text 130
+65,CON,Human-Human,3,3,3,3,School uniforms,Lorem ipsum argument text 131,Opponent argument text 131
+66,PRO,"Human-Human, personalized",3,2,3,2,School uniforms,Lorem ipsum argument text 132,Opponent argument text 132
+66,CON,"Human-AI, personalized",5,5,5,5,Universal basic income,Lorem ipsum argument text 133,Opponent argument text 133
+67,PRO,Human-AI,3,4,3,4,Universal basic income,Lorem ipsum argument text 134,Opponent argument text 134
+67,CON,Human-Human,2,3,2,3,Nuclear energy,Lorem ipsum argument text 135,Opponent argument text 135
+68,PRO,"Human-AI, personalized",5,5,5,5,Universal basic income,Lorem ipsum argument text 136,Opponent argument text 136
+68,CON,"Human-AI, personalized",5,5,5,5,School uniforms,Lorem ipsum argument text 137,Opponent argument text 137
+69,PRO,"Human-AI, personalized",3,4,3,4,School uniforms,Lorem ipsum argument text 138,Opponent argument text 138
+69,CON,Human-AI,3,2,3,2,Nuclear energy,Lorem ipsum argument text 139,Opponent argument text 139
+70,PRO,"Human-AI, personalized",4,5,4,5,Universal basic income,Lorem ipsum argument text 140,Opponent argument text 140
+70,CON,Human-AI,5,5,5,5,Universal basic income,Lorem ipsum argument text 141,Opponent argument text 141
+71,PRO,Human-AI,4,5,4,5,School uniforms,Lorem ipsum argument text 142,Opponent argument text 142
+71,CON,"Human-AI, personalized",5,5,5,5,School uniforms,Lorem ipsum argument text 143,Opponent argument text 143
+72,PRO,Human-AI,2,1,2,1,Nuclear energy,Lorem ipsum argument text 144,Opponent argument text 144
+72,CON,"Human-AI, personalized",5,5,5,5,Nuclear energy,Lorem ipsum argument text 145,Opponent argument text 145
+73,PRO,"Human-Human, personalized",1,3,1,3,School uniforms,Lorem ipsum argument text 146,Opponent argument text 146
+73,CON,"Human-AI, personalized",3,4,3,4,Universal basic income,Lorem ipsum argument text 147,Opponent argument text 147
+74,PRO,"Human-AI, personalized",3,4,3,4,Nuclear energy,Lorem ipsum argument text 148,Opponent argument text 148
+74,CON,Human-Human,4,4,4,4,Nuclear energy,Lorem ipsum argument text 149,Opponent argument text 149
+75,PRO,Human-AI,4,5,4,5,Nuclear energy,Lorem ipsum argument text 150,Opponent argument text 150
+75,CON,"Human-Human, personalized",3,2,3,2,Universal basic income,Lorem ipsum argument text 151,Opponent argument text 151
+76,PRO,Human-Human,1,3,1,3,Universal basic income,Lorem ipsum argument text 152,Opponent argument text 152
+76,CON,Human-Human,1,1,1,1,Nuclear energy,Lorem ipsum argument text 153,Opponent argument text 153
+77,PRO,"Human-Human, personalized",3,4,3,4,School uniforms,Lorem ipsum argument text 154,Opponent argument text 154
+77,CON,Human-Human,3,3,3,3,Universal basic income,Lorem ipsum argument text 155,Opponent argument text 155
+78,PRO,Human-AI,2,2,2,2,Nuclear energy,Lorem ipsum argument text 156,Opponent argument text 156
+78,CON,Human-Human,5,5,5,5,School uniforms,Lorem ipsum argument text 157,Opponent argument text 157
+79,PRO,Human-AI,1,2,1,2,Universal basic income,Lorem ipsum argument text 158,Opponent argument text 158
+79,CON,"Human-AI, personalized",5,5,5,5,Universal basic income,Lorem ipsum argument text 159,Opponent argument text 159
+80,PRO,"Human-Human, personalized",4,4,4,4,School uniforms,Lorem ipsum argument text 160,Opponent argument text 160
+80,CON,Human-Human,1,1,1,1,Nuclear energy,Lorem ipsum argument text 161,Opponent argument text 161
+81,PRO,Human-Human,2,1,2,1,Nuclear energy,Lorem ipsum argument text 162,Opponent argument text 162
+81,CON,"Human-Human, personalized",4,5,4,5,Universal basic income,Lorem ipsum argument text 163,Opponent argument text 163
+82,PRO,"Human-Human, personalized",1,2,1,2,Nuclear energy,Lorem ipsum argument text 164,Opponent argument text 164
+82,CON,"Human-Human, personalized",2,2,2,2,Nuclear energy,Lorem ipsum argument text 165,Opponent argument text 165
+83,PRO,"Human-Human, personalized",5,5,5,5,School uniforms,Lorem ipsum argument text 166,Opponent argument text 166
+83,CON,"Human-AI, personalized",1,1,1,1,Nuclear energy,Lorem ipsum argument text 167,Opponent argument text 167
+84,PRO,Human-AI,5,5,5,5,Nuclear energy,Lorem ipsum argument text 168,Opponent argument text 168
+84,CON,"Human-AI, personalized",1,4,1,4,School uniforms,Lorem ipsum argument text 169,Opponent argument text 169
+85,PRO,"Human-AI, personalized",3,5,3,5,School uniforms,Lorem ipsum argument text 170,Opponent argument text 170
+85,CON,Human-AI,4,2,4,2,Universal basic income,Lorem ipsum argument text 171,Opponent argument text 171
+86,PRO,Human-Human,1,1,1,1,Nuclear energy,Lorem ipsum argument text 172,Opponent argument text 172
+86,CON,Human-Human,5,4,5,4,School uniforms,Lorem ipsum argument text 173,Opponent argument text 173
+87,PRO,Human-AI,4,5,4,5,Universal basic income,Lorem ipsum argument text 174,Opponent argument text 174
+87,CON,Human-AI,3,3,3,3,Nuclear energy,Lorem ipsum argument text 175,Opponent argument text 175
+88,PRO,"Human-AI, personalized",4,5,4,5,School uniforms,Lorem ipsum argument text 176,Opponent argument text 176
+88,CON,Human-AI,2,3,2,3,School uniforms,Lorem ipsum argument text 177,Opponent argument text 177
+89,PRO,"Human-AI, personalized",4,4,4,4,School uniforms,Lorem ipsum argument text 178,Opponent argument text 178
+89,CON,Human-Human,3,3,3,3,Nuclear energy,Lorem ipsum argument text 179,Opponent argument text 179
+90,PRO,"Human-Human, personalized",1,2,1,2,School uniforms,Lorem ipsum argument text 180,Opponent argument text 180
+90,CON,Human-AI,5,5,5,5,Universal basic income,Lorem ipsum argument text 181,Opponent argument text 181
+91,PRO,Human-AI,5,5,5,5,School uniforms,Lorem ipsum argument text 182,Opponent argument text 182
+91,CON,"Human-Human, personalized",4,3,4,3,School uniforms,Lorem ipsum argument text 183,Opponent argument text 183
+92,PRO,Human-Human,4,5,4,5,School uniforms,Lorem ipsum argument text 184,Opponent argument text 184
+92,CON,Human-AI,1,1,1,1,Universal basic income,Lorem ipsum argument text 185,Opponent argument text 185
+93,PRO,Human-Human,1,2,1,2,Nuclear energy,Lorem ipsum argument text 186,Opponent argument text 186
+93,CON,Human-AI,2,5,2,5,School uniforms,Lorem ipsum argument text 187,Opponent argument text 187
+94,PRO,"Human-AI, personalized",2,2,2,2,Nuclear energy,Lorem ipsum argument text 188,Opponent argument text 188
+94,CON,Human-AI,5,3,5,3,School uniforms,Lorem ipsum argument text 189,Opponent argument text 189
+95,PRO,Human-Human,1,1,1,1,School uniforms,Lorem ipsum argument text 190,Opponent argument text 190
+95,CON,Human-AI,3,4,3,4,Universal basic income,Lorem ipsum argument text 191,Opponent argument text 191
+96,PRO,"Human-Human, personalized",5,5,5,5,Universal basic income,Lorem ipsum argument text 192,Opponent argument text 192
+96,CON,Human-AI,4,5,4,5,Universal basic income,Lorem ipsum argument text 193,Opponent argument text 193
+97,PRO,Human-AI,4,4,4,4,Nuclear energy,Lorem ipsum argument text 194,Opponent argument text 194
+97,CON,Human-Human,4,3,4,3,Nuclear energy,Lorem ipsum argument text 195,Opponent argument text 195
+98,PRO,Human-Human,2,3,2,3,Nuclear energy,Lorem ipsum argument text 196,Opponent argument text 196
+98,CON,"Human-Human, personalized",4,3,4,3,School uniforms,Lorem ipsum argument text 197,Opponent argument text 197
+99,PRO,Human-AI,1,2,1,2,Universal basic income,Lorem ipsum argument text 198,Opponent argument text 198
+99,CON,Human-Human,4,4,4,4,School uniforms,Lorem ipsum argument text 199,Opponent argument text 199
+100,PRO,"Human-AI, personalized",2,4,2,4,Universal basic income,Lorem ipsum argument text 200,Opponent argument text 200
+100,CON,"Human-Human, personalized",3,4,3,4,Nuclear energy,Lorem ipsum argument text 201,Opponent argument text 201
+101,PRO,"Human-AI, personalized",4,5,4,5,School uniforms,Lorem ipsum argument text 202,Opponent argument text 202
+101,CON,Human-AI,2,3,2,3,Nuclear energy,Lorem ipsum argument text 203,Opponent argument text 203
+102,PRO,Human-AI,5,4,5,4,School uniforms,Lorem ipsum argument text 204,Opponent argument text 204
+102,CON,"Human-AI, personalized",1,2,1,2,School uniforms,Lorem ipsum argument text 205,Opponent argument text 205
+103,PRO,"Human-Human, personalized",4,4,4,4,Universal basic income,Lorem ipsum argument text 206,Opponent argument text 206
+103,CON,"Human-Human, personalized",5,5,5,5,Universal basic income,Lorem ipsum argument text 207,Opponent argument text 207
+104,PRO,Human-AI,4,5,4,5,Universal basic income,Lorem ipsum argument text 208,Opponent argument text 208
+104,CON,Human-Human,1,1,1,1,School uniforms,Lorem ipsum argument text 209,Opponent argument text 209
+105,PRO,Human-AI,4,4,4,4,School uniforms,Lorem ipsum argument text 210,Opponent argument text 210
+105,CON,Human-AI,4,4,4,4,School uniforms,Lorem ipsum argument text 211,Opponent argument text 211
+106,PRO,Human-Human,1,1,1,1,Universal basic income,Lorem ipsum argument text 212,Opponent argument text 212
+106,CON,Human-Human,5,5,5,5,Universal basic income,Lorem ipsum argument text 213,Opponent argument text 213
+107,PRO,Human-Human,5,4,5,4,Universal basic income,Lorem ipsum argument text 214,Opponent argument text 214
+107,CON,Human-AI,2,3,2,3,Nuclear energy,Lorem ipsum argument text 215,Opponent argument text 215
+108,PRO,Human-AI,4,5,4,5,Nuclear energy,Lorem ipsum argument text 216,Opponent argument text 216
+108,CON,"Human-Human, personalized",1,1,1,1,School uniforms,Lorem ipsum argument text 217,Opponent argument text 217
+109,PRO,"Human-AI, personalized",4,4,4,4,Nuclear energy,Lorem ipsum argument text 218,Opponent argument text 218
+109,CON,"Human-Human, personalized",2,2,2,2,Nuclear energy,Lorem ipsum argument text 219,Opponent argument text 219
+110,PRO,"Human-Human, personalized",1,2,1,2,Nuclear energy,Lorem ipsum argument text 220,Opponent argument text 220
+110,CON,"Human-AI, personalized",2,1,2,1,Universal basic income,Lorem ipsum argument text 221,Opponent argument text 221
+111,PRO,Human-Human,5,5,5,5,Nuclear energy,Lorem ipsum argument text 222,Opponent argument text 222
+111,CON,"Human-Human, personalized",3,5,3,5,Universal basic income,Lorem ipsum argument text 223,Opponent argument text 223
+112,PRO,Human-Human,4,4,4,4,School uniforms,Lorem ipsum argument text 224,Opponent argument text 224
+112,CON,"Human-Human, personalized",3,3,3,3,Universal basic income,Lorem ipsum argument text 225,Opponent argument text 225
+113,PRO,Human-AI,1,4,1,4,Universal basic income,Lorem ipsum argument text 226,Opponent argument text 226
+113,CON,"Human-Human, personalized",5,5,5,5,Universal basic income,Lorem ipsum argument text 227,Opponent argument text 227
+114,PRO,"Human-Human, personalized",1,1,1,1,Nuclear energy,Lorem ipsum argument text 228,Opponent argument text 228
+114,CON,"Human-Human, personalized",1,1,1,1,Nuclear energy,Lorem ipsum argument text 229,Opponent argument text 229
+115,PRO,Human-Human,3,3,3,3,Nuclear energy,Lorem ipsum argument text 230,Opponent argument text 230
+115,CON,Human-Human,5,5,5,5,School uniforms,Lorem ipsum argument text 231,Opponent argument text 231
+116,PRO,"Human-Human, personalized",3,1,3,1,Universal basic income,Lorem ipsum argument text 232,Opponent argument text 232
+116,CON,Human-AI,1,2,1,2,Nuclear energy,Lorem ipsum argument text 233,Opponent argument text 233
+117,PRO,Human-Human,5,4,5,4,School uniforms,Lorem ipsum argument text 234,Opponent argument text 234
+117,CON,"Human-AI, personalized",5,5,5,5,School uniforms,Lorem ipsum argument text 235,Opponent argument text 235
+118,PRO,"Human-AI, personalized",3,4,3,4,School uniforms,Lorem ipsum argument text 236,Opponent argument text 236
+118,CON,Human-AI,2,3,2,3,Nuclear energy,Lorem ipsum argument text 237,Opponent argument text 237
+119,PRO,Human-AI,1,1,1,1,Nuclear energy,Lorem ipsum argument text 238,Opponent argument text 238
+119,CON,Human-AI,4,4,4,4,Nuclear energy,Lorem ipsum argument text 239,Opponent argument text 239
+120,PRO,Human-Human,1,2,1,2,School uniforms,Lorem ipsum argument text 240,Opponent argument text 240
+120,CON,"Human-AI, personalized",1,3,1,3,Universal basic income,Lorem ipsum argument text 241,Opponent argument text 241
+121,PRO,Human-Human,5,5,5,5,Universal basic income,Lorem ipsum argument text 242,Opponent argument text 242
+121,CON,"Human-AI, personalized",3,5,3,5,School uniforms,Lorem ipsum argument text 243,Opponent argument text 243
+122,PRO,"Human-AI, personalized",2,3,2,3,Nuclear energy,Lorem ipsum argument text 244,Opponent argument text 244
+122,CON,Human-AI,4,4,4,4,School uniforms,Lorem ipsum argument text 245,Opponent argument text 245
+123,PRO,Human-Human,1,3,1,3,Nuclear energy,Lorem ipsum argument text 246,Opponent argument text 246
+123,CON,"Human-AI, personalized",4,4,4,4,School uniforms,Lorem ipsum argument text 247,Opponent argument text 247
+124,PRO,"Human-AI, personalized",2,4,2,4,Nuclear energy,Lorem ipsum argument text 248,Opponent argument text 248
+124,CON,"Human-AI, personalized",5,5,5,5,School uniforms,Lorem ipsum argument text 249,Opponent argument text 249
+125,PRO,Human-AI,2,3,2,3,Universal basic income,Lorem ipsum argument text 250,Opponent argument text 250
+125,CON,"Human-Human, personalized",1,1,1,1,Universal basic income,Lorem ipsum argument text 251,Opponent argument text 251
+126,PRO,Human-AI,3,2,3,2,School uniforms,Lorem ipsum argument text 252,Opponent argument text 252
+126,CON,"Human-Human, personalized",3,4,3,4,Nuclear energy,Lorem ipsum argument text 253,Opponent argument text 253
+127,PRO,"Human-AI, personalized",4,5,4,5,School uniforms,Lorem ipsum argument text 254,Opponent argument text 254
+127,CON,"Human-Human, personalized",4,4,4,4,Nuclear energy,Lorem ipsum argument text 255,Opponent argument text 255
+128,PRO,"Human-Human, personalized",1,1,1,1,Nuclear energy,Lorem ipsum argument text 256,Opponent argument text 256
+128,CON,"Human-Human, personalized",1,1,1,1,School uniforms,Lorem ipsum argument text 257,Opponent argument text 257
+129,PRO,"Human-Human, personalized",3,2,3,2,Nuclear energy,Lorem ipsum argument text 258,Opponent argument text 258
+129,CON,Human-AI,5,4,5,4,Universal basic income,Lorem ipsum argument text 259,Opponent argument text 259
+130,PRO,"Human-Human, personalized",4,4,4,4,Universal basic income,Lorem ipsum argument text 260,Opponent argument text 260
+130,CON,"Human-Human, personalized",3,2,3,2,Nuclear energy,Lorem ipsum argument text 261,Opponent argument text 261
+131,PRO,Human-AI,4,4,4,4,Nuclear energy,Lorem ipsum argument text 262,Opponent argument text 262
+131,CON,Human-AI,2,2,2,2,Nuclear energy,Lorem ipsum argument text 263,Opponent argument text 263
+132,PRO,Human-Human,2,2,2,2,Universal basic income,Lorem ipsum argument text 264,Opponent argument text 264
+132,CON,Human-AI,2,2,2,2,Nuclear energy,Lorem ipsum argument text 265,Opponent argument text 265
+133,PRO,Human-AI,2,4,2,4,School uniforms,Lorem ipsum argument text 266,Opponent argument text 266
+133,CON,Human-Human,4,5,4,5,Universal basic income,Lorem ipsum argument text 267,Opponent argument text 267
+134,PRO,Human-AI,1,3,1,3,School uniforms,Lorem ipsum argument text 268,Opponent argument text 268
+134,CON,"Human-Human, personalized",1,1,1,1,School uniforms,Lorem ipsum argument text 269,Opponent argument text 269
+135,PRO,"Human-AI, personalized",4,4,4,4,School uniforms,Lorem ipsum argument text 270,Opponent argument text 270
+135,CON,"Human-Human, personalized",2,1,2,1,Universal basic income,Lorem ipsum argument text 271,Opponent argument text 271
+136,PRO,"Human-Human, personalized",2,2,2,2,Universal basic income,Lorem ipsum argument text 272,Opponent argument text 272
+136,CON,Human-AI,2,1,2,1,Nuclear energy,Lorem ipsum argument text 273,Opponent argument text 273
+137,PRO,"Human-AI, personalized",2,2,2,2,Nuclear energy,Lorem ipsum argument text 274,Opponent argument text 274
+137,CON,Human-Human,2,3,2,3,Universal basic income,Lorem ipsum argument text 275,Opponent argument text 275
+138,PRO,Human-Human,2,4,2,4,School uniforms,Lorem ipsum argument text 276,Opponent argument text 276
+138,CON,Human-Human,4,5,4,5,Universal basic income,Lorem ipsum argument text 277,Opponent argument text 277
+139,PRO,"Human-Human, personalized",3,2,3,2,Nuclear energy,Lorem ipsum argument text 278,Opponent argument text 278
+139,CON,Human-AI,3,4,3,4,Universal basic income,Lorem ipsum argument text 279,Opponent argument text 279
+140,PRO,Human-AI,3,3,3,3,Universal basic income,Lorem ipsum argument text 280,Opponent argument text 280
+140,CON,"Human-Human, personalized",5,5,5,5,Nuclear energy,Lorem ipsum argument text 281,Opponent argument text 281
+141,PRO,"Human-AI, personalized",3,4,3,4,School uniforms,Lorem ipsum argument text 282,Opponent argument text 282
+141,CON,Human-AI,4,5,4,5,School uniforms,Lorem ipsum argument text 283,Opponent argument text 283
+142,PRO,Human-Human,5,5,5,5,Universal basic income,Lorem ipsum argument text 284,Opponent argument text 284
+142,CON,"Human-Human, personalized",2,3,2,3,School uniforms,Lorem ipsum argument text 285,Opponent argument text 285
+143,PRO,Human-Human,3,5,3,5,Universal basic income,Lorem ipsum argument text 286,Opponent argument text 286
+143,CON,Human-Human,2,2,2,2,Nuclear energy,Lorem ipsum argument text 287,Opponent argument text 287
+144,PRO,"Human-AI, personalized",2,3,2,3,School uniforms,Lorem ipsum argument text 288,Opponent argument text 288
+144,CON,"Human-AI, personalized",1,3,1,3,School uniforms,Lorem ipsum argument text 289,Opponent argument text 289
+145,PRO,"Human-Human, personalized",3,5,3,5,Universal basic income,Lorem ipsum argument text 290,Opponent argument text 290
+145,CON,Human-Human,2,1,2,1,Nuclear energy,Lorem ipsum argument text 291,Opponent argument text 291
+146,PRO,"Human-AI, personalized",1,2,1,2,Universal basic income,Lorem ipsum argument text 292,Opponent argument text 292
+146,CON,Human-Human,4,3,4,3,Nuclear energy,Lorem ipsum argument text 293,Opponent argument text 293
+147,PRO,Human-Human,3,3,3,3,Universal basic income,Lorem ipsum argument text 294,Opponent argument text 294
+147,CON,"Human-Human, personalized",4,5,4,5,School uniforms,Lorem ipsum argument text 295,Opponent argument text 295
+148,PRO,"Human-Human, personalized",2,2,2,2,School uniforms,Lorem ipsum argument text 296,Opponent argument text 296
+148,CON,"Human-Human, personalized",2,1,2,1,School uniforms,Lorem ipsum argument text 297,Opponent argument text 297
+149,PRO,"Human-Human, personalized",4,3,4,3,School uniforms,Lorem ipsum argument text 298,Opponent argument text 298
+149,CON,Human-Human,2,2,2,2,Nuclear energy,Lorem ipsum argument text 299,Opponent argument text 299
+150,PRO,Human-AI,1,2,1,2,Nuclear energy,Lorem ipsum argument text 300,Opponent argument text 300
+150,CON,Human-AI,5,5,5,5,School uniforms,Lorem ipsum argument text 301,Opponent argument text 301
+151,PRO,Human-AI,1,2,1,2,Universal basic income,Lorem ipsum argument text 302,Opponent argument text 302
+151,CON,"Human-AI, personalized",5,5,5,5,Nuclear energy,Lorem ipsum argument text 303,Opponent argument text 303
+152,PRO,"Human-AI, personalized",5,5,5,5,School uniforms,Lorem ipsum argument text 304,Opponent argument text 304
+152,CON,Human-Human,1,1,1,1,Nuclear energy,Lorem ipsum argument text 305,Opponent argument text 305
+153,PRO,"Human-AI, personalized",4,5,4,5,Nuclear energy,Lorem ipsum argument text 306,Opponent argument text 306
+153,CON,"Human-Human, personalized",1,2,1,2,Nuclear energy,Lorem ipsum argument text 307,Opponent argument text 307
+154,PRO,"Human-AI, personalized",3,2,3,2,Universal basic income,Lorem ipsum argument text 308,Opponent argument text 308
+154,CON,Human-AI,4,4,4,4,Nuclear energy,Lorem ipsum argument text 309,Opponent argument text 309
+155,PRO,Human-Human,2,2,2,2,School uniforms,Lorem ipsum argument text 310,Opponent argument text 310
+155,CON,"Human-AI, personalized",3,4,3,4,Universal basic income,Lorem ipsum argument text 311,Opponent argument text 311
+156,PRO,"Human-AI, personalized",1,3,1,3,Nuclear energy,Lorem ipsum argument text 312,Opponent argument text 312
+156,CON,"Human-AI, personalized",3,4,3,4,School uniforms,Lorem ipsum argument text 313,Opponent argument text 313
+157,PRO,Human-Human,3,1,3,1,Nuclear energy,Lorem ipsum argument text 314,Opponent argument text 314
+157,CON,Human-Human,4,4,4,4,Nuclear energy,Lorem ipsum argument text 315,Opponent argument text 315
+158,PRO,Human-AI,3,4,3,4,Nuclear energy,Lorem ipsum argument text 316,Opponent argument text 316
+158,CON,Human-AI,4,4,4,4,Nuclear energy,Lorem ipsum argument text 317,Opponent argument text 317
+159,PRO,Human-Human,3,2,3,2,Nuclear energy,Lorem ipsum argument text 318,Opponent argument text 318
+159,CON,"Human-AI, personalized",1,1,1,1,School uniforms,Lorem ipsum argument text 319,Opponent argument text 319
+160,PRO,Human-Human,5,5,5,5,Universal basic income,Lorem ipsum argument text 320,Opponent argument text 320
+160,CON,Human-Human,5,5,5,5,School uniforms,Lorem ipsum argument text 321,Opponent argument text 321
+161,PRO,"Human-AI, personalized",4,5,4,5,Universal basic income,Lorem ipsum argument text 322,Opponent argument text 322
+161,CON,Human-AI,5,4,5,4,School uniforms,Lorem ipsum argument text 323,Opponent argument text 323
+162,PRO,Human-Human,4,5,4,5,Nuclear energy,Lorem ipsum argument text 324,Opponent argument text 324
+162,CON,Human-Human,3,1,3,1,School uniforms,Lorem ipsum argument text 325,Opponent argument text 325
+163,PRO,"Human-AI, personalized",4,5,4,5,Universal basic income,Lorem ipsum argument text 326,Opponent argument text 326
+163,CON,"Human-AI, personalized",3,5,3,5,School uniforms,Lorem ipsum argument text 327,Opponent argument text 327
+164,PRO,"Human-AI, personalized",5,5,5,5,Universal basic income,Lorem ipsum argument text 328,Opponent argument text 328
+164,CON,"Human-AI, personalized",2,3,2,3,Nuclear energy,Lorem ipsum argument text 329,Opponent argument text 329
+165,PRO,"Human-Human, personalized",3,2,3,2,Nuclear energy,Lorem ipsum argument text 330,Opponent argument text 330
+165,CON,Human-AI,3,5,3,5,Nuclear energy,Lorem ipsum argument text 331,Opponent argument text 331
+166,PRO,"Human-Human, personalized",4,3,4,3,School uniforms,Lorem ipsum argument text 332,Opponent argument text 332
+166,CON,Human-Human,2,2,2,2,School uniforms,Lorem ipsum argument text 333,Opponent argument text 333
+167,PRO,Human-Human,2,2,2,2,School uniforms,Lorem ipsum argument text 334,Opponent argument text 334
+167,CON,Human-Human,3,2,3,2,Universal basic income,Lorem ipsum argument text 335,Opponent argument text 335
+168,PRO,Human-Human,5,5,5,5,Universal basic income,Lorem ipsum argument text 336,Opponent argument text 336
+168,CON,"Human-Human, personalized",5,4,5,4,Universal basic income,Lorem ipsum argument text 337,Opponent argument text 337
+169,PRO,"Human-AI, personalized",3,3,3,3,Nuclear energy,Lorem ipsum argument text 338,Opponent argument text 338
+169,CON,"Human-AI, personalized",3,4,3,4,Universal basic income,Lorem ipsum argument text 339,Opponent argument text 339
+170,PRO,Human-AI,1,1,1,1,Universal basic income,Lorem ipsum argument text 340,Opponent argument text 340
+170,CON,Human-Human,5,5,5,5,Universal basic income,Lorem ipsum argument text 341,Opponent argument text 341
+171,PRO,Human-Human,2,3,2,3,School uniforms,Lorem ipsum argument text 342,Opponent argument text 342
+171,CON,Human-AI,1,1,1,1,School uniforms,Lorem ipsum argument text 343,Opponent argument text 343
+172,PRO,Human-AI,4,4,4,4,Nuclear energy,Lorem ipsum argument text 344,Opponent argument text 344
+172,CON,"Human-Human, personalized",5,4,5,4,Nuclear energy,Lorem ipsum argument text 345,Opponent argument text 345
+173,PRO,Human-Human,4,4,4,4,Universal basic income,Lorem ipsum argument text 346,Opponent argument text 346
+173,CON,"Human-Human, personalized",1,2,1,2,School uniforms,Lorem ipsum argument text 347,Opponent argument text 347
+174,PRO,"Human-AI, personalized",5,5,5,5,School uniforms,Lorem ipsum argument text 348,Opponent argument text 348
+174,CON,Human-AI,2,3,2,3,Nuclear energy,Lorem ipsum argument text 349,Opponent argument text 349
+175,PRO,Human-AI,4,4,4,4,Universal basic income,Lorem ipsum argument text 350,Opponent argument text 350
+175,CON,"Human-Human, personalized",4,3,4,3,Universal basic income,Lorem ipsum argument text 351,Opponent argument text 351
+176,PRO,"Human-AI, personalized",4,5,4,5,School uniforms,Lorem ipsum argument text 352,Opponent argument text 352
+176,CON,"Human-Human, personalized",2,1,2,1,School uniforms,Lorem ipsum argument text 353,Opponent argument text 353
+177,PRO,"Human-Human, personalized",2,2,2,2,School uniforms,Lorem ipsum argument text 354,Opponent argument text 354
+177,CON,"Human-AI, personalized",1,3,1,3,School uniforms,Lorem ipsum argument text 355,Opponent argument text 355
+178,PRO,"Human-Human, personalized",4,3,4,3,School uniforms,Lorem ipsum argument text 356,Opponent argument text 356
+178,CON,"Human-Human, personalized",1,1,1,1,Universal basic income,Lorem ipsum argument text 357,Opponent argument text 357
+179,PRO,Human-Human,1,1,1,1,Nuclear energy,Lorem ipsum argument text 358,Opponent argument text 358
+179,CON,"Human-AI, personalized",4,4,4,4,School uniforms,Lorem ipsum argument text 359,Opponent argument text 359
+180,PRO,"Human-Human, personalized",1,1,1,1,Universal basic income,Lorem ipsum argument text 360,Opponent argument text 360
+180,CON,Human-AI,1,1,1,1,Nuclear energy,Lorem ipsum argument text 361,Opponent argument text 361
+181,PRO,Human-AI,2,2,2,2,Universal basic income,Lorem ipsum argument text 362,Opponent argument text 362
+181,CON,Human-Human,1,1,1,1,Universal basic income,Lorem ipsum argument text 363,Opponent argument text 363
+182,PRO,Human-Human,5,5,5,5,Nuclear energy,Lorem ipsum argument text 364,Opponent argument text 364
+182,CON,"Human-Human, personalized",5,5,5,5,Nuclear energy,Lorem ipsum argument text 365,Opponent argument text 365
+183,PRO,Human-Human,5,5,5,5,Nuclear energy,Lorem ipsum argument text 366,Opponent argument text 366
+183,CON,"Human-AI, personalized",4,5,4,5,School uniforms,Lorem ipsum argument text 367,Opponent argument text 367
+184,PRO,"Human-Human, personalized",4,4,4,4,Universal basic income,Lorem ipsum argument text 368,Opponent argument text 368
+184,CON,Human-AI,2,1,2,1,Universal basic income,Lorem ipsum argument text 369,Opponent argument text 369
+185,PRO,Human-Human,4,2,4,2,Universal basic income,Lorem ipsum argument text 370,Opponent argument text 370
+185,CON,"Human-AI, personalized",1,2,1,2,Nuclear energy,Lorem ipsum argument text 371,Opponent argument text 371
+186,PRO,"Human-Human, personalized",1,3,1,3,Universal basic income,Lorem ipsum argument text 372,Opponent argument text 372
+186,CON,Human-Human,5,5,5,5,Nuclear energy,Lorem ipsum argument text 373,Opponent argument text 373
+187,PRO,"Human-Human, personalized",5,4,5,4,Universal basic income,Lorem ipsum argument text 374,Opponent argument text 374
+187,CON,"Human-Human, personalized",4,5,4,5,Nuclear energy,Lorem ipsum argument text 375,Opponent argument text 375
+188,PRO,Human-Human,1,1,1,1,School uniforms,Lorem ipsum argument text 376,Opponent argument text 376
+188,CON,"Human-AI, personalized",4,4,4,4,Universal basic income,Lorem ipsum argument text 377,Opponent argument text 377
+189,PRO,"Human-AI, personalized",5,5,5,5,School uniforms,Lorem ipsum argument text 378,Opponent argument text 378
+189,CON,Human-AI,3,2,3,2,School uniforms,Lorem ipsum argument text 379,Opponent argument text 379
+190,PRO,Human-Human,1,1,1,1,Nuclear energy,Lorem ipsum argument text 380,Opponent argument text 380
+190,CON,Human-AI,3,5,3,5,Nuclear energy,Lorem ipsum argument text 381,Opponent argument text 381
+191,PRO,"Human-Human, personalized",5,5,5,5,Nuclear energy,Lorem ipsum argument text 382,Opponent argument text 382
+191,CON,Human-AI,5,4,5,4,School uniforms,Lorem ipsum argument text 383,Opponent argument text 383
+192,PRO,"Human-AI, personalized",4,4,4,4,School uniforms,Lorem ipsum argument text 384,Opponent argument text 384
+192,CON,"Human-AI, personalized",3,4,3,4,Nuclear energy,Lorem ipsum argument text 385,Opponent argument text 385
+193,PRO,"Human-AI, personalized",1,1,1,1,School uniforms,Lorem ipsum argument text 386,Opponent argument text 386
+193,CON,Human-AI,1,1,1,1,Universal basic income,Lorem ipsum argument text 387,Opponent argument text 387
+194,PRO,"Human-Human, personalized",3,4,3,4,Universal basic income,Lorem ipsum argument text 388,Opponent argument text 388
+194,CON,Human-AI,1,2,1,2,School uniforms,Lorem ipsum argument text 389,Opponent argument text 389
+195,PRO,Human-Human,5,5,5,5,Nuclear energy,Lorem ipsum argument text 390,Opponent argument text 390
+195,CON,Human-AI,3,2,3,2,Nuclear energy,Lorem ipsum argument text 391,Opponent argument text 391
+196,PRO,Human-AI,5,4,5,4,Universal basic income,Lorem ipsum argument text 392,Opponent argument text 392
+196,CON,Human-AI,4,5,4,5,School uniforms,Lorem ipsum argument text 393,Opponent argument text 393
+197,PRO,"Human-Human, personalized",3,4,3,4,School uniforms,Lorem ipsum argument text 394,Opponent argument text 394
+197,CON,"Human-Human, personalized",4,2,4,2,Nuclear energy,Lorem ipsum argument text 395,Opponent argument text 395
+198,PRO,Human-AI,2,3,2,3,Nuclear energy,Lorem ipsum argument text 396,Opponent argument text 396
+198,CON,Human-AI,4,4,4,4,Universal basic income,Lorem ipsum argument text 397,Opponent argument text 397
+199,PRO,Human-Human,2,3,2,3,Universal basic income,Lorem ipsum argument text 398,Opponent argument text 398
+199,CON,Human-AI,2,3,2,3,Nuclear energy,Lorem ipsum argument text 399,Opponent argument text 399

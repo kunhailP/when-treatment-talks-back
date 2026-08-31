@@ -1,0 +1,5 @@
+treatment,n,mean_delta,pct_increased,crude_OR_vs_HH
+Human-Human,300,-0.223,0.173,1.0
+"Human-Human, personalized",150,-0.16,0.167,0.954
+Human-AI,150,-0.02,0.233,1.452
+"Human-AI, personalized",150,0.14,0.313,2.176

@@ -1,0 +1,17 @@
+Classify the PRIMARY persuasion strategy of the debate rebuttal below. Answer with exactly one code:
+
+FACT  - direct factual correction: presents verifiable facts, data, statistics as assertions
+SOCR  - socratic questioning: leads with questions exposing contradictions in the opponent's logic
+COMG  - common-ground framing: starts from shared values, identity, or points of agreement
+SRCT  - source transparency: explains where evidence comes from and how it was verified
+EMPA  - emotional appeal / empathy: acknowledges feelings, evokes emotions
+REBT  - counterargument / rebuttal: directly attacks the opponent's specific claims
+CLAIM - unsupported assertion: advances claims without evidence
+META  - meta-conversational: manages the conversation itself
+
+Rebuttal:
+---
+{{TEXT}}
+---
+
+Answer (one code only):
