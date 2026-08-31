@@ -35,127 +35,131 @@ are produced by executed code in the repository; none are placeholders.}}
 \maketitle
 
 \begin{abstract}
-\noindent Conversational AI systems choose what to say turn by turn, adapting
-to the person they are talking to. Their deployment logs are the data most
-analysts will have, and the question those logs invite is which of the
-system's behaviors caused the belief change. We show that adaptivity itself
-obstructs that question, and we quantify the obstruction.
+\noindent Conversational artificial intelligence now conducts political
+persuasion at scale, and the systems that do so adapt: they choose what to
+say at each turn as a function of what the person has said so far. Regulating
+or replicating such a system requires knowing which of its behaviors move
+beliefs, and the natural evidence base is the deployment log. We show that
+this evidence base is limited in a way that no estimator can repair, and we
+characterize the limit.
 
-Treating the delivered treatment as a triple --- a strategy policy $\pi$, a
-generation kernel $G$, and an information environment $E$ --- we derive the
-efficient influence function for the turn-level excursion effect of such a
-system. Its semiparametric efficiency bound grows exponentially in a
-\emph{policy decisiveness} index $D(h) = -\log\min_a \pi(a \mid h)$, a
-functional of the behavior policy alone that is identified from logs and of
-which softmax temperature is one special case; the classical
-average-treatment-effect bound is the degenerate case of ours. This is more
-than a large constant. Along policy sequences whose decisiveness grows with
-sample size, a two-point argument bounds the minimax risk away from zero:
-no estimator recovers turn-level effects at any rate, and the regime in
-which estimates look stable while remaining wrong is exactly the regime in
-which two policies with different effects are statistically
+We define the treatment delivered by an adaptive generative system as a
+triple: a strategy policy, a generation kernel, and an information
+environment. For the turn-level excursion effect of such a system we derive
+the efficient influence function, which yields a semiparametric efficiency
+bound growing exponentially in a policy decisiveness index. The index is a
+functional of the behavior policy alone and is identified from logs. Softmax
+temperature is one special case of it, and the classical
+average-treatment-effect bound is the degenerate case of our bound. The
+consequence is not merely a large constant. Along policy sequences whose
+decisiveness grows with sample size, a two-point argument bounds the minimax
+risk away from zero: no estimator recovers turn-level effects at any rate.
+The regime in which estimates appear stable while remaining wrong is exactly
+the regime in which policies with different effects are statistically
 indistinguishable.
 
-What information survives is located. As the policy sharpens, the overlap
-mass concentrates on the policy's learned decision boundary, and the
-estimand that remains estimable is a boundary effect --- formally a
-regression-discontinuity quantity, at a threshold the policy chose rather
-than the analyst. We prove this in one dimension and, by a coarea argument,
-on a decision manifold in $\mathbb{R}^d$. Re-querying three RLHF-tuned
-open-weights models on real debate contexts suggests deployed policies are
-sharp enough for this to bind, though we show the measurement is a property
-of a label projection and report what it cannot establish. The design
-consequence is immediate: turn-level causal knowledge about conversational
-AI has to be randomized into the conversation, not recovered from it, and we
-give the protocol that does so.
+The information that survives is located rather than merely diminished. As a
+policy sharpens, its overlap mass concentrates on the decision boundary the
+policy has learned. The estimand that remains is a boundary effect in the
+regression-discontinuity sense, defined at a threshold chosen by the system
+rather than the analyst, and therefore describing the minority of histories
+about which the system is undecided. We prove this in one dimension and, by a
+coarea argument, on a decision manifold in $\mathbb{R}^d$. Re-query
+experiments on three open-weights models suggest deployed policies are sharp
+enough for these limits to bind, subject to measurement caveats we report in
+full. The implication for research design is direct. Turn-level causal
+knowledge about conversational AI must be randomized into the conversation
+rather than recovered from it, and we specify the protocol that does so.
 \end{abstract}
 
 \section{Introduction}\label{sec:intro}
 
-Conversational AI persuades. In randomized trials, GPT-4 debates shifted
-opponents' positions more often than human debaters did
+Conversational artificial intelligence persuades. In randomized trials, GPT-4
+shifted debate opponents' positions more often than human debaters did
 \citep{salvi2025conversational}, and conversations with frontier models moved
-policy attitudes with durable effects \citep{hackenburg2025levers}. Measured
-against the baseline of political persuasion research, where meta-analytic
-average effects sit well under one percentage point
-\citep{kalla2018minimal}, these are not small findings.
+policy attitudes with effects that persisted for weeks
+\citep{hackenburg2025levers}. Against the benchmark of political persuasion
+research, where meta-analytic average effects fall well below one percentage
+point \citep{kalla2018minimal}, these are substantial.
 
-They are also not the findings anyone wants. Knowing that a system persuades
-is the beginning of the question. The behavior we would regulate, replicate,
-or defend against is not ``conversational AI'' but something narrower: the
-system asserted rather than asked, or supplied five facts rather than one, at
-this point in this conversation. The strongest lever in
-\citet{hackenburg2025levers} --- a reward model selecting responses turn by
-turn --- is precisely a turn-level adaptive policy, and its logs are what an
-analyst inherits.
+Establishing that a technology persuades is the first question, not the last.
+The objects of political regulation and scientific replication are narrower
+than the technology. They are behaviors: the system asserted rather than
+asked, or supplied five facts rather than one, at this point in this
+conversation. Which of those behaviors carries the effect determines what a
+platform should be required to disclose, what a countermeasure should target,
+and what a replication would have to hold fixed. The strongest single lever
+identified by \citet{hackenburg2025levers}, a reward model selecting among
+candidate responses turn by turn, is precisely a turn-level adaptive policy.
+Its logs are what an analyst inherits.
 
-The natural move is to treat those logs as observational data on a
-time-varying treatment and apply the corresponding machinery. This paper is
-about why that move fails, and it fails for a reason specific to adaptive
-systems rather than for the familiar reason of confounding. A policy that
-has learned which action is better at a given history stops taking the other
-one. The counterfactual contrast an analyst wants to estimate is exactly the
-contrast the system has learned not to generate. Competence at the task and
-informativeness about the task are in tension, and the tension is
-quantifiable.
+The natural response is to treat those logs as observational data on a
+time-varying treatment and to apply the corresponding identification
+machinery. This paper explains why that response fails. The failure is not
+the familiar one of unmeasured confounding, which a richer log might
+mitigate. It is specific to adaptive systems. A policy that has learned which
+action is better at a given history stops taking the other one. The
+counterfactual contrast the analyst requires is exactly the contrast the
+system has learned not to produce. Competence at the task and
+informativeness about the task stand in tension, and that tension can be
+quantified.
 
-Three things follow. Where the learned policy is history-deterministic, the
-turn-level effect is not identified at all --- a support failure, standard
-since \citet{robins1986new}, whose interest here is that RLHF preference
-optimization and low-temperature deployment make the triggering condition
-systematic rather than accidental. Where positivity survives, it survives
-uselessly: the efficiency bound for the turn-level effect grows exponentially
-in how decisive the policy is, and along sequences of increasingly decisive
-policies the minimax risk does not go to zero at any sample size. And the
-information that does survive is not a diminished version of the population
-effect but a different estimand: it lives on the policy's decision boundary,
-where the policy is undecided, which in a confident deployment is a
-vanishing minority of traffic.
+Three results follow. Where a deployed policy is history-deterministic, the
+turn-level effect is not identified at all. This is a support failure,
+standard since \citet{robins1986new}. What is new is that preference
+optimization widens the score gaps that produce it and low-temperature
+deployment sharpens them further, so the triggering condition is systematic
+rather than accidental. Where positivity survives, it survives without much
+use. The efficiency bound for the turn-level effect grows exponentially in
+how decisive the policy is, and along sequences of increasingly decisive
+policies the minimax risk does not converge to zero at any sample size.
+Finally, the information that does survive is not a weaker estimate of the
+population effect but a different estimand. It lives on the policy's decision
+boundary, where the policy is undecided, which in a confident deployment is a
+shrinking minority of interactions.
 
-That last point is where the negative result turns useful. A boundary
-estimand at a learned threshold is a regression-discontinuity quantity, with
-the interpretive apparatus that comes with it --- including the knowledge
-that it does not describe the population the deployment actually served.
-Analysts who report an effect from adaptive logs are, at best, reporting
-this, and should say so.
+That last result is where a negative finding becomes usable. A boundary
+estimand at a learned threshold is a regression-discontinuity quantity, and
+it inherits the interpretive apparatus of that design, including the
+understanding that it does not describe the population the deployment
+actually served. An analyst who reports an effect estimated from adaptive
+logs is, in the favorable case, reporting this quantity, and should say so.
 
-Since the obstruction is created by the deployed policy before the analyst
-sees anything, no estimator removes it; only a different design does. The
-final section develops the generative micro-randomized trial: randomize the
-action within the conversation, lock the evidence available to the
-generator, and treat the generate-and-check procedure as the treatment
-kernel, so that the quantity identified is assignment to a generative
-protocol rather than the effect of a realized sentence. The experiment
-itself is a companion paper; what belongs here is the argument that it is
-necessary.
+Because the obstruction is created by the deployed policy before any analysis
+begins, no estimator removes it. Only a different design does. Section
+\ref{sec:gmrt} develops the generative micro-randomized trial: randomize the
+action within the conversation, lock the evidence available to the generator,
+and treat the generate-and-check procedure as the treatment kernel, so that
+the identified quantity is assignment to a generative protocol rather than
+the effect of a realized sentence. The experiment itself is a companion
+paper. What belongs here is the argument that it is necessary.
 
-\paragraph{Relation to existing literatures.} Three are adjacent.
+\paragraph{Relation to existing work.} Three literatures are adjacent.
 \citet{imai2026causal} and \citet{nakamura2026dynamic} identify effects of
 features of generated text, including sequences of features, using internal
 representations of the generating model. Overlap in that setting is
-established rather than assumed --- under a separability condition, and the
-authors warn that adjusting naively on representations destroys it. Our
-object differs in where overlap is lost: there it is a property of the
-representation the analyst conditions on, here it is destroyed by the
-deployed policy's own decisiveness before analysis begins. Second, the
-estimation-side face of the problem is studied as off-policy evaluation
-under deficient support \citep{sachdeva2020off,dudik2011doubly,
-thomas2016data,jiang2016doubly,kallus2020double}. That literature bounds
-particular estimators; our statements are about the efficiency bound and the
-minimax risk, which closes the ``use a better estimator'' response by
-construction, and its remedies --- truncation, regularized weights, support
-restriction --- change the estimand without characterizing what they change
-it to, which is what Section~\ref{sec:resultB} supplies. Third, the
-econometrics of limited overlap \citep{khan2010irregular,damour2021overlap,
-li2018balancing} is the closest antecedent for the shape of our results; the
-contribution here is to index the failure by a policy functional that a
-deployment actually determines, and to show what the surviving estimand is.
-Micro-randomized trials \citep{qian2022microrandomized,boruvka2018assessing}
-supply the excursion estimand we adopt, and stochastic-intervention theory
+established rather than assumed, under a separability condition, and those
+authors warn that naive adjustment on learned representations destroys it.
+Our object differs in where overlap is lost. There it is a property of the
+representation the analyst conditions on. Here it is destroyed by the
+deployed policy before analysis begins. Second, the estimation-side face of
+the problem appears as off-policy evaluation under deficient support
+\citep{sachdeva2020off,dudik2011doubly,thomas2016data,jiang2016doubly,
+kallus2020double}. That literature bounds the behavior of particular
+estimators. Our statements concern the efficiency bound and the minimax risk,
+which closes the response that a better estimator would suffice. Its
+remedies, such as truncation and support restriction, change the estimand
+without characterizing the result; Section~\ref{sec:resultB} supplies that
+characterization. Third, the econometrics of limited overlap
+\citep{khan2010irregular,damour2021overlap,li2018balancing} is the closest
+antecedent for the shape of these results. Our contribution is to index the
+failure by a policy functional that a deployment itself determines, and to
+identify the estimand that survives. Micro-randomized trials
+\citep{qian2022microrandomized,boruvka2018assessing} supply the excursion
+estimand we adopt, and the theory of stochastic interventions
 \citep{munoz2012population,kennedy2019nonparametric,young2014identification}
-supplies its formal object; what conversation adds is a generation kernel
-between assignment and realization, and the fidelity problem that comes with
-it.
+supplies its formal object. What conversation adds is a generation kernel
+between assignment and realization, and the fidelity problem that follows.
 
 \section{Generative Treatments}\label{sec:framework}
 
@@ -170,8 +174,8 @@ retention.
 
 \paragraph{The action space is general.} $A_t \in \mathcal{A}$ may be a
 discrete strategy label, a continuous generation parameter, or a factorial
-cell. As a running example --- and as the implementation object of the
-companion experimental paper --- we use a $2\times 2$: form $F \in
+cell. As a running example, and as the implementation object of the
+companion experimental paper, we use a $2\times 2$: form $F \in
 \{\text{assertive}, \text{interrogative}\}$ $\times$ dose $D \in
 \{\text{high: 4--5 facts}, \text{low: 1--2 facts}\}$.
 
@@ -190,8 +194,8 @@ $\mathcal{A}$, all $t$, all $h$), with subsequent turns following $\rho$.
 Proximal excursions (immediate reactance, belief update) are standard
 CEE/WCLS targets \citep{boruvka2018assessing}; distal excursions (final
 accuracy, retention) connect to distal causal excursion effect estimation
-\citep{qian2025dcee} --- using ordinary WCLS for terminal outcomes is a
-known attack point we avoid by construction.
+\citep{qian2025dcee}. Using ordinary WCLS for terminal outcomes is a known
+attack point, which this distinction avoids.
 \end{itemize}
 
 \paragraph{Ill-defined treatment in logs.} An observational label
@@ -199,7 +203,7 @@ $\tilde{S}_t = s$ corresponds to the realized kernel $M_t \sim G(\cdot \mid
 s, H_t)$, a \emph{different distribution at every history}. Label-pooled
 contrasts do not correspond to any well-defined treatment pair. Our regime
 definition does not ``solve'' this nonidentification; it replaces the
-question with a well-posed one --- and the well-posed $\beta$ is identified
+question with a well-posed one, and the well-posed $\beta$ is identified
 only under assignment randomization (Section~\ref{sec:gmrt}).
 
 \section{The Information Limit}\label{sec:whynot}
@@ -219,7 +223,7 @@ If $\pi^{\mathrm{dep}}_t(a \mid h) = 0$ on a positive-probability set of
 histories, turn-level excursion effects are nonparametrically unidentified.
 \end{proposition}
 
-The counterexample pair requires no latent confounder --- the failure is
+The counterexample pair requires no latent confounder, the failure is
 support, not confounding. Take $T = 1$, $H \in \{h_0, h_1\}$,
 $\pi^{\mathrm{dep}}(1 \mid h_0) = 1/2$, $\pi^{\mathrm{dep}}(1 \mid h_1) = 0$,
 $Y(a) \mid H = h \sim N(\mu_a(h), 1)$, and let two DGPs differ only in
@@ -244,7 +248,7 @@ decisiveness at $h$ (Definition~\ref{def:D}), where $\mathcal{A}^*$ is the
 set of actions entering the contrast. Assume (A1$'$) $\Prob\{D(H) \geq d\}
 \geq c > 0$; (A2$'$) conditional outcome variances on that set are bounded
 below by $\underline{\sigma}^2$; and (A3) the model class is nonparametric in
-the outcome regression --- no parametric extrapolation into unobserved
+the outcome regression, no parametric extrapolation into unobserved
 strata. Then the semiparametric efficiency bound for the turn-level
 excursion effect satisfies
 \[
@@ -322,8 +326,8 @@ All terms of $V_{\mathrm{eff}}$ are nonnegative; keep the terminal one. On
 $\Hd$, $\E_\pi[w_t^2 \mid H_t = h] = K^{-2}\sum_a 1/\pi_\tau(a \mid h) \geq
 K^{-2} e^{\delta/\tau}$ since the rarest action has probability at most
 $e^{-\delta/\tau}$. Induct backward from $t = T$: by the tower property and
-(M1) --- whose action-uniformity is what lets the bound pass through each
-turn's weight --- each turn contributes a factor $p_\delta\,
+(M1), whose action-uniformity is what lets the bound pass through each
+turn's weight, each turn contributes a factor $p_\delta\,
 e^{\delta/\tau}/K^{2}$, and turn 1 contributes $\Prob(H_1 \in \Hd)\,
 e^{\delta/\tau}/K^{2}$. We quote rather than re-derive the finite-horizon
 efficiency bound; the form above is the discrete-horizon Cram\'er--Rao bound
@@ -339,7 +343,7 @@ Two limitations should be read with this proposition. It bounds the
 turn-level excursion effect requires redoing the induction with the
 continuation weights of Appendix~\ref{app:eif} and we do not claim it here.
 And (M1) requires the history to remain in $\Hd$ under \emph{every} action,
-i.e.\ that the treatment does not move the history state much --- close to
+i.e.\ that the treatment does not move the history state much, close to
 the opposite of the premise in this paper's title. The per-turn factor is
 $p_\delta e^{\delta/\tau}/K^2$, and $p_\delta$ is not estimated anywhere in
 this paper, so multi-turn compounding should be read as conditional on an
@@ -347,7 +351,7 @@ unverified quantity rather than as an empirical claim.
 \end{remark}
 
 Substantively, (M1) says decisiveness persists regardless of what the system
-does --- as with strongly reactant partisan users. The $K^2$ factor reflects
+does, as with strongly reactant partisan users. The $K^2$ factor reflects
 the conservativeness of the uniform reference and is not optimized; the
 excursion version (turn $t$, reference thereafter) follows with exponent
 $T-t+1$. The honest reading: more turns make the information limit
@@ -380,14 +384,61 @@ For the main design $H \sim U(-1,1)$, $M = \tau e^{(1-\tau)/\tau}$ in closed
 form, i.e.\ $\log M = 1/\tau - 1 - \log(1/\tau)$.
 
 \emph{The deceptive regime is this indistinguishability.} In the main
-simulation design, two laws whose true ATEs differ by $0.198$ --- differing
-only in $\beta$ on the rarely-treated region --- are separated by $0.16$
+simulation design, two laws whose true ATEs differ by $0.198$, differing
+only in $\beta$ on the rarely-treated region, are separated by $0.16$
 standard deviations of the H\'ajek estimator at $\tau = 0.08$, $n = 2{,}000$,
 and still only $0.40$ at $n = 32{,}000$, a sixteenfold increase in sample
 size. At $\tau = 0.22$ the same $0.200$ gap is recovered as $0.224$ at
 $1.69$ standard deviations. What the phase diagram labels ``biased but
 stable'' is not a description of estimator behaviour but an instance of
 two-point indistinguishability.
+
+\subsection{What the assumptions require}\label{sec:assumptions}
+
+The results above rest on conditions that are worth reading substantively,
+because they determine which deployments the limits describe.
+
+\emph{Positive mass at high decisiveness} (A1$'$) asks that a
+non-negligible share of histories be ones on which the policy is close to
+committed. This is the condition that makes the results about deployment
+rather than about a pathological corner. It is testable from logs whenever
+the action probabilities are recorded, and Appendix~\ref{app:study0}
+estimates a proxy for it.
+
+\emph{A variance floor} (A2$'$) asks that outcomes not be deterministic
+given history and action on that region. Without it a rare action could be
+uninformative and yet cost nothing to miss. In belief-change outcomes with
+measurement error the condition is mild.
+
+\emph{A nonparametric outcome model} (A3) is the substantive commitment. If
+the analyst is willing to assume a parametric outcome regression that
+extrapolates into histories where an action was never taken, the bound does
+not apply, because the missing counterfactual is supplied by the functional
+form rather than by the data. That is a coherent position. It purchases
+identification with an assumption that the data cannot check, which is the
+trade the bound is designed to make visible.
+
+\emph{Regularity for localization} (B1)--(B4) and (C1)--(C5) require the
+score to be continuously differentiable with a non-degenerate boundary: zero
+must be a regular value of $\Delta$, and the boundary must carry positive
+density. The first fails if the policy's indifference set has a flat or
+self-intersecting geometry, in which case the limiting measure is not a
+surface measure. The second is what keeps the statement non-vacuous, and it
+fails if the policy is indifferent only on histories that never occur, which
+is the case of a deployment with no equipoise at all.
+
+\emph{Uniform recurrence} (M1), used only for the multi-turn statement,
+asks that a history in the high-decisiveness region stay there whatever the
+system does. Remark~\ref{rem:atscope} discusses why this sits uneasily with
+the premise of an adaptive system that changes the state it is acting on,
+and why we treat the multi-turn result as conditional.
+
+Two assumptions are conspicuously \emph{not} required. Nothing assumes the
+policy is a softmax; that parameterization is an illustration, and
+Definition~\ref{def:D} is stated for any policy with positive action
+probabilities. And nothing assumes the analyst knows the policy: the results
+are bounds on what any analysis could achieve, so knowing $\pi$ exactly, as
+in our oracle simulations, does not evade them.
 
 \section{Where the Surviving Information Lives}\label{sec:resultB}
 
@@ -421,7 +472,7 @@ point mass and
 Let $H \in \mathbb{R}^d$ with density $f$, let $\mathcal{B} = \{h :
 \Delta(h) = 0\}$, and assume: (C1) $\Delta \in C^1$ and $f$ is bounded and
 continuous near $\mathcal{B}$; (C2) $0$ is a \emph{regular value} of
-$\Delta$, i.e.\ $\nabla\Delta(h) \neq 0$ on $\mathcal{B}$ --- the
+$\Delta$, i.e.\ $\nabla\Delta(h) \neq 0$ on $\mathcal{B}$, the
 $d$-dimensional analogue of the simple-root condition (B2); (C3)--(C4) the
 tail-separation condition of Proposition~\ref{prop:b} holds with
 $\mathrm{dist}(\cdot,\mathcal{B})$; and (C5) $0 < \int_{\mathcal{B}}
@@ -448,7 +499,7 @@ $f/\|\nabla\Delta\|$-weighted average effect over a boundary, the object
 studied in multi-dimensional and geographic RD \citep{keele2015geographic}.
 The substantive reading is sharper than an overlap-weighting analogy: logs
 from a sharply adaptive system behave less like an observational study than
-like a natural experiment at a threshold --- but the threshold is one the
+like a natural experiment at a threshold, but the threshold is one the
 \emph{policy} learned, not one the analyst chose. What is stably estimable
 therefore describes the histories on which the policy is \emph{undecided},
 which in a decisive deployment is precisely the minority of traffic.
@@ -481,9 +532,9 @@ Corollary~\ref{cor:manifold}, proved in Appendix~\ref{app:manifold}.
 \paragraph{Why the boundary estimand matters substantively.} $\beta^{\ov}$
 is not a consolation prize; it is the effect in a policy-relevant population.
 The decision boundary $\{\Delta(H) = 0\}$ collects the histories at which the
-deployed policy is genuinely undecided --- the algorithmic analogue of
+deployed policy is genuinely undecided, the algorithmic analogue of
 clinical equipoise \citep{li2018balancing}. Three consequences. First,
-\emph{marginal policy evaluation}: any small change to the policy --- a
+\emph{marginal policy evaluation}: any small change to the policy, a
 regulation, a guardrail, a reward-model update, a temperature change ---
 alters behavior precisely on and near this boundary, so the effect among
 boundary histories is the first-order term in the value change of any local
@@ -491,15 +542,15 @@ policy modification. Second, \emph{auditability}: $\beta^{\ov}$ is the one
 turn-level causal quantity a regulator could estimate from logs alone with
 stable precision, which makes its scope and its limits worth stating exactly.
 Third, the political reading, stated as interpretation rather than result:
-histories far from the boundary --- strongly reactant partisan contexts where
-the policy is most decisive --- are exactly where population-level causal
+histories far from the boundary, strongly reactant partisan contexts where
+the policy is most decisive, are exactly where population-level causal
 information vanishes; what deployment data can tell us about persuasion is
 confined to the persuadable margin as \emph{the policy} defines it, not as
 the scientist would.
 
 \paragraph{What Result B does \emph{not} say.} At fixed $\tau > 0$, an IPW
 estimator with true propensities targets the \emph{population} effect as $n
-\to \infty$ --- the estimand does not silently become the boundary effect
+\to \infty$, the estimand does not silently become the boundary effect
 because the policy is sharp. Numerically: $\tau = 0.3$, $n = 4\times 10^6$,
 $\beta(H) = 1 + |H|$ gives IPW $1.792 \approx$ ATE $1.798 \neq \beta^{\ov} =
 1.356$. Formal identification and practical estimability are different
@@ -510,7 +561,7 @@ properties; our claims are about the \emph{rate} of information loss and the
 $(n, \tau)$: with $n \gg e^{\delta/\tau}$ the population effect is estimable
 (at exploding variance); near $n \sim e^{\delta/\tau}$ variance explodes;
 with $n \ll e^{\delta/\tau}$ rare crossover actions never appear in the
-sample and estimators become \emph{biased while looking stable} --- the
+sample and estimators become \emph{biased while looking stable}, the
 deceptive regime. Figure~\ref{fig:phase} shows the three regimes for the main
 design $H \sim U(-1,1)$, $\Delta(H) = H$, with two \emph{reference} lines.
 The dashed line is the Proposition~\ref{prop:a} bound with $\delta$ chosen optimally: since
@@ -544,107 +595,40 @@ coverage panels.}
 
 \section{Do Deployed Policies Sit in This Regime?}\label{sec:study0}
 
-Three empirical bridges locate deployed systems on the diagram. Their
-epistemic status is \emph{motivating}: they estimate proxies of policy
-decisiveness and instruction--behavior slippage, not the parameters of
-Sections~\ref{sec:1a}--\ref{sec:resultB}.
+The theory says that sufficiently decisive policies destroy the information
+needed to analyze them. Whether deployed systems are that decisive is an
+empirical question, and we can give a partial and carefully bounded answer.
 
-\paragraph{(0-a) Reproduction.} Our pipeline reproduces the direction of
-\citet{salvi2025conversational} on the released data ($n = 750$):
-personalized Human-AI has the largest crude odds ratio for increased
-agreement ($2.18 > 1$), matching the original ordering.
+Re-querying three RLHF-tuned open-weights models ($k = 20$ regenerations on
+each of 200 real debate contexts, 12{,}000 generations) and labelling each
+generation with an LLM judge, the per-context distribution over strategy
+labels is close to degenerate: median entropy zero and modal shares of
+94.5--98.6\% under our primary judge. Read literally, that would place these
+contexts far inside the collapse regime.
 
-\paragraph{(0-b) Re-query decisiveness.} For 200 rebuttal contexts stratified
-by treatment and prior-agreement strength, we regenerate $k = 20$ responses
-per context and classify the persuasion strategy of each. Across three
-RLHF-tuned open-weights families the per-context strategy distribution is
-near-degenerate (Table~\ref{tab:models}).
+We do not read it literally, for three reasons that Appendix~\ref{app:study0}
+develops. The raw generations are not degenerate at all, within a context
+no two are identical and mean pairwise lexical overlap is 0.19--0.26, so
+whatever collapses does so only after projection onto an eight-category label
+space. That projection is a measurement instrument with poor reliability
+($\kappa = 0.13$ between two judges, and essentially no agreement once
+both-modal pairs are removed), and its modal category is near-tautological
+with the prompt used to generate the text. And at $k = 20$ a strategy with
+true probability $0.02$ goes unobserved 67\% of the time, so ``never
+observed'' does not license ``very rare'': the defensible one-sided statement
+from $0$ of $20$ is $\E[1/p] \geq 7.2$, not the $42$ that the smoothed
+point estimate suggests.
 
-\begin{table}[t]
-\centering
-\begin{tabular}{lccc}
-\toprule
-model & median entropy (bits) & zero-entropy contexts & modal share \\
-\midrule
-Qwen2.5-7B-Instruct & 0.0 & 89.5\% & REBT 98.6\% \\
-Mistral-7B-Instruct-v0.3 & 0.0 & 58.0\% & REBT 94.5\% \\
-Phi-3.5-mini-instruct & 0.0 & 75.5\% & REBT 97.3\% \\
-\bottomrule
-\end{tabular}
-\caption{Re-query decisiveness across model families: 200 contexts $\times$
-$k=20$ regenerations each; strategies classified by a single 32B judge.
-Low entropy recurs across families --- the observable signature of
-``structurally frequent.''}
-\label{tab:models}
-\end{table}
-
-Substituting per-strategy $\hat{p}_s$ into the effective-sample formula
-(Dirichlet-smoothed, $k = 20$ resolution): the modal strategy needs
-${\sim}3\times 10^{3}$ conversations per contrast arm and minority
-strategies are on the order of $10^{5}$ ($7.7\times10^{4}$ to
-$1.2\times10^{5}$ across strategies and judges), with a two-minority
-contrast needing the \emph{sum} of two such terms. Three caveats are
-essential. First, these are illustrative insertions into
-Proposition~\ref{prop:a}'s formula, not estimates of any deployment's
-policy. Second, the magnitude is set by choices we make, not by the data:
-$n_{\mathrm{req}} = \sigma^2\,\E[1/\hat p]/\mathrm{SE}^{*2}$ with
-$\sigma^2 = 1$ and $\mathrm{SE}^{*} = 0.02$, and for a strategy never
-observed in $k$ draws the smoothed $\hat p$ is exactly $\alpha/(k+\alpha K)$,
-so $\E[1/\hat p]$ is the constant $(k + \alpha K)/\alpha = 48$ regardless of
-how rare the strategy truly is; halving $\alpha$ to $0.1$ moves the figure
-to ${\sim}5\times10^{5}$. Third, for the same reason these numbers say
-``below the resolution of $k=20$,'' not ``this rare.''
-
-\emph{Placing contexts on the phase diagram.} Only the composite
-$\Delta/\tau$ --- the score gap in temperature units, exactly the phase
-diagram's abscissa --- is identified from choice frequencies; $\tau$ alone is
-not. Estimating the two-action reduction $\widehat{\Delta/\tau} =
-\log[(c_1+\alpha)/(c_2+\alpha)]$ per context yields a median of $3.71$ for
-all three models --- which is the \emph{resolution ceiling} of $k = 20$
-draws: 58--89.5\% of contexts are right-censored there (the runner-up action
-was never realized). The reflexive reading is that measuring a deployed policy's decisiveness
-runs into the same information limit that blocks effect estimation: with the
-runner-up never realized, $k$ draws cannot distinguish ``rare'' from
-``absent.'' We are deliberately careful about what that licenses. The value
-$3.71 = \log\{(k+\alpha)/\alpha\}$ is the arithmetic ceiling of the
-estimator at $k=20$, not a property of any model, which is why all three
-models return it. A defensible one-sided statement uses the exact binomial
-instead: observing the runner-up $0$ times in $20$ draws gives a
-Clopper--Pearson $95\%$ upper bound $p_2 \leq 0.139$, hence
-$\Delta/\tau \geq 1.82$ and $\E[1/p] \geq 7.2$ --- an order of magnitude
-below the ceiling value. We therefore do not propagate the ceiling figure
-through Proposition~\ref{prop:at}; with $K = 8$ strategy categories that
-proposition's compounding condition $\Delta/\tau > \log(K^2/p_\delta)$ is
-not met by the measured values in any case.
-
-Two robustness results discipline these numbers. \emph{Judge sensitivity}:
-relabeling all 4{,}000 Qwen responses with a 32B judge yields raw agreement
-0.903 but $\kappa = 0.13$, and $\kappa \approx 0$ once both-modal pairs are
-excluded --- judges agree on the dominant label and disagree almost
-completely on minority-label identity. Aggregate quantities are nevertheless
-stable (per-strategy $n_{\mathrm{req}}$ ratios 0.88--1.52 across judges). We
-therefore report entropy, modal share, and $n_{\mathrm{req}}$ --- and we do
-not interpret minority-label identity before human double-coding
-(pre-registered $\kappa \geq 0.6$ on 200 turns). \emph{Label-error
-simulation}: propagating misclassification rates $q \in \{0.05, 0.1, 0.2\}$
-through the pipeline (symmetric and majority-absorbing noise models anchored
-to the observed confusion pattern) moves rare-strategy $n_{\mathrm{req}}$ by
-$-25\%$ to $+6\%$ even at $q = 0.2$; symmetric noise biases toward optimism,
-so the $10^{5}$ scale is conservative.
-
-\paragraph{(0-c) Instruction $\neq$ behavior.} In the released data of
-\citet{hackenburg2025levers} (56{,}831 persuasion conversations across three
-studies), the randomized rhetoric instruction explains $\eta^2 = 0.20 / 0.12
-/ 0.32$ of realized fact-count variance in studies 1/2/3 --- 68--88\% of
-realized-dose variation occurs \emph{within} assignment. Assignments also
-bundle: ``information'' realizes 8.3--21.8 facts on average while ``moral
-reframing'' realizes 1.6--2.2, and 52--56\% of moral-reframing conversations
-realize zero facts. Where compliance flags exist, valence compliance is
-72.7\% (study 1) and 89.6\% (study 3); grammar and on-topic compliance are
-above 92\% in both. What was randomized was an instruction; the treatment that
-reached the participant was a generated behavior, substantially decoupled
-from it. This is the observational counterpart of the fidelity problem the
-G-MRT protocol addresses by design.
+What survives is weaker than the headline and still relevant: deployed
+generative policies are decisive enough, at the level of coarse behavioral
+categories, that minority-action contrasts would require sample sizes on the
+order of $10^{4}$--$10^{5}$ conversations. That is a statement about where to
+look for trouble, not a measurement of any deployment's decisiveness, and it
+is the reason the design of Section~\ref{sec:gmrt} is worth the cost rather
+than a demonstration that it is necessary. An audit of $56{,}831$ deployed
+persuasion conversations makes the companion point on the design side: what
+was randomized in those studies was an \emph{instruction}, and it explains
+only 12--32\% of the variance in the behavior actually realized.
 
 \section{Design Consequence: Generative Micro-Randomization}\label{sec:gmrt}
 
@@ -669,7 +653,7 @@ The protocol: (1) conversation-level randomization of the generator $Z_i \in
 randomization of $A_t$ with full logging of assignment, probability, and
 realization; (3) a locked evidence bank of $\geq 20$ verified fact units per
 issue with per-turn sub-banks or without-replacement sampling \emph{specified
-as part of the treatment regime} --- dose is honestly named a
+as part of the treatment regime}, dose is honestly named a
 high-information communication package (fact count covaries with length and
 cognitive load; length-controlled designs are a follow-up); (4) a fidelity
 gate that inspects each utterance before sending, regenerates once on
@@ -686,7 +670,7 @@ the treatment.
 \paragraph{The price of identification (illustrative, not a theorem).}
 Mixing exploration into deployment, $\rho = (1-\epsilon)\pi_\tau +
 \epsilon\,\mathrm{Unif}$, caps the variance contribution at $\sigma^2
-K/(n\epsilon)$ at a per-turn regret cost scaling with $\epsilon$ --- a design
+K/(n\epsilon)$ at a per-turn regret cost scaling with $\epsilon$, a design
 corollary quantifying the trade-off, presented as an illustration because its
 exact form depends on outcome bounds, estimator, and horizon.
 
@@ -707,7 +691,7 @@ object-by-object in the repository.
 \paragraph{(i) Sign reversal under adaptivity.} A defensiveness-adaptive
 policy makes the naive turn-level contrast wrong in \emph{sign} (truth
 $+0.068$; naive $-0.294$, coverage 0.0) while known-$\rho$ IPW/DR recover it
-(bias $\leq 0.01$, coverage $\approx 0.95$--$0.97$) --- the confounding face
+(bias $\leq 0.01$, coverage $\approx 0.95$--$0.97$), the confounding face
 of the problem, and the G-MRT's licence (Figure~\ref{fig:sign}).
 
 \begin{figure}[t]
@@ -721,18 +705,18 @@ versus known-$\rho$ IPW/DR.}
 \paragraph{(ii) Two-state temperature collapse.} Along a $\tau$ grid
 calibrated so $\tau = 1$ reproduces the adaptive policy of (i): IPW SE grows
 exponentially, tracking a scaled inverse-propensity diagnostic curve (labeled
-as such --- it is not the efficiency bound); the naive estimator becomes
+as such, it is not the efficiency bound); the naive estimator becomes
 \emph{more confident while more wrong} as $\tau$ falls (coverage $\to 0$ with
 shrinking SE) (Figure~\ref{fig:collapse}). Metric discipline: global
 arm-specific Kish ESS (theory object), minimum stratum-arm cell occupancy
-(rare-crossover diagnostic --- not Kish), $\E[p(1-p)]$ (Proposition~\ref{prop:b} object), and
+(rare-crossover diagnostic, not Kish), $\E[p(1-p)]$ (Proposition~\ref{prop:b} object), and
 $\E[2\min(p,1-p)]$ (diagnostic) are reported as four separate columns,
 coverage both conditional and unconditional on estimability, with zero-cell
 rates alongside. One finding we flag for practice: in the collapse regime the
 \emph{realized} control-arm Kish ESS is non-monotone in $\tau$: it falls to
 $0.028$ at $\tau = 0.40$, while the zero-stratum-arm rate is still $0.00$,
 and then \emph{rebounds} to $0.037$, $0.372$, $0.534$ at $\tau = 0.30, 0.22,
-0.15$ --- over exactly the range where the zero-stratum-arm rate climbs
+0.15$, over exactly the range where the zero-stratum-arm rate climbs
 $0.06 \to 0.70 \to 0.99$. Surviving
 weights homogenize as rare crossovers vanish from the sample, so a
 healthy-looking realized ESS co-occurring with high zero-cell rates is itself
@@ -751,18 +735,18 @@ $N(0,1)$ robustness; $\beta(H) \in \{1,\, 1+e^{-H^2},\, 1+|H|\}$; 400
 replications per cell.) At $n = 32{,}000$: all population-targeting
 estimators are unbiased with nominal coverage down to $\tau \approx 0.15$; at
 $\tau = 0.045$ Horvitz--Thompson has SD 2.95 (variance explosion) while
-H\'ajek shows bias 0.46 with SD 0.30 --- biased-yet-stable; oracle AIPW
+H\'ajek shows bias 0.46 with SD 0.30, biased-yet-stable; oracle AIPW
 retains nominal coverage throughout but does not rescue \emph{precision},
 its SD inflating from 0.012 to 1.38 (a factor of 116) as $\tau$ falls ---
 which is the behaviour Proposition~\ref{prop:a} predicts, and confirms that the efficiency
 loss is not an IPW artifact; the oracle
-outcome-regression line is flat by construction --- the (A3) escape made
+outcome-regression line is flat by construction, the (A3) escape made
 visible, identification bought by assumption; and the overlap estimator
 remains unbiased with nominal coverage \emph{for its own target
 $\beta^{\ov}$} at every $\tau$, with $\beta^{\ov}_\tau \to \beta(0) = 1$ as
 Proposition~\ref{prop:b} predicts (Figure~\ref{fig:battery}). Under $N(0,1)$ the collapse is
 earlier and, at extreme $\tau$, propensities underflow to machine 0/1 so IPW
-becomes numerically undefined --- reported as estimability 0, not dropped.
+becomes numerically undefined, reported as estimability 0, not dropped.
 
 \begin{figure}[t]
 \centering
@@ -787,7 +771,7 @@ a simulation finding and leave its asymptotic characterization open.
 
 \paragraph{The companion experiment.} The companion paper implements the $2\times 2$ G-MRT: pilot $n =
 80$--$120$ (function verification: assignment mechanics, fidelity rates, bank
-leakage, dropout --- not effect detection), demonstration $n = 180$--$250$
+leakage, dropout, not effect detection), demonstration $n = 180$--$250$
 with pre-registered minority contrasts, confirmatory sample from post-pilot
 power simulation. Pre-registration locks the fidelity floor, blocking factors
 (issue), attrition handling (IPW-for-attrition), and reactivity checks
@@ -829,7 +813,7 @@ matching upper bound is left open.
 \emph{Proposition~\ref{prop:at} rests on a recurrence condition in tension with our
 own framing.} Condition (M1) requires histories to remain in the high-gap
 set under \emph{every} action, i.e.\ that treatment does not move the
-history state much --- which is close to the opposite of the premise in this
+history state much, which is close to the opposite of the premise in this
 paper's title. Its per-turn factor is $\rho_{\min}^2 e^{D} p_\delta$, and
 $p_\delta$ is not estimated anywhere here; multi-turn compounding should be
 read as conditional on an unverified quantity.
@@ -844,7 +828,7 @@ all once both-modal pairs are excluded, and the headline entropy figures
 move materially between them; and at $k = 20$ regenerations a strategy with
 true probability $0.02$ is unobserved with probability $0.67$, so
 ``never observed'' is not ``very rare.'' At the level of raw text the
-generations are not degenerate at all --- within-context duplicates are
+generations are not degenerate at all, within-context duplicates are
 absent and pairwise lexical overlap is low. Any collapse we report is a
 collapse \emph{after} projection to the label space. The re-queried models
 are also open-weights stand-ins for the deployed system, not the deployed
@@ -1111,6 +1095,128 @@ measure on $\mathcal{B}$ with $\mathcal{H}^{d-1}$-density proportional to
 $f/\|\nabla\Delta\|$. Taking $g = c$ gives the limit of $\beta^{\ov}_\tau$.
 For $d = 1$, $\mathcal{H}^0$ is counting measure and $\|\nabla\Delta\| =
 |\Delta'|$, recovering Appendix~\ref{app:resultB}. \hfill$\square$
+
+\section{Study 0 in full}\label{app:study0}
+
+This appendix reports the three descriptive analyses summarized in
+Section~\ref{sec:study0}, together with the reasons we treat them as
+motivating rather than confirmatory.
+
+
+Three empirical bridges locate deployed systems on the diagram. Their
+epistemic status is \emph{motivating}: they estimate proxies of policy
+decisiveness and instruction--behavior slippage, not the parameters of
+Sections~\ref{sec:1a}--\ref{sec:resultB}.
+
+\paragraph{(0-a) Reproduction.} Our pipeline reproduces the direction of
+\citet{salvi2025conversational} on the released data ($n = 750$ rows from
+$600$ debates): the personalized Human-AI arm shows the largest shift toward
+the opponent's side. Because the Human-Human arms contribute two rows per
+debate, we report cluster-robust rather than crude inference. On the
+binarized outcome $\mathbf{1}\{\Delta > 0\}$ with sandwich standard errors
+clustered on debate, the personalized Human-AI odds ratio against
+Human-Human is $2.18$ (95\% CI $[1.38, 3.43]$, $p = 0.0008$); the
+unpersonalized AI arm is $1.45$ ($[0.90, 2.35]$) and personalized
+Human-Human is $0.95$ ($[0.57, 1.61]$). Binarizing discards the $49.5\%$ of
+rows with no change and all magnitudes; on the full $-4$ to $+4$ scale a
+proportional-odds model gives a smaller estimate for the same contrast,
+$1.68$ ($[1.16, 2.42]$, $p = 0.006$), which is the number we would cite if
+one were needed. The direction survives both specifications; the magnitude
+is specification-dependent, and the dichotomized version is the flattering
+one.
+
+\paragraph{(0-b) Re-query decisiveness.} For 200 rebuttal contexts stratified
+by treatment and prior-agreement strength, we regenerate $k = 20$ responses
+per context and classify the persuasion strategy of each. Across three
+RLHF-tuned open-weights families the per-context strategy distribution is
+near-degenerate (Table~\ref{tab:models}).
+
+\begin{table}[t]
+\centering
+\begin{tabular}{lccc}
+\toprule
+model & median entropy (bits) & zero-entropy contexts & modal share \\
+\midrule
+Qwen2.5-7B-Instruct & 0.0 & 89.5\% & REBT 98.6\% \\
+Mistral-7B-Instruct-v0.3 & 0.0 & 58.0\% & REBT 94.5\% \\
+Phi-3.5-mini-instruct & 0.0 & 75.5\% & REBT 97.3\% \\
+\bottomrule
+\end{tabular}
+\caption{Re-query decisiveness across model families: 200 contexts $\times$
+$k=20$ regenerations each; strategies classified by a single 32B judge.
+Low entropy recurs across families --- the observable signature of
+``structurally frequent.''}
+\label{tab:models}
+\end{table}
+
+Substituting per-strategy $\hat{p}_s$ into the effective-sample formula
+(Dirichlet-smoothed, $k = 20$ resolution): the modal strategy needs
+${\sim}3\times 10^{3}$ conversations per contrast arm and minority
+strategies are on the order of $10^{5}$ ($7.7\times10^{4}$ to
+$1.2\times10^{5}$ across strategies and judges), with a two-minority
+contrast needing the \emph{sum} of two such terms. Three caveats are
+essential. First, these are illustrative insertions into
+Proposition~\ref{prop:a}'s formula, not estimates of any deployment's
+policy. Second, the magnitude is set by choices we make, not by the data:
+$n_{\mathrm{req}} = \sigma^2\,\E[1/\hat p]/\mathrm{SE}^{*2}$ with
+$\sigma^2 = 1$ and $\mathrm{SE}^{*} = 0.02$, and for a strategy never
+observed in $k$ draws the smoothed $\hat p$ is exactly $\alpha/(k+\alpha K)$,
+so $\E[1/\hat p]$ is the constant $(k + \alpha K)/\alpha = 48$ regardless of
+how rare the strategy truly is; halving $\alpha$ to $0.1$ moves the figure
+to ${\sim}5\times10^{5}$. Third, for the same reason these numbers say
+``below the resolution of $k=20$,'' not ``this rare.''
+
+\emph{Placing contexts on the phase diagram.} Only the composite
+$\Delta/\tau$ --- the score gap in temperature units, exactly the phase
+diagram's abscissa --- is identified from choice frequencies; $\tau$ alone is
+not. Estimating the two-action reduction $\widehat{\Delta/\tau} =
+\log[(c_1+\alpha)/(c_2+\alpha)]$ per context yields a median of $3.71$ for
+all three models --- which is the \emph{resolution ceiling} of $k = 20$
+draws: 58--89.5\% of contexts are right-censored there (the runner-up action
+was never realized). The reflexive reading is that measuring a deployed policy's decisiveness
+runs into the same information limit that blocks effect estimation: with the
+runner-up never realized, $k$ draws cannot distinguish ``rare'' from
+``absent.'' We are deliberately careful about what that licenses. The value
+$3.71 = \log\{(k+\alpha)/\alpha\}$ is the arithmetic ceiling of the
+estimator at $k=20$, not a property of any model, which is why all three
+models return it. A defensible one-sided statement uses the exact binomial
+instead: observing the runner-up $0$ times in $20$ draws gives a
+Clopper--Pearson $95\%$ upper bound $p_2 \leq 0.139$, hence
+$\Delta/\tau \geq 1.82$ and $\E[1/p] \geq 7.2$ --- an order of magnitude
+below the ceiling value. We therefore do not propagate the ceiling figure
+through Proposition~\ref{prop:at}; with $K = 8$ strategy categories that
+proposition's compounding condition $\Delta/\tau > \log(K^2/p_\delta)$ is
+not met by the measured values in any case.
+
+Two robustness results discipline these numbers. \emph{Judge sensitivity}:
+relabeling all 4{,}000 Qwen responses with a 32B judge yields raw agreement
+0.903 but $\kappa = 0.13$, and $\kappa \approx 0$ once both-modal pairs are
+excluded --- judges agree on the dominant label and disagree almost
+completely on minority-label identity. Aggregate quantities are nevertheless
+stable (per-strategy $n_{\mathrm{req}}$ ratios 0.88--1.52 across judges). We
+therefore report entropy, modal share, and $n_{\mathrm{req}}$ --- and we do
+not interpret minority-label identity before human double-coding
+(pre-registered $\kappa \geq 0.6$ on 200 turns). \emph{Label-error
+simulation}: propagating misclassification rates $q \in \{0.05, 0.1, 0.2\}$
+through the pipeline (symmetric and majority-absorbing noise models anchored
+to the observed confusion pattern) moves rare-strategy $n_{\mathrm{req}}$ by
+$-25\%$ to $+6\%$ even at $q = 0.2$; symmetric noise biases toward optimism,
+so the $10^{5}$ scale is conservative.
+
+\paragraph{(0-c) Instruction $\neq$ behavior.} In the released data of
+\citet{hackenburg2025levers} (56{,}831 persuasion conversations across three
+studies), the randomized rhetoric instruction explains $\eta^2 = 0.20 / 0.12
+/ 0.32$ of realized fact-count variance in studies 1/2/3 --- 68--88\% of
+realized-dose variation occurs \emph{within} assignment. Assignments also
+bundle: ``information'' realizes 8.3--21.8 facts on average while ``moral
+reframing'' realizes 1.6--2.2, and 52--56\% of moral-reframing conversations
+realize zero facts. Where compliance flags exist, valence compliance is
+72.7\% (study 1) and 89.6\% (study 3); grammar and on-topic compliance are
+above 92\% in both. What was randomized was an instruction; the treatment that
+reached the participant was a generated behavior, substantially decoupled
+from it. This is the observational counterpart of the fidelity problem the
+G-MRT protocol addresses by design.
+
 
 \bibliographystyle{plainnat}
 \bibliography{../references}

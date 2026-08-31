@@ -1,4 +1,6 @@
-numpy>=1.26
+numpy>=1.24
 pandas>=2.0
-matplotlib>=3.8
-# Study 0 (추후): datasets, statsmodels, scikit-learn
+matplotlib>=3.7
+statsmodels>=0.14
+pytest>=7.0
+pyreadr>=0.5
