@@ -33,6 +33,7 @@ Outputs: ../results/continuous_h_results.csv, continuous_h_battery.png,
 """
 
 import argparse
+import hashlib
 import os
 from multiprocessing import Pool
 
@@ -120,10 +121,22 @@ def one_sim(dgp, beta_fn, tau, n, rng):
 ESTIMATORS = ["ht", "hajek", "trunc", "aipw_oracle", "or_oracle", "overlap"]
 
 
+def stable_seed(*parts):
+    """Deterministic seed across processes.
+
+    Python's builtin hash() is salted by PYTHONHASHSEED for str/tuple, so
+    hash((bname, tau)) gave a different population draw on every run: the
+    simulation loop was reproducible but the *targets* (ate, beta_ov,
+    e_inv_p) were not, and every *_bias / *_cover_* column moved with them.
+    """
+    key = "|".join(repr(p) for p in parts).encode()
+    return int.from_bytes(hashlib.blake2b(key, digest_size=4).digest(), "big") % 2 ** 31
+
+
 def run_cell(job):
     dgp, bname, tau, n, nsims, seed = job
     beta_fn = BETAS[bname]
-    pop = population_objects(dgp, beta_fn, tau, seed=hash((bname, tau)) % 2 ** 31)
+    pop = population_objects(dgp, beta_fn, tau, seed=stable_seed(dgp, bname, tau))
     ss = np.random.SeedSequence([seed, NS.index(n), TAUS.index(tau)])
     rngs = [np.random.default_rng(s) for s in ss.spawn(nsims)]
     sims = [one_sim(dgp, beta_fn, tau, n, r) for r in rngs]

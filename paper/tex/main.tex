@@ -7,6 +7,7 @@
 \usepackage[round]{natbib}
 \usepackage[colorlinks=true,citecolor=blue,linkcolor=blue,urlcolor=blue]{hyperref}
 \usepackage{microtype}
+\usepackage{enumitem}
 
 \newtheorem{proposition}{Proposition}
 \newtheorem{corollary}{Corollary}
@@ -70,11 +71,14 @@ assignment-ITT analysis --- as the design remedy.
 Conversational AI persuades. In randomized trials, GPT-4 debates shifted
 opponents' positions more often than human debaters did
 \citep{salvi2025conversational}, and conversations with frontier models moved
-policy attitudes with durable effects \citep{hackenburg2025levers}. Yet the
-meta-analytic picture of political persuasion is one of small and
-heterogeneous effects ($g \approx 0.02$, $I^{2}\approx 76\%$), which makes
-decomposition --- \emph{which turn-level behaviors of the AI cause belief
-change} --- the scientifically and politically urgent question. The strongest
+policy attitudes with durable effects \citep{hackenburg2025levers}. Yet
+measured persuasion effects are small in absolute terms: meta-analytic
+evidence from field experiments in political persuasion puts average
+effects well under one percentage point \citep{kalla2018minimal}. Small
+average effects are what make decomposition --- \emph{which turn-level
+behaviors of the AI cause belief change} --- the scientifically and
+politically urgent question, since an aggregate near zero is consistent
+with offsetting turn-level behaviors of either sign. The strongest
 lever in \citet{hackenburg2025levers}, a reward model selecting responses turn
 by turn, is precisely the component whose interior remains a black box: it is
 an adaptive turn-level policy, and its logs are what an analyst inherits.
@@ -217,7 +221,7 @@ $\mathcal{A}$, all $t$, all $h$), with subsequent turns following $\rho$.
 Proximal excursions (immediate reactance, belief update) are standard
 CEE/WCLS targets \citep{boruvka2018assessing}; distal excursions (final
 accuracy, retention) connect to distal causal excursion effect estimation
-\citep{shi2025distal} --- using ordinary WCLS for terminal outcomes is a
+\citep{qian2025dcee} --- using ordinary WCLS for terminal outcomes is a
 known attack point we avoid by construction.
 \end{itemize}
 
@@ -355,19 +359,39 @@ diagram}\label{sec:resultB}
 
 \begin{proposition}[Result B, one-dimensional]\label{prop:b}
 Let $\omega_\tau(H) = p_\tau(1-p_\tau)$ and $\beta^{\ov}_\tau =
-\E[\omega_\tau\{Y(1)-Y(0)\}]/\E[\omega_\tau]$. Assume $H$ has continuous
-density $f$; $\Delta \in C^1$ with isolated simple roots; a tail-separation
-condition ($\inf_{|h - r| \geq \epsilon} |\Delta(h)| > 0$ for all
-$\epsilon>0$); and continuity of $f$ and of $c(h) = \E[Y(1)-Y(0) \mid H=h]$
-near the roots, $c$ bounded. Then, as $\tau \downarrow 0$, the normalized
-overlap measure converges weakly to a point mass at the decision boundary;
-with a unique root at $0$,
+\E[\omega_\tau\{Y(1)-Y(0)\}]/\E[\omega_\tau]$. Assume:
+\begin{enumerate}[label=(B\arabic*),leftmargin=3.2em,itemsep=1pt]
+\item $H$ has a density $f$, continuous in a neighbourhood of each root;
+\item $\Delta \in C^1$ and the root set $\mathcal{R} = \{h : \Delta(h) = 0\}$
+      is \emph{finite}, with every root simple ($\Delta'(r) \neq 0$);
+\item $c(h) = \E[Y(1)-Y(0) \mid H = h]$ is bounded, and continuous near
+      each root;
+\item $f(r) > 0$ for at least one $r \in \mathcal{R}$.
+\end{enumerate}
+together with the tail-separation condition (B2$'$):
+$\inf_{\,\mathrm{dist}(h,\mathcal{R}) \geq \epsilon} |\Delta(h)| > 0$ for
+every $\epsilon > 0$. Then, as $\tau \downarrow 0$, the normalized overlap
+measure $\omega_\tau f / \int \omega_\tau f$ converges weakly to
+$\sum_j w_j \delta_{r_j}$ with weights $w_j \propto f(r_j)/|\Delta'(r_j)|$.
+In the special case of a \emph{unique} root at $0$ the limit is a single
+point mass and
 \[
 \E[\omega_\tau] = \tau\,\frac{f(0)}{|\Delta'(0)|}\,(1+o(1)),
 \qquad
 \beta^{\ov}_\tau \to \E[Y(1)-Y(0) \mid H = 0].
 \]
 \end{proposition}
+
+\begin{remark}[The surviving information also vanishes]\label{rem:bmass}
+Proposition~\ref{prop:b} says \emph{where} overlap mass concentrates, not how
+much of it there is. Since $\E[\omega_\tau] = O(\tau)$, the effective sample
+available for $\beta^{\ov}_\tau$ is itself $O(n\tau)$ and degenerates in the
+same limit. Result B should therefore not be read as saying that boundary
+information is \emph{stable}: what survives longest is boundary information,
+but it too disappears as the policy sharpens. Assumption (B4) is exactly what
+prevents the leading term from collapsing to $0 = o(\tau)$; without it the
+statement is vacuous.
+\end{remark}
 
 \begin{proof}[Proof idea]
 $\omega_\tau = K(\Delta(h)/\tau)$ exactly, with $K(u) =
@@ -570,7 +594,7 @@ exact form depends on outcome bounds, estimator, and horizon.
 
 Proximal excursions: WCLS with known randomization $\rho$
 \citep{boruvka2018assessing,qian2022microrandomized}. Distal excursions: DCEE
-estimators \citep{shi2025distal}, not terminal-outcome WCLS. Policy values:
+estimators \citep{qian2025dcee}, not terminal-outcome WCLS. Policy values:
 cross-fitted doubly robust estimators for 2--3 pre-specified policy pairs
 only. Scope sentence: all guarantees are relative to the G-MRT's known
 $\rho$; nothing in this section rescues transcript-only analysis.
@@ -626,8 +650,11 @@ $N(0,1)$ robustness; $\beta(H) \in \{1,\, 1+e^{-H^2},\, 1+|H|\}$; 400
 replications per cell.) At $n = 32{,}000$: all population-targeting
 estimators are unbiased with nominal coverage down to $\tau \approx 0.15$; at
 $\tau = 0.045$ Horvitz--Thompson has SD 2.95 (variance explosion) while
-H\'ajek shows bias 0.46 with SD 0.30 --- biased-yet-stable; oracle AIPW does
-not rescue coverage (Result~A is not an IPW artifact); the oracle
+H\'ajek shows bias 0.46 with SD 0.30 --- biased-yet-stable; oracle AIPW
+retains nominal coverage throughout but does not rescue \emph{precision},
+its SD inflating from 0.012 to 1.38 (a factor of 116) as $\tau$ falls ---
+which is the behaviour Result~A predicts, and confirms that the efficiency
+loss is not an IPW artifact; the oracle
 outcome-regression line is flat by construction --- the (A3) escape made
 visible, identification bought by assumption; and the overlap estimator
 remains unbiased with nominal coverage \emph{for its own target
