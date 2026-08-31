@@ -844,9 +844,13 @@ sources, the analysis pipeline, the re-query outputs and judge labels, and
 the derived result files. The DebateGPT reproduction uses the public
 release of \citet{salvi2025conversational}; the deployment audit uses the
 public release of \citet{hackenburg2025levers}, and the $56{,}831$
-conversations are the released persuasion rows, not that paper's full
-sample. Simulation entry points and expected runtimes are documented in the
-repository README.
+conversations are the released persuasion rows, not that paper's full sample.
+The repository vendors only the files its own pipeline reads and provides a
+script to retrieve the remainder of each upstream release. Neither vendored
+source contains conversation text: the upstream authors state that raw logs
+carry personally identifiable information and are not public, and this
+repository does not contain them. Simulation entry points and expected
+runtimes are documented in the repository README.
 
 The result that organizes the rest is that adaptive systems produce the
 least population-level causal information exactly where they are most

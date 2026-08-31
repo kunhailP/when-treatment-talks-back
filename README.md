@@ -28,7 +28,7 @@ manuscript is `paper/tex/main.tex`; the compiled PDF is `paper/tex/main.pdf`.
 ```bash
 pip install -r requirements.txt
 pytest tests/                          # 7 numerical identities, ~1s
-bash scripts/validate_repo.sh          # compile check + Study 0-a strict + smoke run
+bash scripts/validate_repo.sh          # 6 steps incl. manuscript-vs-results check, ~30s
 ```
 
 Simulations (`simulation/results/` is regenerated in place):
@@ -40,6 +40,7 @@ python simulation/src/continuous_h.py --dgp uniform   # battery + phase diagram,
 python simulation/src/continuous_h.py --dgp normal
 python simulation/src/label_error.py            # label-noise sensitivity
 python simulation/src/minimax_twopoint.py       # Le Cam construction checks
+python simulation/src/minimax_crosscheck.py     # independent re-derivation (TV, Bernoulli, Bayes risk)
 python simulation/src/deceptive_regime.py       # indistinguishability in the main DGP
 ```
 
@@ -69,22 +70,29 @@ simulation/     DGPs, estimator battery, phase diagram; results/ is generated
 analysis/       Study 0 pipeline, committed inputs and outputs
 tests/          numerical identities used by the proofs
 scripts/        validate_repo.sh
+companion/      design spec and draft preregistration for the experiment,
+                which has not been run
 docs/           publication_map.md (scope split with the companion paper)
-docs/internal/  research diary: review packets, errata, design history, slides.
-                Not part of the replication package; kept because the project's
-                self-corrections are part of its record.
+docs/internal/  research diary: review packets, errata, design history, slides,
+                reading notes. Not part of the replication package; kept
+                because the project's self-corrections are part of its record.
 ```
 
 ## Data
 
 `analysis/data/raw/debategpt.csv` is the public release accompanying Salvi et
-al.; `analysis/data/scaling-conversational-AI/` is the public release
-accompanying Hackenburg et al. The latter contains derived variables and
-response identifiers only — the upstream authors state that raw conversation
-logs contain personally identifiable information and are not publicly
-available, and this repository does not contain them. The 56,831 figure in
-the paper is the count of released persuasion rows, not that study's full
-sample.
+al. From the Hackenburg et al. release we vendor only the three files the
+pipeline reads, `data_and_analysis_code/study_{1,2,3}/output/data_prepared.rds`,
+together with the upstream README for provenance. The rest of that release —
+R analysis code, figures, fact-checker assessments, supplementary materials —
+is not redistributed here; `analysis/data/fetch_upstream.sh` retrieves it.
+
+Neither vendored file contains conversation text. The `.rds` files hold
+derived variables and response identifiers only. The upstream authors state
+that raw conversation logs contain personally identifiable information and
+are not publicly available, and this repository does not contain them. The
+56,831 figure in the paper counts released persuasion rows, not that study's
+full sample.
 
 Re-query outputs (`analysis/data/requery_*.jsonl`, 12,000 generations) and
 judge labels are committed so that `08`, `11` and `12` reproduce without a
