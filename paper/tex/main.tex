@@ -294,9 +294,19 @@ the single-turn problem with propensity $\pi_\tau(\cdot \mid H_t)$, and
 identifying $\beta_t$ additionally requires bridging every later turn from
 $\pi^{\mathrm{dep}}$ to $\rho$. Discarding the information cost of those
 later-turn bridges can only \emph{understate} the difficulty; hence any lower
-bound for the single-turn problem at the $(\Delta, \tau)$ prevailing at turn
-$t$ is also a lower bound for the conversational problem. ($K$-action
-policies reduce to the two-action case via the two arms of the contrast.)
+bound for the single-turn problem at the decisiveness prevailing at turn $t$
+is also a lower bound for the conversational problem.
+
+We record this as a remark rather than a proposition. The factorization
+argument is a sketch: making it a theorem requires showing that the
+efficiency bound of the submodel in which later-turn transitions are known
+does not exceed that of the full model, which is plausible on tangent-space
+grounds but which we do not prove here. Nothing in
+Sections~\ref{sec:resultA}--\ref{sec:resultB} depends on it; the
+propositions are single-turn statements and are used as such. The
+multi-turn envelope result remains open, and
+Proposition~\ref{prop:at} is a separate, conditional statement about the
+policy value rather than a discharge of this remark.
 \end{remark}
 
 \begin{proposition}[A-T: multi-turn compounding]\label{prop:at}
@@ -535,11 +545,19 @@ is not a consolation prize; it is the effect in a policy-relevant population.
 The decision boundary $\{\Delta(H) = 0\}$ collects the histories at which the
 deployed policy is genuinely undecided, the algorithmic analogue of
 clinical equipoise \citep{li2018balancing}. Three consequences. First,
-\emph{marginal policy evaluation}: any small change to the policy, a
-regulation, a guardrail, a reward-model update, a temperature change ---
-alters behavior precisely on and near this boundary, so the effect among
-boundary histories is the first-order term in the value change of any local
-policy modification. Second, \emph{auditability}: $\beta^{\ov}$ is the one
+\emph{marginal policy evaluation}: a small additive perturbation of the
+policy's scores, $\Delta \mapsto \Delta + \epsilon g$, moves the action
+probabilities by $\partial p/\partial\epsilon = \omega_\tau g/\tau$, which is
+largest exactly on the boundary, so for perturbations whose $g$ does not
+itself vanish there --- a regulation, a guardrail, a reward-model update ---
+the effect among boundary histories is the first-order term in the value
+change. The qualification is not decorative. A change in temperature is
+\emph{not} such a perturbation: $\partial p/\partial\tau = -\omega_\tau
+\Delta/\tau^{2}$ vanishes identically at $\Delta = 0$ and is largest at
+$|\Delta| \approx 1.54\,\tau$, so sharpening a policy has no first-order
+effect on the histories where it is undecided. $\beta^{\ov}$ is the leading
+term for score-level modifications, not for every local change one might
+make to a deployment. Second, \emph{auditability}: $\beta^{\ov}$ is the one
 turn-level causal quantity a regulator could estimate from logs alone with
 stable precision, which makes its scope and its limits worth stating exactly.
 Third, the political reading, stated as interpretation rather than result:
