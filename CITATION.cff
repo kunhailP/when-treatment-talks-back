@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+title: >-
+  When the Treatment Talks Back: Information Limits of Observational Logs from
+  Adaptive Generative Political Communication
+message: If you use this material, please cite the paper.
+type: software
+authors:
+  - family-names: Park
+    given-names: Kun Woo
+    affiliation: Kookmin University
+repository-code: https://github.com/kunhailP/when-treatment-talks-back
+abstract: >-
+  Replication material for a paper on what conversation logs from an adaptive
+  generative system can identify about the system's turn-level behavior. The
+  efficiency bound for the turn-level excursion effect grows exponentially in a
+  policy decisiveness index identified from logs; along policy sequences whose
+  decisiveness grows with sample size the minimax risk is bounded away from
+  zero; and the overlap mass that survives localizes on the policy's learned
+  decision boundary, leaving a regression-discontinuity estimand.
+keywords:
+  - causal inference
+  - semiparametric efficiency
+  - minimax lower bounds
+  - overlap
+  - micro-randomized trials
+  - political persuasion
+  - large language models
+license: CC-BY-4.0
+date-released: '2026-08-31'
+version: v0.3

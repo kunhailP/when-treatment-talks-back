@@ -103,3 +103,12 @@ byte-reproducible.
 
 The G-MRT experiment is a separate paper; `docs/publication_map.md` records
 which results belong where. No experimental data has been collected.
+
+## License
+
+Code (`simulation/`, `analysis/src/`, `tests/`, `scripts/`) is MIT. Text,
+figures and derived results are CC BY 4.0, matching the license the article is
+intended to appear under. Data redistributed from the Salvi et al. and
+Hackenburg et al. public releases remains under those authors' terms and is
+not covered by either; see `LICENSE` for the specifics and for what is
+deliberately absent.
