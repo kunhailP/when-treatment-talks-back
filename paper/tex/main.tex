@@ -51,16 +51,21 @@ semiparametric efficiency bound grows exponentially in a \emph{policy
 decisiveness} index $D(h) = -\log \min_a \pi(a \mid h)$ --- a functional of
 the behaviour policy alone, identified from logs, with the softmax
 temperature as one special case. The classical average-treatment-effect
-bound is recovered as a degenerate case. Third, the overlap weight mass
+bound is recovered as a degenerate case. We then show that this is not
+merely a large constant: along policy sequences whose decisiveness grows
+fast enough relative to $n$, a two-point argument gives a minimax lower
+bound that is bounded away from zero, so no estimator recovers the
+turn-level effect at any rate. Third, the overlap weight mass
 concentrates on the policy's learned decision boundary as the policy
 sharpens: the surviving estimand is a boundary effect $\beta^{\ov}$ ---
 formally a regression-discontinuity estimand at a threshold the policy
 learned rather than one the analyst chose --- and we prove this in one
 dimension and, via a coarea argument, on a decision manifold in
 $\mathbb{R}^d$. We are explicit that this is localization, not stability:
-the surviving mass is itself $O(\tau)$. Simulation exhibits estimable,
-variance-explosion, and deceptively stable-but-biased regimes in $(n,\tau)$;
-characterizing the joint limit that separates them remains open. Re-querying
+the surviving mass is itself $O(\tau)$. The same argument identifies the deceptively stable-but-biased regime seen
+in simulation as two-point indistinguishability rather than estimator
+pathology; where estimation becomes \emph{easy} again is a separate
+achievability question we leave open. Re-querying
 three RLHF-tuned open-weights models on 200 real debate contexts locates
 plausible deployments in the difficult region, with the important caveat
 that the measured decisiveness is a property of a label projection and is
@@ -386,6 +391,42 @@ the conservativeness of the uniform reference and is not optimized; the
 excursion version (turn $t$, reference thereafter) follows with exponent
 $T-t+1$. The honest reading: more turns make the information limit
 exponentially worse, now as a proposition rather than a heuristic.
+
+\begin{proposition}[Minimax collapse]\label{prop:minimax}
+Let $M(\pi) := \sup_{d>0} \Prob\{D(H) \geq d\}\,e^{d}$. Consider the model
+class in which $\pi$ is known and fixed, $Y \mid A=a, H=h \sim
+N(\mu_a(h), \sigma^2)$, and $|\mu| \leq B$. Then for any estimator
+$\hat\beta$,
+\[
+\inf_{\hat\beta}\ \sup_{P}\ \E_P\big|\hat\beta - \beta(P)\big|
+\;\geq\; \tfrac14 \min\Big\{\, B\rho_{\min},\ \rho_{\min}\,\sigma
+\sqrt{M(\pi)/n} \,\Big\}.
+\]
+In particular, along a sequence of policies with $M(\pi_n)/n \to \infty$
+the minimax risk is bounded away from zero: no estimator recovers $\beta$
+at any rate.
+\end{proposition}
+
+This is the statement that Proposition~\ref{prop:a} alone does not support.
+Proposition~\ref{prop:a} bounds the information constant at a fixed policy,
+where $\beta$ remains regularly $\sqrt{n}$-estimable; Proposition
+\ref{prop:minimax} says that once decisiveness grows fast enough relative to
+sample size, estimability itself fails. The proof (Appendix~\ref{app:eif})
+is a two-point argument in which the two laws differ only in the outcome
+regression at the rarest action on the high-decisiveness stratum, so that
+they are separated in the estimand but nearly indistinguishable in the data.
+For the main design $H \sim U(-1,1)$, $M = \tau e^{(1-\tau)/\tau}$ in closed
+form, i.e.\ $\log M = 1/\tau - 1 - \log(1/\tau)$.
+
+\emph{The deceptive regime is this indistinguishability.} In the main
+simulation design, two laws whose true ATEs differ by $0.198$ --- differing
+only in $\beta$ on the rarely-treated region --- are separated by $0.16$
+standard deviations of the H\'ajek estimator at $\tau = 0.08$, $n = 2{,}000$,
+and still only $0.40$ at $n = 32{,}000$, a sixteenfold increase in sample
+size. At $\tau = 0.22$ the same $0.200$ gap is recovered as $0.224$ at
+$1.69$ standard deviations. What the phase diagram labels ``biased but
+stable'' is not a description of estimator behaviour but an instance of
+two-point indistinguishability.
 
 \subsection{Localization, the counterexample, and the phase
 diagram}\label{sec:resultB}
@@ -802,11 +843,14 @@ escapes the \emph{rate}; that is a statement about drifting sequences and
 requires a local asymptotic minimax argument we do not supply
 (Remark~\ref{rem:notrate}).
 
-\emph{The joint limit is unresolved.} The $(n,\tau)$ phase structure is a
-simulation finding. On a widened grid, neither $\log\E[e^{D}]$ nor an
-upper-tail functional of $D$ gives a stable offset to the measured
-transition across our two designs, so we do not claim to know which
-functional governs it.
+\emph{We bound impossibility, not achievability.}
+Proposition~\ref{prop:minimax} says when estimation must fail; it does not
+say when it becomes easy, and the observed onset of estimability in
+simulation is the latter. The two are separated by a design-dependent
+amount: the gap between the lower-bound functional $M$ and the oracle-IPW
+variance factor $\E[e^{D}]$ is $1.00$ nats for $U(-1,1)$ and $2.06$ for
+$N(0,1)$. No single functional can therefore track both curves, and a
+matching upper bound is left open.
 
 \emph{Proposition~A-T rests on a recurrence condition in tension with our
 own framing.} Condition (M1) requires histories to remain in the high-gap
@@ -956,19 +1000,55 @@ decoding, learned $\arg\max$ rules, hard filters). For $K=2$ one also has the
 exact identity $1/\{p(1-p)\} = 2 + 2\cosh(\mathrm{logit}\,p)$.
 \end{remark}
 
-\begin{remark}[What Proposition~\ref{prop:aprime} does not establish]
-\label{rem:notrate}
+\begin{remark}[Scope of Proposition~\ref{prop:aprime}]\label{rem:notrate}
 The bound is a statement about the asymptotic variance at a \emph{fixed}
 policy. Whenever $\pi(a \mid h) > 0$ everywhere, $V(\beta) < \infty$ and
-$\beta$ remains regularly $\sqrt{n}$-estimable: the result is a constant
-factor, not an impossibility. A claim that no regular estimator escapes the
-\emph{rate} concerns drifting sequences $\pi_n$ sharpening with $n$ and
-requires a local asymptotic minimax argument, which we do not give; the
-closest antecedent is the irregular-identification analysis of
-\citet{khan2010irregular}. We therefore state Result~A as a bound on the
-information constant and leave the joint $(n, \pi_n)$ limit open
-(Section~\ref{sec:discussion}).
+$\beta$ remains regularly $\sqrt{n}$-estimable: on its own this is a
+constant factor, not an impossibility. The impossibility statement requires
+drifting sequences $\pi_n$ and is Proposition~\ref{prop:minimax} below; the
+closest antecedent for the irregular behaviour it describes is
+\citet{khan2010irregular}.
 \end{remark}
+
+\begin{proof}[Proof of Proposition~\ref{prop:minimax}]
+Fix $d > 0$, let $\mathcal{H}_d = \{D \geq d\}$ and $c = \Prob(\mathcal{H}_d)
+> 0$, and let $a^*$ attain the minimum in Definition~\ref{def:D}, so
+$\pi(a^* \mid h) \leq e^{-d}$ on $\mathcal{H}_d$. Define two laws $P_0, P_1$
+that agree in the marginal of $H$, in $\pi$, and in $\mu(a,h)$ for every
+$(a,h)$ except one: $\mu^{(0)}(a^*,h) = 0$ and $\mu^{(1)}(a^*,h) =
+\varepsilon$ for $h \in \mathcal{H}_d$.
+
+\emph{Separation in the estimand.} Since $\psi(q) = \E[\sum_a q(a\mid H)
+\mu(a,H)]$,
+\[
+\beta(P_1) - \beta(P_0) \;=\; \E\big[q(a^*\mid H)\,\varepsilon\,
+\mathbf{1}\{H \in \mathcal{H}_d\}\big] \;\geq\; \rho_{\min}\,c\,\varepsilon
+\;=:\; \Delta .
+\]
+
+\emph{Proximity in the data.} The observed density factorizes as
+$P(H)\,\pi(A \mid H)\,N(Y; \mu_A(H), \sigma^2)$, and $P_0, P_1$ share the
+first two factors, so only the $(a^*, \mathcal{H}_d)$ cell contributes to the
+divergence:
+\[
+\mathrm{KL}(P_0 \| P_1) = \E_H\Big[\textstyle\sum_a \pi(a \mid H)\,
+\mathrm{KL}\big(N(\mu^{(0)}_a,\sigma^2) \,\|\, N(\mu^{(1)}_a,\sigma^2)\big)
+\Big] = c\,\pi(a^*\mid h)\,\frac{\varepsilon^2}{2\sigma^2}
+\leq \frac{c\,e^{-d}\varepsilon^2}{2\sigma^2}.
+\]
+By tensorization $\mathrm{KL}(P_0^n \| P_1^n) = n\,\mathrm{KL}(P_0\|P_1)$.
+Choose $\varepsilon = \sigma\sqrt{e^{d}/(nc)}$, so that this equals $1/2$;
+Pinsker's inequality then gives $\mathrm{TV}(P_0^n, P_1^n) \leq
+\sqrt{\mathrm{KL}/2} = 1/2$.
+
+\emph{Le Cam.} The two-point bound
+$\inf_{\hat\beta}\sup_P \E|\hat\beta - \beta| \geq (\Delta/2)(1 -
+\mathrm{TV}) \geq \Delta/4$ with
+$\Delta = \rho_{\min} c \varepsilon = \rho_{\min}\sigma\sqrt{c\,e^{d}/n}$.
+Optimizing over $d$ replaces $c\,e^{d}$ by $M(\pi)$. The constraint
+$|\mu| \leq B$ caps $\varepsilon$ at $B$, giving the stated minimum
+\citep[for the two-point method see][\S2.2]{tsybakov2009introduction}. \qed
+\end{proof}
 
 \section{Support failure (Proposition~\ref{prop:1a})}\label{app:support}
 
