@@ -164,6 +164,4 @@ The one-sentence version of this paper: *adaptive systems generate the least pop
 | T3 | analysis/results/fidelity_audit.csv | §4.4 |
 | A1 | simulation/results/label_error.csv | §4.4 / appendix |
 
-### Writing-rule compliance note (internal)
-
-"theorem" absent; Prop 1A stated as *structurally frequent and design-reinforced* (no "inevitable"); Study 0 verbs are motivate/locate/quantify (no "establish"); Result B labeled Proposition (1-D proof complete 2026-07-30 — nonidentification_note v0.5), multivariate version appendix-only; Result 5 labeled illustrative; §3 uses general 𝒜 with 2×2 as running example; §7 separates Kish ESS from cell occupancy and reports conditional/unconditional coverage. v0.2 additions: Remark A′ marked as remark (not proposition — the factorization argument is a sketch pending the multi-turn envelope result); OPE boundary drawn at four named places; β^ov relevance stated as policy-evaluation claims plus one explicitly-labeled interpretation.
+> 내부 작성규율 메모는 `docs/writing_rules_compliance.md`로 이동 (v0.3, 2026-08-31).

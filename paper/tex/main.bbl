@@ -42,15 +42,15 @@ Miroslav Dud{\'i}k, John Langford, and Lihong Li.
 \newblock In \emph{Proceedings of the 28th International Conference on Machine
   Learning (ICML)}, pages 1097--1104, 2011.
 
-\bibitem[Hackenburg et~al.(2025)Hackenburg, Tappin,
-  et~al.]{hackenburg2025levers}
-Kobi Hackenburg, Ben~M. Tappin, et~al.
+\bibitem[Hackenburg et~al.(2025)Hackenburg, Tappin, Hewitt, Saunders, Black,
+  Lin, Fist, Margetts, Rand, and Summerfield]{hackenburg2025levers}
+Kobi Hackenburg, Ben~M. Tappin, Luke Hewitt, Ed~Saunders, Sid Black, Hause Lin,
+  Catherine Fist, Helen Margetts, David~G. Rand, and Christopher Summerfield.
 \newblock The levers of political persuasion with conversational artificial
   intelligence.
-\newblock \emph{Science}, 2025.
+\newblock \emph{Science}, 390\penalty0 (6777):\penalty0 eaea3884, 2025.
 \newblock \doi{10.1126/science.aea3884}.
-\newblock arXiv:2507.13919. Code:
-  github.com/kobihackenburg/scaling-conversational-AI.
+\newblock URL \url{https://www.science.org/doi/10.1126/science.aea3884}.
 
 \bibitem[Hahn(1998)]{hahn1998role}
 Jinyong Hahn.
