@@ -96,12 +96,14 @@ environment. Turn-level contrasts computed from deployment logs face three
 distinct failures: (i) support failure where the policy is
 history-deterministic (Proposition~\ref{prop:1a}); (ii) an exponential
 collapse of the semiparametric efficiency bound in the policy's decisiveness
-even when positivity formally holds (Result~A), with bounds that transfer a
-fortiori from single turns to conversations and compound geometrically across
-turns (Proposition~A-T); and (iii) localization --- the overlap mass that
-survives concentrates on the policy's decision boundary, so what remains
-stably estimable is a boundary estimand $\beta^{\ov}$, distinct from the
-population effect (Result~B). We verify each mechanism in simulation, locate
+even when positivity formally holds (Result~A), derived from the efficient
+influence function of the excursion estimand itself, with a multi-turn
+compounding result under an additional recurrence condition
+(Proposition~A-T); and (iii) localization --- the overlap mass that survives
+concentrates on the policy's decision boundary, so what remains estimable
+longest is a boundary estimand $\beta^{\ov}$, distinct from the population
+effect and formally a regression-discontinuity quantity (Result~B and
+Corollary~\ref{cor:manifold}). We verify each mechanism in simulation, locate
 real deployments on the resulting $(n,\tau)$ phase diagram using re-query
 experiments on three RLHF-tuned models, and audit instruction--behavior
 slippage in 56{,}831 deployed conversations.
@@ -116,8 +118,10 @@ noncompliance.
 Contributions, three and locked: (1) an estimand framework for generative
 treatments with a general adaptive action space; (2) temperature-indexed
 overlap collapse and localization --- Proposition~\ref{prop:1a}, Result~A
-with explicit conditions, Proposition~A-T, Result~B proved in one dimension,
-the fixed-$\tau$ counterexample, and the $(n,\tau)$ phase diagram; (3) the
+with explicit conditions and an identified decisiveness index,
+Proposition~A-T, Result~B proved in one dimension and on a decision manifold
+in $\mathbb{R}^d$, the fixed-$\tau$ counterexample, and the $(n,\tau)$ phase
+structure; (3) the
 G-MRT design with a generated-treatment fidelity protocol. Everything else
 --- generator transport, internal-representation methods, simultaneous
 inference, constrained policy learning --- is explicitly out of scope
@@ -125,13 +129,25 @@ inference, constrained policy learning --- is explicitly out of scope
 
 \section{Related Work}\label{sec:related}
 
-\paragraph{Texts as treatments, static.} \citet{imai2026causal} identify
-effects of generated texts as fixed objects; ordering effects \emph{within} a
-fixed object involve no human-feedback loop and no positivity problem. Our
-object is different: an adaptive policy operating \emph{on} human responses,
-where the policy itself destroys overlap. This distinction --- dynamic
-response policy versus static generated object --- is the boundary line of
-this paper.
+\paragraph{Texts as treatments, static and sequential.}
+\citet{imai2026causal} identify effects of features of generated texts using
+internal representations of the generating model. Overlap is not free in that
+setting: it is \emph{established}, under a separability condition on the
+representation, and the authors are explicit that adjusting naively on
+learned representations can destroy it. \citet{nakamura2026dynamic} extend
+the framework to \emph{sequences} of treatment features --- including their
+position within a text or video --- estimating a marginal structural model
+with a jointly learned deconfounder for each feature in the sequence, so the
+difficulty that later features depend on earlier ones is squarely within
+their scope as well as ours. The distinction we draw is therefore not
+``static versus sequential'' but where the loss of overlap originates. In
+that line the object is a generated artifact produced by a fixed procedure,
+and overlap is a property of the representation the analyst adjusts on. Here
+the object is an adaptive policy responding to a human interlocutor, and
+overlap is destroyed by the deployed policy's own decisiveness before the
+analyst does anything --- which is why our results are bounds on what any
+analysis of such logs can achieve, and are complementary to, rather than
+competitive with, their estimation framework.
 
 \paragraph{Off-policy evaluation with deficient support.} The
 estimation-side face of our problem is studied in the contextual-bandit and
@@ -272,22 +288,35 @@ Proposition~\ref{prop:1a} alone would be ``use IPW.'' Result~A closes that
 escape at the level of the efficiency bound.
 
 \begin{proposition}[Result A]\label{prop:a}
-Assume (A1) the high-gap set $\Hd = \{h : |\Delta(h)| \geq \delta\}$ has
-positive measure; (A2) conditional outcome variances are bounded below by
-$\underline{\sigma}^2$ on $\Hd$; (A3) the model class is nonparametric in the
-outcome regression --- no parametric extrapolation into unobserved strata.
-Then the semiparametric efficiency bound for the ATE-type excursion satisfies
+Let $D(h) = -\log\min_{a \in \mathcal{A}^*} \pi(a \mid h)$ be the policy's
+decisiveness at $h$ (Definition~\ref{def:D}), where $\mathcal{A}^*$ is the
+set of actions entering the contrast. Assume (A1$'$) $\Prob\{D(H) \geq d\}
+\geq c > 0$; (A2$'$) conditional outcome variances on that set are bounded
+below by $\underline{\sigma}^2$; and (A3) the model class is nonparametric in
+the outcome regression --- no parametric extrapolation into unobserved
+strata. Then the semiparametric efficiency bound for the turn-level
+excursion effect satisfies
 \[
-V_\tau \;\geq\; \underline{\sigma}^2 \cdot \Prob(\Hd) \cdot e^{\delta/\tau}.
+V \;\geq\; \underline{\sigma}^2\,\rho_{\min}^2\,\E\big[e^{D(H)}\big]
+\;\geq\; \underline{\sigma}^2\,\rho_{\min}^2\,c\,e^{d},
 \]
+with $\rho_{\min}$ the smallest reference probability on $\mathcal{A}^*$.
 \end{proposition}
 
-\begin{proof}
-Insert $\min(p_\tau, 1-p_\tau) \leq e^{-\delta/\tau}$ on $\Hd$ into the bound
-of \citet{hahn1998role}, $V_\tau = \E[\sigma_1^2/p_\tau +
-\sigma_0^2/(1-p_\tau) + (\beta(H) - \beta)^2]$, discarding the third term and
-restricting to $\Hd$.
-\end{proof}
+We derive this from the efficient influence function of the excursion
+estimand itself (Propositions~\ref{prop:eif} and \ref{prop:aprime},
+Appendix~\ref{app:eif}) rather than importing a bound stated for the average
+treatment effect. The ATE bound of \citet{hahn1998role} is recovered as the
+two-action, degenerate-reference special case. Two consequences are worth
+isolating. First, the governing quantity is a property of the behaviour
+policy alone and is identified from logs; a softmax at temperature $\tau$
+gives $D = |\Delta|/\tau$ as one special case, but the statement covers
+truncated and constrained decoding, hard filters, and learned $\arg\max$
+rules, none of which are softmax. Second, in a factorial design the relevant
+probabilities are the \emph{cell} probabilities, not the marginal for the
+factor being contrasted: because the reference regime draws the other factor
+from $\rho$, a design in which the form-marginal stays at $1/2$ while cells
+become rare still has an exploding bound.
 
 By the convolution theorem, \emph{no regular estimator in the class} attains
 lower asymptotic variance: switching from IPW to AIPW recovers no
@@ -482,11 +511,18 @@ $(n, \tau)$: with $n \gg e^{\delta/\tau}$ the population effect is estimable
 with $n \ll e^{\delta/\tau}$ rare crossover actions never appear in the
 sample and estimators become \emph{biased while looking stable} --- the
 deceptive regime. Figure~\ref{fig:phase} shows the three regimes for the main
-design $H \sim U(-1,1)$, $\Delta(H) = H$, with two boundary lines: the
-fixed-gap heuristic $\log n = \delta/\tau$ (dashed) and the exact $\log n =
-\log \E[1/p_\tau] = \log(1 + \tau \sinh(1/\tau))$ (solid; Monte-Carlo
-agreement to four digits; $\tau \downarrow 0$ asymptote $1/\tau + \log\tau -
-\log 2$). The empirical regime boundary tracks the solid line.
+design $H \sim U(-1,1)$, $\Delta(H) = H$, with two \emph{reference} lines.
+The dashed line is the Result~A bound with $\delta$ chosen optimally: since
+$\Prob(\Hd) = 1-\delta$ here, $\max_\delta (1-\delta)e^{\delta/\tau}$ is
+attained at $\delta = 1-\tau$, giving $\log n = 1/\tau - 1 - \log(1/\tau)$.
+(Fixing $\delta = 1$, as an earlier version did, puts $\Prob(\Hd) = 0$ and
+makes the bound identically zero.) The solid line is the $n_{\mathrm{eff}} =
+1$ contour $\log \E[1/p_\tau] = \log(1 + \tau\sinh(1/\tau))$, exact for
+this design. We stress that neither line is the observed transition: the
+$n_{\mathrm{eff}}=1$ contour is a \emph{necessary} condition, and on a
+$13 \times 13$ grid the measured onsets of estimability lie $3$--$5$ nats
+above it. Which functional of the decisiveness distribution governs the
+transition is open (Section~\ref{sec:discussion}).
 
 \begin{figure}[t]
 \centering
@@ -582,9 +618,10 @@ studies), the randomized rhetoric instruction explains $\eta^2 = 0.20 / 0.12
 / 0.32$ of realized fact-count variance in studies 1/2/3 --- 68--88\% of
 realized-dose variation occurs \emph{within} assignment. Assignments also
 bundle: ``information'' realizes 8.3--21.8 facts on average while ``moral
-reframing'' realizes 1.6--2.1, and 52--56\% of moral-reframing conversations
+reframing'' realizes 1.6--2.2, and 52--56\% of moral-reframing conversations
 realize zero facts. Where compliance flags exist, valence compliance is
-72.7\% (study 1). What was randomized was an instruction; the treatment that
+72.7\% (study 1) and 89.6\% (study 3); grammar and on-topic compliance are
+above 92\% in both. What was randomized was an instruction; the treatment that
 reached the participant was a generated behavior, substantially decoupled
 from it. This is the observational counterpart of the fidelity problem the
 G-MRT protocol addresses by design.
@@ -674,8 +711,11 @@ arm-specific Kish ESS (theory object), minimum stratum-arm cell occupancy
 $\E[2\min(p,1-p)]$ (diagnostic) are reported as four separate columns,
 coverage both conditional and unconditional on estimability, with zero-cell
 rates alongside. One finding we flag for practice: in the collapse regime the
-\emph{realized} Kish ESS rebounds non-monotonically ($0.028 \to 0.53$)
-exactly when the zero-stratum-arm rate jumps ($0.70 \to 0.99$) --- surviving
+\emph{realized} control-arm Kish ESS is non-monotone in $\tau$: it falls to
+$0.028$ at $\tau = 0.40$, while the zero-stratum-arm rate is still $0.00$,
+and then \emph{rebounds} to $0.037$, $0.372$, $0.534$ at $\tau = 0.30, 0.22,
+0.15$ --- over exactly the range where the zero-stratum-arm rate climbs
+$0.06 \to 0.70 \to 0.99$. Surviving
 weights homogenize as rare crossovers vanish from the sample, so a
 healthy-looking realized ESS co-occurring with high zero-cell rates is itself
 the signature of the deceptive regime. ESS should never be reported without
@@ -709,16 +749,21 @@ becomes numerically undefined --- reported as estimability 0, not dropped.
 \begin{figure}[t]
 \centering
 \includegraphics[width=\textwidth]{figs/continuous_h_battery.png}
-\caption{Estimator battery on the continuous-boundary design at $n = 4{,}000$
+\caption{Estimator battery on the continuous-boundary design, $n = 4{,}000$
 (bias against each estimator's own target; the overlap estimator targets
-$\beta^{\ov}$).}
+$\beta^{\ov}$). The numerical values quoted in the text are for $n =
+32{,}000$, the largest cell of the grid.}
 \label{fig:battery}
 \end{figure}
 
-\paragraph{(iv) Phase diagram.} The empirical regime classification over the
-$(n, \tau)$ grid tracks the exact solid boundary $\log \E[1/p_\tau]$; the
-dashed $\delta/\tau$ heuristic is visibly off at small $\tau$
-(Figure~\ref{fig:phase}).
+\paragraph{(iv) Phase diagram.} The three regimes separate cleanly over the
+$(n, \tau)$ grid (Figure~\ref{fig:phase}). We report the reference lines
+without claiming either is the transition: measured onsets of estimability
+lie $3$--$5$ nats above the $n_{\mathrm{eff}}=1$ contour, and on a widened
+$13 \times 13$ grid neither a mean functional ($\log\E[e^{D}]$) nor an
+upper-tail functional of $D$ reproduces a stable offset across the
+$U(-1,1)$ and $N(0,1)$ designs. We therefore present the phase structure as
+a simulation finding and leave its asymptotic characterization open.
 
 \section{Empirical Plan and Ethics}\label{sec:plan}
 
@@ -746,6 +791,64 @@ conditioning are themselves design-based cautionary tales,
 cf.~\citealp{tierney2025design}), simultaneous inference over excursion
 families, and epistemically constrained policy learning. Each is a
 companion, not a section.
+
+\paragraph{Limitations.} Five, stated plainly.
+
+\emph{The bound is a constant, not a rate.} Proposition~\ref{prop:aprime}
+bounds the asymptotic variance at a fixed policy. For any policy with
+strictly positive action probabilities the excursion effect remains
+regularly $\sqrt{n}$-estimable, and we do not prove that no estimator
+escapes the \emph{rate}; that is a statement about drifting sequences and
+requires a local asymptotic minimax argument we do not supply
+(Remark~\ref{rem:notrate}).
+
+\emph{The joint limit is unresolved.} The $(n,\tau)$ phase structure is a
+simulation finding. On a widened grid, neither $\log\E[e^{D}]$ nor an
+upper-tail functional of $D$ gives a stable offset to the measured
+transition across our two designs, so we do not claim to know which
+functional governs it.
+
+\emph{Proposition~A-T rests on a recurrence condition in tension with our
+own framing.} Condition (M1) requires histories to remain in the high-gap
+set under \emph{every} action, i.e.\ that treatment does not move the
+history state much --- which is close to the opposite of the premise in this
+paper's title. Its per-turn factor is $\rho_{\min}^2 e^{D} p_\delta$, and
+$p_\delta$ is not estimated anywhere here; multi-turn compounding should be
+read as conditional on an unverified quantity.
+
+\emph{Study~0 measures a projection, not a policy.} The entropy and
+decisiveness figures in Section~\ref{sec:study0} are properties of an
+eight-category strategy label assigned by an LLM judge, not of the
+generation policy itself. Three specific threats: the modal category
+(rebuttal) is near-tautological with the generation prompt, which asks for a
+rebuttal; the two judges we ran agree at $\kappa = 0.13$ overall and not at
+all once both-modal pairs are excluded, and the headline entropy figures
+move materially between them; and at $k = 20$ regenerations a strategy with
+true probability $0.02$ is unobserved with probability $0.67$, so
+``never observed'' is not ``very rare.'' At the level of raw text the
+generations are not degenerate at all --- within-context duplicates are
+absent and pairwise lexical overlap is low. Any collapse we report is a
+collapse \emph{after} projection to the label space. The re-queried models
+are also open-weights stand-ins for the deployed system, not the deployed
+system. We therefore use Study~0 to motivate and locate, not to establish;
+human double-coding and higher-$k$ re-query on the censored subset are the
+obvious next steps and are not yet done.
+
+\emph{Study~0-c measures a bundled dose.} Realized fact counts covary with
+AI verbosity ($r = 0.49$ and $0.71$ in studies 2 and 3), so the
+within-assignment variance we report is not purely instruction--behavior
+slippage; adjusting for message length \emph{raises} $\eta^2$ rather than
+lowering it.
+
+\paragraph{Data and code availability.} All numbers reported here are
+produced by code in the project repository, which contains the simulation
+sources, the analysis pipeline, the re-query outputs and judge labels, and
+the derived result files. The DebateGPT reproduction uses the public
+release of \citet{salvi2025conversational}; the deployment audit uses the
+public release of \citet{hackenburg2025levers}, and the $56{,}831$
+conversations are the released persuasion rows, not that paper's full
+sample. Simulation entry points and expected runtimes are documented in the
+repository README.
 
 The one-sentence version of this paper: \emph{adaptive systems generate the
 least population-level causal information exactly where they are most

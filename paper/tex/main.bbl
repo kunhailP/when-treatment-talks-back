@@ -1,4 +1,4 @@
-\begin{thebibliography}{25}
+\begin{thebibliography}{26}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -120,6 +120,12 @@ Fan Li, Kari~Lock Morgan, and Alan~M. Zaslavsky.
 \newblock Balancing covariates via propensity score weighting.
 \newblock \emph{Journal of the American Statistical Association}, 113\penalty0
   (521):\penalty0 390--400, 2018.
+
+\bibitem[Nakamura and Imai(2026)]{nakamura2026dynamic}
+Kentaro Nakamura and Kosuke Imai.
+\newblock {GenAI} powered dynamic causal inference with unstructured data,
+  2026.
+\newblock Preprint.
 
 \bibitem[Qian(2025)]{qian2025dcee}
 Tianchen Qian.

@@ -23,9 +23,16 @@ DGP (주): H ~ Uniform(-1,1), Δ(H)=H, p_τ(H)=logit⁻¹(H/τ), A~Bern(p_τ),
   estimable       : |상대편향| ≤ .10 이고 uncond coverage ≥ .85
   variance-expl   : 나머지 (분산 지배)
   biased-stable   : |상대편향| ≥ .20 이고 sd < |bias| (편향된 채 안정)
-  경계선 2개: 점선 log n = δ/τ (δ=1, 고정-gap heuristic)
-             실선 log n = log E[1/p_τ] = log(1+τ·sinh(1/τ)) (정확, Uniform)
+  참조선 2개 (경계 주장 아님 — v0.3 정정):
+    점선 log n = 1/τ − 1 − log(1/τ): Result A 하한을 δ에 대해 최적화한 것
+         (U(−1,1)에서 P(𝓗_δ)=1−δ ⇒ δ*=1−τ). 구 점선(δ=1 고정)은
+         P(𝓗_δ)=0이라 하한이 항등적으로 0인 vacuous 케이스였다.
+    실선 log n = log E[1/p_τ] = log(1+τ·sinh(1/τ)): 이는 n_eff=1 등고선이며
+         추정가능성의 **필요조건**이지 전이 위치가 아니다. 실측 전이는 이보다
+         3–5 nats 위에 있다 (13τ×13n 격자, 내부 전이 9개).
   ※ 국면 임계값은 presentation 선택이며 민감도는 RMSE·coverage 판을 병기해 방어.
+  ※ (n,τ) 공동극한의 지배량은 미해결 — 평균(E[e^D])과 상위꼬리 후보가 분포족을
+    바꾸면 서로 다른 오프셋을 주며, 현 데이터로는 판별되지 않는다.
 
 Usage: python continuous_h.py [--nsims 400] [--dgp uniform|normal] [--selftest]
 Outputs: ../results/continuous_h_results.csv, continuous_h_battery.png,
@@ -213,9 +220,19 @@ def phase_figure(res, outdir):
         pc = ax.pcolormesh(x, np.log(yv), g, cmap=cmap, shading="nearest",
                            vmin=None if clim is None else clim[0],
                            vmax=None if clim is None else clim[1])
-        ax.plot(tt, tt, "k--", lw=1.2, label=r"log n = $\delta/\tau$ ($\delta$=1)")
+        # Result A bound, delta chosen optimally. For H~U(-1,1), P(H_delta)=1-delta,
+        # so the bound is max_delta (1-delta)e^{delta/tau}, attained at delta=1-tau
+        # with value tau*e^{(1-tau)/tau}; in log and with tt=1/tau that is
+        # tt - 1 - log(tt). The old dashed line fixed delta=1, where P(H_delta)=0
+        # and the bound is identically zero -- i.e. it plotted a vacuous special
+        # case of our own proposition.
+        ax.plot(tt, tt - 1 - np.log(tt), "k--", lw=1.2,
+                label=r"Result A bound, $\delta$ optimized")
+        # This is the log n = log E[1/p_tau] contour, i.e. n_eff = 1. It is a
+        # NECESSARY condition for estimability, not the location of the observed
+        # transition: measured onsets sit 3-5 nats above it.
         ax.plot(tt, np.log(1 + (1 / tt) * np.sinh(tt)), "k-", lw=1.6,
-                label=r"log n = log E[$1/p_\tau$]")
+                label=r"$n_{\mathrm{eff}}=1$ (necessary, not the transition)")
         ax.set_xlabel(r"$1/\tau$")
         ax.set_ylabel("log n")
         ax.set_ylim(np.log(yv.min()), np.log(yv.max()))
