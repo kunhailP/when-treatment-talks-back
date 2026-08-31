@@ -1,28 +1,88 @@
 #!/usr/bin/env bash
-# 배포 전 검증 (4차 비판 수용, 2026-07-30 신설).
-# 압축·커밋 전에 반드시 통과해야 한다:  bash scripts/validate_repo.sh
+# Pre-commit validation.  Run before tagging or archiving:  bash scripts/validate_repo.sh
+#
+# What this checks, and what it deliberately does not.  Steps 1-5 establish
+# that the code runs and that the committed Study 0-a summary matches the real
+# data.  Step 6 checks that numbers printed in the manuscript still match the
+# result files they came from, which is the failure mode this project has hit
+# most often: an analysis is rerun, the CSV changes, and the prose does not.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-echo "== [1/4] compile check =="
+echo "== [1/6] compile check =="
 python -m py_compile simulation/src/*.py analysis/src/*.py analysis/tests/make_fixture.py
 
-echo "== [2/4] fixture 재생성 =="
+echo "== [2/6] unit tests =="
+python -m pytest tests/ -q
+
+echo "== [3/6] fixture regeneration =="
 ( cd analysis/tests && python make_fixture.py )
 
-echo "== [3/4] Study 0-a strict 방향 검정 =="
+echo "== [4/6] Study 0-a strict direction check (fixture) =="
 ( cd analysis/src && python 02_reproduce.py --data ../tests/fixture_debates.csv --strict )
-# fixture 실행이 results/reproduce_summary.csv를 덮어쓰므로, 실데이터가 있으면 복원 (2026-07-30 수정)
+# The fixture run overwrites results/reproduce_summary.csv; restore from real
+# data when it is present.
 if [ -f analysis/data/raw/debategpt.csv ]; then
-  echo "== [3b] 실데이터 summary 복원 =="
+  echo "== [4b] restore real-data summary =="
   ( cd analysis/src && python 02_reproduce.py --data ../data/raw/debategpt.csv --strict )
 fi
 
-echo "== [4/4] 소형 temperature collapse (smoke — 임시 폴더에서 실행, 실제 results/ 보존) =="
+echo "== [5/6] temperature collapse smoke run (temp dir; results/ preserved) =="
 TMP=$(mktemp -d)
 mkdir -p "$TMP/src"
 cp simulation/src/temperature_collapse.py "$TMP/src/"
 ( cd "$TMP/src" && python temperature_collapse.py --nsims 5 --n 500 )
 rm -rf "$TMP"
+
+echo "== [6/6] manuscript numbers vs result files =="
+python - <<'PY'
+import re, sys
+import pandas as pd
+
+tex = open("paper/tex/main.tex").read()
+fails = []
+
+def check(label, cond, detail):
+    print(f"   {'ok  ' if cond else 'FAIL'}  {label}")
+    if not cond:
+        fails.append(f"{label}: {detail}")
+
+# Study 0-a: cluster-robust and ordinal odds ratios
+inf = pd.read_csv("analysis/results/study0a_inference.csv")
+ai = inf[inf.arm == "Human-AI, personalized"].iloc[0]
+check("0-a cluster-robust OR in text",
+      f"{ai.OR:.2f}" in tex, f"file says {ai.OR:.2f}")
+check("0-a CI in text",
+      f"{ai.ci_lo:.2f}" in tex and f"{ai.ci_hi:.2f}" in tex,
+      f"file says [{ai.ci_lo:.2f}, {ai.ci_hi:.2f}]")
+
+# Study 0-b: modal strategy shares
+mc = pd.read_csv("analysis/results/model_comparison.csv")
+lo, hi = mc.modal_share.min() * 100, mc.modal_share.max() * 100
+check("0-b modal share range in text",
+      f"{lo:.1f}--{hi:.1f}" in tex, f"file says {lo:.1f}--{hi:.1f}")
+
+# Study 0-c: eta^2 range and total n
+fa = open("analysis/results/fidelity_audit_summary.txt").read()
+ns = [int(x) for x in re.findall(r"'n': (\d+)", fa)]
+check("0-c total n in text",
+      f"{sum(ns):,}".replace(",", "{,}") in tex, f"file says {sum(ns)}")
+
+# No retracted phrasing survives
+for phrase in ["exact boundary", "escapes the rate", "tracks the exact"]:
+    check(f"retracted phrase absent: '{phrase}'", phrase not in tex, "present")
+
+# No placeholders or TODO strings
+bib = open("paper/references.bib").read()
+check("bib has no TODO", "TODO" not in bib, "present")
+check("author filled in", "[Author]" not in tex,
+      "\\author{[Author]} is still a placeholder")
+
+if fails:
+    print("\n   " + str(len(fails)) + " check(s) failed:")
+    for f in fails:
+        print("     - " + f)
+    sys.exit(1)
+PY
 
 echo "== validate_repo: ALL PASS =="
