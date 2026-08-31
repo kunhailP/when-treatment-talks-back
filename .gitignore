@@ -5,3 +5,9 @@ data/raw/
 *.env
 __MACOSX/
 .DS_Store
+
+# LaTeX build artifacts
+paper/tex/*.aux
+paper/tex/*.log
+paper/tex/*.out
+paper/tex/*.blg

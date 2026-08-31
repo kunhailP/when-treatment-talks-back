@@ -1,4 +1,4 @@
-\begin{thebibliography}{21}
+\begin{thebibliography}{25}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -50,14 +50,21 @@ Kobi Hackenburg, Ben~M. Tappin, et~al.
 \newblock \emph{Science}, 2025.
 \newblock \doi{10.1126/science.aea3884}.
 \newblock arXiv:2507.13919. Code:
-  github.com/kobihackenburg/scaling-conversational-AI. TODO: complete author
-  list from published version.
+  github.com/kobihackenburg/scaling-conversational-AI.
 
 \bibitem[Hahn(1998)]{hahn1998role}
 Jinyong Hahn.
 \newblock On the role of the propensity score in efficient semiparametric
   estimation of average treatment effects.
 \newblock \emph{Econometrica}, 66\penalty0 (2):\penalty0 315--331, 1998.
+
+\bibitem[Hahn et~al.(2001)Hahn, Todd, and Van~der
+  Klaauw]{hahn2001identification}
+Jinyong Hahn, Petra Todd, and Wilbert Van~der Klaauw.
+\newblock Identification and estimation of treatment effects with a
+  regression-discontinuity design.
+\newblock \emph{Econometrica}, 69\penalty0 (1):\penalty0 201--209, 2001.
+\newblock \doi{10.1111/1468-0262.00183}.
 
 \bibitem[Imai and Nakamura(2026)]{imai2026causal}
 Kosuke Imai and Kentaro Nakamura.
@@ -73,12 +80,26 @@ Nan Jiang and Lihong Li.
 \newblock In \emph{Proceedings of the 33rd International Conference on Machine
   Learning (ICML)}, pages 652--661, 2016.
 
+\bibitem[Kalla and Broockman(2018)]{kalla2018minimal}
+Joshua~L. Kalla and David~E. Broockman.
+\newblock The minimal persuasive effects of campaign contact in general
+  elections: Evidence from 49 field experiments.
+\newblock \emph{American Political Science Review}, 112\penalty0 (1):\penalty0
+  148--166, 2018.
+\newblock \doi{10.1017/S0003055417000363}.
+
 \bibitem[Kallus and Uehara(2020)]{kallus2020double}
 Nathan Kallus and Masatoshi Uehara.
 \newblock Double reinforcement learning for efficient off-policy evaluation in
   markov decision processes.
 \newblock \emph{Journal of Machine Learning Research}, 21\penalty0
   (167):\penalty0 1--63, 2020.
+
+\bibitem[Keele and Titiunik(2015)]{keele2015geographic}
+Luke~J. Keele and Roc\'{\i}o Titiunik.
+\newblock Geographic boundaries as regression discontinuities.
+\newblock \emph{Political Analysis}, 23\penalty0 (1):\penalty0 127--155, 2015.
+\newblock \doi{10.1093/pan/mpu014}.
 
 \bibitem[Kennedy(2019)]{kennedy2019nonparametric}
 Edward~H. Kennedy.
@@ -87,11 +108,24 @@ Edward~H. Kennedy.
 \newblock \emph{Journal of the American Statistical Association}, 114\penalty0
   (526):\penalty0 645--656, 2019.
 
+\bibitem[Khan and Tamer(2010)]{khan2010irregular}
+Shakeeb Khan and Elie Tamer.
+\newblock Irregular identification, support conditions, and inverse weight
+  estimation.
+\newblock \emph{Econometrica}, 78\penalty0 (6):\penalty0 2021--2042, 2010.
+\newblock \doi{10.3982/ECTA7372}.
+
 \bibitem[Li et~al.(2018)Li, Morgan, and Zaslavsky]{li2018balancing}
 Fan Li, Kari~Lock Morgan, and Alan~M. Zaslavsky.
 \newblock Balancing covariates via propensity score weighting.
 \newblock \emph{Journal of the American Statistical Association}, 113\penalty0
   (521):\penalty0 390--400, 2018.
+
+\bibitem[Qian(2025)]{qian2025dcee}
+Tianchen Qian.
+\newblock Distal causal excursion effects: Modeling long-term intervention
+  effects and proximal moderation in micro-randomized trials, 2025.
+\newblock Preprint; not peer-reviewed at time of writing.
 
 \bibitem[Qian et~al.(2022)Qian, Walton, Collins, Klasnja, Lanza, Nahum-Shani,
   Rabbi, Russell, Almirall, and Murphy]{qian2022microrandomized}
@@ -122,14 +156,6 @@ Francesco Salvi, Manoel Horta~Ribeiro, Riccardo Gallotti, and Robert West.
 \newblock \emph{Nature Human Behaviour}, 2025.
 \newblock \doi{10.1038/s41562-025-02194-6}.
 \newblock Data: huggingface.co/datasets/frasalvi/debategpt.
-
-\bibitem[Shi and Dempsey(2025)]{shi2025distal}
-Jieru Shi and Walter Dempsey.
-\newblock Assessing time-varying causal effect moderation in the presence of
-  distal outcomes.
-\newblock \emph{Biometrics}, 2025.
-\newblock TODO: verify volume/pages before submission (repo bib policy:
-  verified 2026-07-22 baseline).
 
 \bibitem[Thomas and Brunskill(2016)]{thomas2016data}
 Philip~S. Thomas and Emma Brunskill.

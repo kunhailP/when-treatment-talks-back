@@ -11,6 +11,8 @@
 
 \newtheorem{proposition}{Proposition}
 \newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
 \theoremstyle{remark}
 \newtheorem{remark}{Remark}
 
@@ -43,24 +45,26 @@ structurally limited information about turn-level causal effects. First, when
 the deployed policy has history-deterministic components, turn-level effects
 are nonparametrically unidentified (support failure); in RLHF-tuned
 deployments this condition is structurally frequent and design-reinforced.
-Second, even with formal positivity, the semiparametric efficiency bound for
-population excursion effects degrades exponentially in the policy's effective
-inverse temperature: no regular estimator in the nonparametric class escapes
-the rate (Result~A); under a uniform-recurrence condition the bound compounds
-geometrically across turns (Proposition~A-T). Third, the overlap weight mass
-concentrates on the policy's learned decision boundary as temperature falls,
-so the causal information that remains stably observable is localized there;
-the boundary effect is a distinct --- and policy-relevant --- estimand
-$\beta^{\ov}$, not a silent replacement for the population effect (Result~B,
-proved in one dimension). A phase diagram in $(n,\tau)$ with an exact boundary
---- $\log\E[1/p_\tau]=\log(1+\tau\sinh(1/\tau))$ for our main design ---
-separates estimable, variance-explosion, and deceptively stable-but-biased
-regimes. Re-querying three RLHF-tuned open-weights models on 200 real debate
-contexts shows median per-context strategy entropy of exactly zero and
-modal-strategy shares of 94.5--98.6\%, implying $\geq 10^{5}$ conversations
-for any minority-strategy contrast. An audit of 56{,}831 deployed persuasion
-conversations shows that randomized prompt instructions explain only
-12--32\% of realized evidence-dose variance. We propose the generative
+Second, even with formal positivity, we derive the efficient influence
+function for the turn-level excursion estimand and show that its
+semiparametric efficiency bound grows exponentially in a \emph{policy
+decisiveness} index $D(h) = -\log \min_a \pi(a \mid h)$ --- a functional of
+the behaviour policy alone, identified from logs, with the softmax
+temperature as one special case. The classical average-treatment-effect
+bound is recovered as a degenerate case. Third, the overlap weight mass
+concentrates on the policy's learned decision boundary as the policy
+sharpens: the surviving estimand is a boundary effect $\beta^{\ov}$ ---
+formally a regression-discontinuity estimand at a threshold the policy
+learned rather than one the analyst chose --- and we prove this in one
+dimension and, via a coarea argument, on a decision manifold in
+$\mathbb{R}^d$. We are explicit that this is localization, not stability:
+the surviving mass is itself $O(\tau)$. Simulation exhibits estimable,
+variance-explosion, and deceptively stable-but-biased regimes in $(n,\tau)$;
+characterizing the joint limit that separates them remains open. Re-querying
+three RLHF-tuned open-weights models on 200 real debate contexts locates
+plausible deployments in the difficult region, with the important caveat
+that the measured decisiveness is a property of a label projection and is
+sensitive to the judge (Section~\ref{sec:study0}). We propose the generative
 micro-randomized trial (G-MRT) --- within-conversation turn-level
 randomization with a locked evidence bank, gated generation, and
 assignment-ITT analysis --- as the design remedy.
@@ -343,7 +347,7 @@ $e^{-\delta/\tau}$. Induct backward from $t = T$: by the tower property and
 turn's weight --- each turn contributes a factor $p_\delta\,
 e^{\delta/\tau}/K^{2}$, and turn 1 contributes $\Prob(H_1 \in \Hd)\,
 e^{\delta/\tau}/K^{2}$. The self-contained derivation of the quoted
-efficiency bound is deferred to the appendix; our contribution is the
+efficiency bound is given in Appendix~\ref{app:eif}; our contribution is the
 insertion and the induction.
 \end{proof}
 
@@ -439,8 +443,9 @@ $e^{-c(\epsilon)/\tau}$; near a simple root, the change of variables
 $v=\Delta(h)$, $v=\tau u$ and dominated convergence give
 $\int g\,\omega_\tau f \,dh = \tau\, g(0) f(0)/|\Delta'(0)| + o(\tau)$ for
 bounded continuous $g$. Ratios deliver the three claims. With multiple roots,
-mass distributes proportionally to $f(r_j)/|\Delta'(r_j)|$. The multivariate
-coarea version remains at appendix/conjecture status.
+mass distributes proportionally to $f(r_j)/|\Delta'(r_j)|$. Full proof in
+Appendix~\ref{app:resultB}; the multivariate coarea version is
+Corollary~\ref{cor:manifold}, proved in Appendix~\ref{app:manifold}.
 \end{proof}
 
 \paragraph{Why the boundary estimand matters substantively.} $\beta^{\ov}$
@@ -747,6 +752,216 @@ least population-level causal information exactly where they are most
 decisive, and the information that survives lives on their decision
 boundary} --- so if you want turn-level causal knowledge from conversational
 AI, you must randomize the turns.
+
+\appendix
+
+\section{Efficient influence function and the decisiveness bound}
+\label{app:eif}
+
+\paragraph{Setup.} Observe $O = (H, A, Y)$ with $A \in \mathcal{A}$,
+$|\mathcal{A}| = K < \infty$, and $\pi(a \mid h) = \Prob(A = a \mid H = h) >
+0$ a.s. Write $\mu(a,h) = \E[Y \mid A=a, H=h]$ and $\sigma^2(a,h) = \Var(Y
+\mid A=a, H=h)$; the model is nonparametric. In the multi-turn setting read
+$H = H_t$, $Y$ as the proximal outcome, and all statements on the
+availability stratum $\{I_t = 1\}$.
+
+A regime is a known action distribution $q(\cdot \mid h)$ on $\mathcal{A}$
+--- a stochastic intervention --- with value
+$\psi(q) = \E\big[\sum_a q(a \mid H)\,\mu(a,H)\big]$. The form estimand of
+Section~\ref{sec:framework} is $\beta^{\mathrm{form}} = \psi(q_1) -
+\psi(q_0)$ with $q_1(f,d \mid h) = \mathbf{1}\{f = \text{assertive}\}
+\rho_D(d)$ and $q_0$ likewise for interrogative. Note that the dose is
+marginalized under the \emph{reference} $\rho_D$, not under $\pi$; this is
+what makes the cell propensities, rather than the form-marginal, the
+relevant quantities.
+
+\begin{proposition}[Efficient influence function]\label{prop:eif}
+$\psi(q)$ is pathwise differentiable with efficient influence function
+\[
+\varphi_q(O) \;=\; \sum_a q(a \mid H)\mu(a,H) \;-\; \psi(q) \;+\;
+\frac{q(A \mid H)}{\pi(A \mid H)}\big(Y - \mu(A,H)\big),
+\]
+so that for $\beta = \psi(q_1) - \psi(q_0)$ the semiparametric efficiency
+bound is
+\begin{equation}\label{eq:E1}
+V(\beta) \;=\; \Var\big(m_1(H) - m_0(H)\big) \;+\;
+\E\Big[\textstyle\sum_a \big(q_1(a \mid H) - q_0(a \mid H)\big)^2
+\frac{\sigma^2(a,H)}{\pi(a \mid H)}\Big],
+\end{equation}
+where $m_j(h) = \sum_a q_j(a \mid h)\mu(a,h)$.
+\end{proposition}
+
+\begin{proof}
+$\psi(q)$ depends on the observed-data law only through the marginal of $H$
+and the outcome regression $\mu$. Decompose the tangent space as
+$\mathcal{T} = \mathcal{T}_H \oplus \mathcal{T}_{A \mid H} \oplus
+\mathcal{T}_{Y \mid A,H}$ and differentiate along a regular parametric
+submodel. The $\mathcal{T}_H$ component contributes $\sum_a q\mu - \psi$;
+the $\mathcal{T}_{Y \mid A,H}$ component contributes $(q/\pi)(Y - \mu)$.
+Because $q$ is a known function and $\psi$ does not depend on $\pi$, the
+$\mathcal{T}_{A \mid H}$ component vanishes --- this holds even though $q$
+may depend on $h$. One checks $\E[\varphi_q] = 0$ and $\varphi_q \in
+\mathcal{T}$, so $\varphi_q$ is the EIF. The two components are orthogonal,
+giving $\Var(\varphi_q) = \Var(m_q(H)) + \E[(q/\pi)^2\sigma^2]$; expanding
+the second term over $a$ and using linearity in $q$ for the contrast yields
+\eqref{eq:E1}.
+\end{proof}
+
+When $q_1$ and $q_0$ have disjoint support --- as they do for a form or
+dose contrast --- $(q_1 - q_0)^2 = q_1^2 + q_0^2$ and the sum in
+\eqref{eq:E1} runs over all $K$ cells.
+
+\begin{definition}[Policy decisiveness]\label{def:D}
+For $\mathcal{A}^* = \mathrm{supp}(q_1) \cup \mathrm{supp}(q_0)$ set
+$D(h) := -\log \min_{a \in \mathcal{A}^*} \pi(a \mid h)$.
+\end{definition}
+
+$D$ is a functional of the behaviour policy alone and is identified from
+logs; neither $\tau$ nor a softmax parameterization enters.
+
+\begin{proposition}[Decisiveness bound; Result~A restated]\label{prop:aprime}
+Assume (A1$'$) $\Prob\{D(H) \geq d\} \geq c > 0$; (A2$'$)
+$\underline{\sigma}^2 := \inf\{\sigma^2(a,h) : D(h) \geq d,\ a \in
+\mathcal{A}^*\} > 0$; and (A3). Let $\rho_{\min} = \min_{a \in
+\mathcal{A}^*} q_j(a \mid h)$. Then
+\[
+V(\beta) \;\geq\; \underline{\sigma}^2 \rho_{\min}^2\,
+\E\big[e^{D(H)}\big] \;\geq\; \underline{\sigma}^2 \rho_{\min}^2\, c\, e^{d}.
+\]
+\end{proposition}
+
+\begin{proof}
+Discard the first term of \eqref{eq:E1}. On $\{D \geq d\}$,
+$\sum_a (q_1-q_0)^2 \sigma^2/\pi \geq \underline{\sigma}^2 \rho_{\min}^2
+\sum_{a \in \mathcal{A}^*} 1/\pi(a \mid H) \geq \underline{\sigma}^2
+\rho_{\min}^2 / \min_{a \in \mathcal{A}^*}\pi(a \mid H) =
+\underline{\sigma}^2\rho_{\min}^2 e^{D(H)} \geq \underline{\sigma}^2
+\rho_{\min}^2 e^{d}$; multiply by $\Prob\{D \geq d\} \geq c$.
+\end{proof}
+
+\begin{remark}[Recovering \citet{hahn1998role}]
+With $K = 2$, $q_1 = \delta_1$, $q_0 = \delta_0$ (so $\rho_{\min} = 1$),
+\eqref{eq:E1} is $\Var(\mu_1 - \mu_0) + \E[\sigma_1^2/\pi(1 \mid H) +
+\sigma_0^2/\pi(0 \mid H)]$, i.e.\ the ATE bound of \citet{hahn1998role}. The
+present paper therefore does not import that bound for a different estimand;
+it derives the bound for the excursion estimand and recovers Hahn's as a
+special case. If $\pi$ is a softmax at temperature $\tau$ and $K=2$, then
+$D = |\Delta|/\tau + O(e^{-|\Delta|/\tau})$ and the $e^{\delta/\tau}$ form is
+recovered; the converse fails, so Proposition~\ref{prop:aprime} applies to
+sharply adaptive policies that are not softmax (truncated or constrained
+decoding, learned $\arg\max$ rules, hard filters). For $K=2$ one also has the
+exact identity $1/\{p(1-p)\} = 2 + 2\cosh(\mathrm{logit}\,p)$.
+\end{remark}
+
+\begin{remark}[What Proposition~\ref{prop:aprime} does not establish]
+\label{rem:notrate}
+The bound is a statement about the asymptotic variance at a \emph{fixed}
+policy. Whenever $\pi(a \mid h) > 0$ everywhere, $V(\beta) < \infty$ and
+$\beta$ remains regularly $\sqrt{n}$-estimable: the result is a constant
+factor, not an impossibility. A claim that no regular estimator escapes the
+\emph{rate} concerns drifting sequences $\pi_n$ sharpening with $n$ and
+requires a local asymptotic minimax argument, which we do not give; the
+closest antecedent is the irregular-identification analysis of
+\citet{khan2010irregular}. We therefore state Result~A as a bound on the
+information constant and leave the joint $(n, \pi_n)$ limit open
+(Section~\ref{sec:discussion}).
+\end{remark}
+
+\section{Support failure (Proposition~\ref{prop:1a})}\label{app:support}
+
+Take $T=1$, $H \in \{h_0, h_1\}$ with $\Prob(H = h_1) > 0$,
+$\pi^{\mathrm{dep}}(1 \mid h_0) = 1/2$ and $\pi^{\mathrm{dep}}(1 \mid h_1) =
+0$, and $Y(a) \mid H=h \sim N(\mu_a(h), 1)$. Let two laws $P_1, P_2$ agree
+in every component except $\mu_1(h_1)$, equal to $c_1$ under $P_1$ and $c_2
+\neq c_1$ under $P_2$. The observed-data density factorizes as
+$P(H)\,\pi^{\mathrm{dep}}(A \mid H)\,N(y; \mu_A(H), 1)$ and the stratum
+$\{A = 1, H = h_1\}$ has probability zero, so $\mu_1(h_1)$ does not appear:
+$P_1$ and $P_2$ induce identical observed-data laws. Their uniform-reference
+excursion effects differ by $\Prob(h_1)(c_2 - c_1) \neq 0$. Hence no
+functional of the observed-data law equals the excursion effect, which is
+the claim. No latent confounder is used: the failure is support, not
+confounding. The multi-turn version replaces $H$ by $(X, R_{1:t-1})$ and
+recovers the standard time-varying-confounding form of
+\citet{robins1986new}; the contribution here is not the structure but the
+claim that the triggering condition is structurally frequent in RLHF-tuned
+deployment, which is an empirical claim (Section~\ref{sec:study0}) and not a
+theorem.
+
+\section{Localization in one dimension (Proposition~\ref{prop:b})}
+\label{app:resultB}
+
+Throughout $\omega_\tau(h) = p_\tau(1-p_\tau) = \frac{1}{4}\mathrm{sech}^2
+\!\big(\tfrac{\Delta(h)}{2\tau}\big) = \tfrac{1}{\tau}K\!\big(
+\tfrac{\Delta(h)}{\tau}\big)$ with $K(u) = 1/[4\cosh^2(u/2)]$, an exact
+identity. Two elementary facts: $\int_{\mathbb{R}} K = [\tfrac12
+\tanh(u/2)]_{-\infty}^{\infty} = 1$, and $\cosh^2(u/2) \geq e^{|u|}/4$ gives
+$K(u) \leq e^{-|u|}$.
+
+Fix a bounded continuous $g$ and put $I_\tau(g) = \int \omega_\tau g f$.
+Split at $U_\epsilon = \{\mathrm{dist}(h,\mathcal{R}) < \epsilon\}$. Outside
+$U_\epsilon$, (B2$'$) gives $|\Delta| \geq \eta(\epsilon) > 0$, so
+$\omega_\tau \leq e^{-\eta/\tau}$ and, $f$ and $g$ being bounded, that
+contribution is $O(e^{-\eta/\tau}) = o(\tau)$. Inside, work near a single
+root $r$ with $\Delta'(r) \neq 0$ (B2); by the inverse function theorem
+$\Delta$ is a $C^1$ diffeomorphism of a neighbourhood of $r$ onto a
+neighbourhood of $0$, so substituting $v = \Delta(h)$ and then $v = \tau u$,
+\[
+\int_{U_\epsilon} \omega_\tau g f \,dh
+= \int K(u)\,\frac{(gf)(\Delta^{-1}(\tau u))}{|\Delta'(\Delta^{-1}(\tau u))|}
+\,\tau \,du .
+\]
+The integrand is dominated by $K(u)\sup_{|h-r| \leq \epsilon}
+|gf/\Delta'|$, finite because $|\Delta'|$ is continuous and bounded away
+from $0$ near $r$; by dominated convergence and continuity of $f$, $g$ at
+$r$ the integral tends to $g(r)f(r)/|\Delta'(r)|$. Hence
+$I_\tau(g) = \tau\,g(r)f(r)/|\Delta'(r)| + o(\tau)$. Summing over the
+finitely many roots (B2) gives $I_\tau(g) = \tau \sum_j
+g(r_j)f(r_j)/|\Delta'(r_j)| + o(\tau)$. Taking $g \equiv 1$ yields the
+statement for $\E[\omega_\tau]$, where (B4) $f(r) > 0$ for some root is
+exactly what prevents the leading term from vanishing and the expansion
+from degenerating to $0 = o(\tau)$. Ratios $I_\tau(g)/I_\tau(1)$ give weak
+convergence to $\sum_j w_j \delta_{r_j}$ with $w_j \propto
+f(r_j)/|\Delta'(r_j)|$, and $g = c$ (bounded, continuous near the roots, by
+(B3)) gives the limit of $\beta^{\ov}_\tau$. With a unique root at $0$ this
+is a point mass and $\beta^{\ov}_\tau \to c(0)$. \hfill$\square$
+
+\section{Localization on a decision manifold (Corollary~\ref{cor:manifold})}
+\label{app:manifold}
+
+Let $H \in \mathbb{R}^d$ and $\mathcal{B} = \Delta^{-1}(0)$. By (C2),
+$\nabla\Delta \neq 0$ on $\mathcal{B}$, so $0$ is a regular value and
+$\mathcal{B}$ is a $C^1$ hypersurface of dimension $d-1$. On $U_{\epsilon_0}
+= \{|\Delta| < \epsilon_0\}$ the coarea formula (e.g.\ Evans and Gariepy,
+Thm.\ 3.4.2) gives, for integrable $\Phi$,
+\[
+\int_{U_{\epsilon_0}} \Phi \,dh
+= \int_{\mathbb{R}} \Big[ \int_{\Delta^{-1}(s)}
+\frac{\Phi}{\|\nabla\Delta\|}\,d\mathcal{H}^{d-1}\Big] ds .
+\]
+Apply this with $\Phi = \omega_\tau g f$. Since $\omega_\tau$ depends on $h$
+only through $\Delta(h)$, it is constant on level sets and factors out:
+with $G(s) := \int_{\Delta^{-1}(s)} gf/\|\nabla\Delta\|
+\,d\mathcal{H}^{d-1}$,
+\[
+\int_{U_{\epsilon_0}} \omega_\tau g f \,dh
+= \int_{-\epsilon_0}^{\epsilon_0} \tfrac{1}{\tau}K(s/\tau)\,G(s)\,ds
+= \int_{|u| \leq \epsilon_0/\tau} K(u)\,G(\tau u)\,du \cdot \tau .
+\]
+By (C1)--(C2) and the implicit function theorem the level sets
+$\Delta^{-1}(s)$ vary continuously in $s$ near $0$ along the normal flow of
+$\mathcal{B}$, and $f$, $g$, $\|\nabla\Delta\|$ are continuous with
+$\|\nabla\Delta\|$ bounded away from $0$; hence $G$ is continuous at $0$
+with $G(0) = \int_{\mathcal{B}} gf/\|\nabla\Delta\| \,d\mathcal{H}^{d-1}$.
+Since $\int K = 1$ and $K(u) \leq e^{-|u|}$, dominated convergence gives
+$\int_{U_{\epsilon_0}} \omega_\tau g f = \tau\,G(0)\,(1 + o(1))$. The region
+outside $U_{\epsilon_0}$ contributes $O(e^{-\eta/\tau})$ by (C4) as in
+Appendix~\ref{app:resultB}. Taking $g \equiv 1$ gives the stated expansion
+of $\E[\omega_\tau]$; (C5) guarantees the limit is in $(0,\infty)$, so
+ratios converge and the normalized overlap measure tends weakly to the
+measure on $\mathcal{B}$ with $\mathcal{H}^{d-1}$-density proportional to
+$f/\|\nabla\Delta\|$. Taking $g = c$ gives the limit of $\beta^{\ov}_\tau$.
+For $d = 1$, $\mathcal{H}^0$ is counting measure and $\|\nabla\Delta\| =
+|\Delta'|$, recovering Appendix~\ref{app:resultB}. \hfill$\square$
 
 \bibliographystyle{plainnat}
 \bibliography{../references}
