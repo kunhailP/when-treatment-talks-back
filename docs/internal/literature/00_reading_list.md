@@ -21,6 +21,6 @@
 - Boruvka, Almirall, Witkiewitz, Murphy. **Assessing time-varying causal effect moderation in mobile health.** *JASA* 113 (2018) — excursion effect와 WCLS의 원 논문. formal framework §2.3의 직접 기반.
 - Robins. **A new approach to causal inference in mortality studies with a sustained exposure period.** *Mathematical Modelling* 7 (1986) — g-methods의 원류. Proposition 1에서 반드시 인용 (novelty 경계 설정).
 
-## 읽기 순서 권고 (주차별 계획은 docs/project_plan.md)
+## 읽기 순서 권고 (주차별 계획은 docs/internal/project_plan.md)
 
 1주차: Salvi + Hackenburg (현상과 데이터) → 2주차: Qian + Boruvka (설계 언어) → 3주차: Imai & Nakamura + Tierney (텍스트 처치의 식별) → 4주차: Dafoe (설계 세부) + Robins (이론 뿌리) → 상시: Chen–Kalla–Le, Costello, Zeng, Bai, Matz는 인용 목적 속독.

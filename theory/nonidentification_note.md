@@ -37,7 +37,7 @@ convolution theorem에 의해 (A3) 클래스의 어떤 정규 추정량도 이 �
 
 **유효표본 (v0.4 교체 — arm-specific Kish).** n_eff(a) = n / E[1/π_τ(a|H)]. (구 표기 n·E[exp(−Δ/τ)] 폐기 — 층 혼합에서 Jensen 방향이 달라 과대평가할 수 있음.) **"τ 절반 → 필요 n 제곱"은 점수격차가 고정된 층 내부에서만** 성립: 그 층에서 1/p_τ ≈ exp(δ/τ)이므로 τ→τ/2가 exp(δ/τ)→exp(δ/τ)²을 준다. 층별 gap이 이질적이면 전체 rate는 최대 gap 층이 지배.
 
-**핵심 문장: 추정량을 IPW에서 AIPW로 바꿔도 근본적으로 관측되지 않는 반사실 정보는 복구되지 않는다.** T턴 복리화(E[W²]~exp(2TΔ̄/τ))의 정확한 차수는 경로 의존성 때문에 heuristic으로 표기 (envelope 정리 TODO).
+**핵심 문장: 추정량을 IPW에서 AIPW로 바꿔도 근본적으로 관측되지 않는 반사실 정보는 복구되지 않는다.** T턴 복리화의 정확한 차수는 경로 의존성 때문에 heuristic으로 표기 (envelope 정리는 여전히 미해결). **단, 단일턴 minimax 불가능성은 v0.5에서 증명되었다 — `minimax_collapse.md` Theorem C.**
 
 **Proposition A-T (다턴 복리 하한 — v0.5.2 신규, 증명 = proofs_w3_draft §4).** (M1) 고갭 집합의 행동-균등 재귀성 P(H_{s+1}∈𝓗_δ|h,a) ≥ p_δ, (M2) 턴별 분산 하한, (A3) 하에서, Kallus–Uehara(2020)/Jiang–Li(2016) 유한기간 OPE efficiency bound에 backward induction을 적용하면 T턴 정책가치의 효율 하한은 **V_eff ≥ σ̲²·P₁(𝓗_δ)·p_δ^{T−1}·[exp(δ/τ)/K²]^T** — τ < δ/log(K²/p_δ)에서 T에 기하급수 복리. **구 Result 3의 heuristic이 정식 하한으로 대체됨** (excursion 버전은 지수 T−t+1의 corollary). (M1)은 실질 가정(강반발층의 지속성)이며 논문에 해석 명시.
 
@@ -89,8 +89,8 @@ convolution theorem에 의해 (A3) 클래스의 어떤 정규 추정량도 이 �
 1. ~~1A 반례쌍의 완전한 구성~~ → **완료 (v0.5, 본 문서 + proofs_w3_draft §1)**
 2. ~~Result B 1-D 증명~~ → **완료·Proposition 승격 (v0.5, proofs_w3_draft §3)**; 다차원 coarea는 appendix 지위
 3. ~~Result A 정식 하한~~ → **완료 (v0.5, proofs_w3_draft §2)**
-4. ~~연속형 결정경계 시뮬레이션~~ → **완료 (2026-07-30, simulation/src/continuous_h.py)**: 위상도·battery·robustness 전부 산출, 국면 경계가 실선 log E[1/p_τ]와 정합
+4. ~~연속형 결정경계 시뮬레이션~~ → **완료**: 위상도·battery·robustness 산출. **정정(2026-08-31): 국면 경계가 실선 log E[1/p_τ]와 정합한다는 기술은 이 리포의 자체 CSV로 반증되었다.** 그 선은 n_eff=1 등고선(필요조건)이고 실측 전이는 3–5 nats 위다. 하한(M)과 달성은 다른 양이며 `minimax_collapse.md` §5 참조. 또한 seed=hash() 버그로 v0.2 결과는 재현 불가였고 재생성됨
 5. 전략 라벨 측정오차 하의 π̂ 왜곡 분석 — W4 (JCI 부록) [진행 중]
 6. **[PA 트랙으로 이관]** differential fidelity(배정 vs 실현) 시뮬레이션, 2×2 form×dose DGP, WCLS 추정기 — publication_map 참조
 
-**위임 결정 3건 (2026-07-30, 사용자 재검토 가능 — proofs_w3_draft 말미 참조):** (i) (B2′) 정칙조건 채택, (ii) Result A는 Hahn(1998) 인용 형태(자기완결 유도는 appendix 후보), (iii) 1A는 U 없는 최소 구성을 본문으로, U-매개 다턴은 remark로.
+**위임 결정 3건 (2026-07-30, 사용자 재검토 가능 — proofs_w3_draft 말미 참조):** (i) (B2′) 정칙조건 채택, (ii) ~~Result A는 Hahn(1998) 인용 형태~~ → **해결 (v0.5): `excursion_bound.md`가 excursion estimand의 EIF를 직접 유도하고 Hahn을 특수사례로 회수한다. 논문 부록 A에 수록**, (iii) 1A는 U 없는 최소 구성을 본문으로, U-매개 다턴은 remark로.

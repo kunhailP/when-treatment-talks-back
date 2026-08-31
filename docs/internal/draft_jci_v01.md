@@ -2,7 +2,7 @@
 
 **[HISTORICAL — superseded by draft_jci_v02.md (2026-07-30). 이 파일은 수정하지 않는다.]**
 
-**Working paper draft v0.1 (2026-07-30) — JCI track (docs/publication_map.md). Structure = paper/outline.md v0.3. All numbers below are from executed runs in this repository (analysis/results/, simulation/results/); none are placeholders.**
+**Working paper draft v0.1 (2026-07-30) — JCI track (docs/publication_map.md). Structure = docs/internal/outline.md v0.3. All numbers below are from executed runs in this repository (analysis/results/, simulation/results/); none are placeholders.**
 
 ---
 

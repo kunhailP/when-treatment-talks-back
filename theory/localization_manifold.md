@@ -1,6 +1,6 @@
 # Decision-Manifold Localization (v0.5 — Result B의 다변량 완결)
 
-> **지위**: 신규. `temperature_collapse.md:46`과 `paper/outline.md:25`가 "conjecture/appendix 상태"로
+> **지위**: 신규. `temperature_collapse.md:46`과 `docs/internal/outline.md:25`가 "conjecture/appendix 상태"로
 > 남겨둔 multivariate coarea 판을 정리로 닫는다. 1-D 판(`proofs_w3_draft.md:83-100`)은 d=1 특수사례가 된다.
 > **참고**: 이 정리는 *어디에* overlap 질량이 남는지를 말한다. *얼마나* 남는지는 §4를 볼 것 — 그것도 사라진다.
 
@@ -111,10 +111,7 @@ Hahn, Todd & van der Klaauw (2001); Imbens & Lemieux (2008); Calonico, Cattaneo 
 Keele & Titiunik (2015, 다차원/지리적 RD); Cattaneo, Titiunik & Vazquez-Bare (경계 RD).
 인용하지 않으면 심사자는 (a) 이미 알려진 것으로 읽거나 (b) 더 강한 주장을 놓쳤다고 볼 것이다.
 
-## 6. 상류 문서 반영
+## 6. 상류 반영 (완료)
 
-- `formal_framework.md:69`: Result B 조건에 **(B2) simple root** 누락 — 수정 필요(별건).
-  다변량 판은 (C2) "0이 regular value"로 진술.
-- `temperature_collapse.md:46`, `paper/outline.md:25`: "conjecture/appendix 상태" 표기 해제.
-- `paper/tex/main.tex`: Result B 뒤에 Corollary로 배치, 증명은 부록 §C.
-- `references.bib`: RD 5건 + Federer/Evans–Gariepy (coarea) 추가.
+`formal_framework.md`가 v0.5로 갱신되어 이 파일의 결과를 반영한다.
+논문 반영은 `paper/tex/main.tex` 및 부록 참조.

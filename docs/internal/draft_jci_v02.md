@@ -1,6 +1,6 @@
 # When the Treatment Talks Back: Information Limits of Observational Logs from Adaptive Generative Political Communication
 
-**Working paper draft v0.2 (2026-07-30) — JCI track (docs/publication_map.md). Structure = paper/outline.md v0.3. All numbers are from executed runs in this repository; none are placeholders. v0.1 → v0.2 (심사 선제 대응 3건): (i) §4.2 Remark A′ — 단일턴 하한의 다턴 a fortiori 적용 (T=1 정리 ↔ T=3 동기의 내적 정합성 봉합); (ii) §2에 off-policy evaluation/deficient-support 문헌 단락 신설 (Sachdeva–Su–Joachims 2020 등) + 경계 긋기; (iii) §4.3에 β^ov의 실질적 의미(equipoise/한계 정책 모집단) 문단 신설. v0.1은 역사 기록 보존.**
+**Working paper draft v0.2 (2026-07-30) — JCI track (docs/publication_map.md). Structure = docs/internal/outline.md v0.3. All numbers are from executed runs in this repository; none are placeholders. v0.1 → v0.2 (심사 선제 대응 3건): (i) §4.2 Remark A′ — 단일턴 하한의 다턴 a fortiori 적용 (T=1 정리 ↔ T=3 동기의 내적 정합성 봉합); (ii) §2에 off-policy evaluation/deficient-support 문헌 단락 신설 (Sachdeva–Su–Joachims 2020 등) + 경계 긋기; (iii) §4.3에 β^ov의 실질적 의미(equipoise/한계 정책 모집단) 문단 신설. v0.1은 역사 기록 보존.**
 
 ---
 
@@ -164,4 +164,4 @@ The one-sentence version of this paper: *adaptive systems generate the least pop
 | T3 | analysis/results/fidelity_audit.csv | §4.4 |
 | A1 | simulation/results/label_error.csv | §4.4 / appendix |
 
-> 내부 작성규율 메모는 `docs/writing_rules_compliance.md`로 이동 (v0.3, 2026-08-31).
+> 내부 작성규율 메모는 `docs/internal/writing_rules_compliance.md`로 이동 (v0.3, 2026-08-31).

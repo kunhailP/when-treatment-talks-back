@@ -147,7 +147,7 @@ Prop A-T는 τ < δ/log(K²/p_δ), 즉 **Δ/τ > log(K²/p_δ)**일 때만 복�
 
 즉 **그 논문의 중심 기술적 성취가 정확히 positivity를 확보하는 것**이다. "no positivity problem"은 반대로 쓴 것이다.
 
-**추가로 발견된 것 — 두 논문이 섞였다.** `paper/outline.md:12`은 이렇게 적고 있다:
+**추가로 발견된 것 — 두 논문이 섞였다.** `docs/internal/outline.md:12`은 이렇게 적고 있다:
 
 > `Nakamura & Imai 2026 "dynamic": 고정된 객체 내부의 순서 효과, 인간 피드백 없음, positivity 문제 없음`
 

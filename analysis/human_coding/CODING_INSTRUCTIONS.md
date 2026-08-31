@@ -36,7 +36,7 @@ text만 보고 코딩할 것). 두 코더가 **독립적으로** `label_coder1`,
 ## 절차
 
 1. 각 코더 독립 코딩 (권장: 하루 이내, 휴식 포함 2–3시간)
-2. 완료 후 `python ../src/13_human_agreement.py` 실행 (작성 예정) →
+2. 완료 후 `python ../src/14_human_agreement.py` 실행 →
    coder1×coder2 κ, coder×LLM-judge κ 산출
 3. κ≥0.6이면 LLM 라벨 사용 정당화, 미달이면 불일치 사례 협의(adjudication) 후
    민감도 범위를 논문에 병기

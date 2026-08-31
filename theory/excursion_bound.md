@@ -1,6 +1,6 @@
 # Excursion Efficiency Bound (v0.5 — D-1 해결 + Result A의 decisiveness 재정식화)
 
-> **지위**: 신규. `nonidentification_note.md:96` 위임결정 (ii) = `docs/review_packet_20260825.md` D-1을 해결한다.
+> **지위**: 신규. `nonidentification_note.md:96` 위임결정 (ii) = `docs/internal/review_packet_20260825.md` D-1을 해결한다.
 > 이 파일이 닫는 것: (a) primary estimand β_t의 효율적 영향함수와 그 분산, (b) Result A를 ATE가 아닌
 > **excursion effect에 대해** 정당하게 재진술, (c) softmax·τ를 제거한 policy-decisiveness 형태로의 일반화.
 > 이 파일이 닫지 **못하는** 것: 고정 π의 점근분산 진술이라는 한계는 그대로다 (§5 참조).
@@ -128,13 +128,13 @@ softmax가 아닌 임의의 sharply adaptive policy(top-k, nucleus, 규칙기반
 1. **(A′)는 고정 π에서의 점근분산 진술이다.** 모든 h에서 π(a|h) > 0이면 V(β) < ∞이고
    β는 여전히 regular하게 √n-추정 가능하다. (A′)는 impossibility가 아니라 **상수 인자**다.
    초록·본문에서 "no regular estimator escapes **the rate**"라고 쓰려면 π_n이 n과 함께
-   날카로워지는 표류수열 위의 **local asymptotic minimax 논증**이 필요하다. 그것은 이 파일에 없다.
-   (직계 선행연구: Khan & Tamer 2010, *Econometrica* — irregular identification. `references.bib`에 추가할 것.)
+   날카로워지는 표류수열 위의 **local asymptotic minimax 논증**이 필요하다. 그것은 이 파일에 없다 — `minimax_collapse.md` Theorem C가 그것이다.
+   (직계 선행연구: Khan & Tamer 2010, *Econometrica* — irregular identification. 인용 완료.)
 2. **다턴 복리는 §6의 미완성 항목이다.** Prop A-T는 정책가치 V(ρ)의 하한이며 excursion 버전이 아니다.
 3. **유한표본 붕괴(위상도의 "편향된 채 안정" 국면)는 (A′)가 설명하지 않는다.** (A′)는 E[e^D] —
    즉 D의 **평균** — 을 지배량으로 갖는데, 유한표본 support 실패는 D의 **상위꼬리**가 지배한다
    (수치 확인: U(−1,1)과 N(0,1)에서 평균 기반 임계는 후자를 4 log 단위 틀린다).
-   **두 임계는 다른 양이며 같은 그림에 한 선으로 그려서는 안 된다.** → `joint_regimes.md` (미작성)
+   **두 임계는 다른 양이며 같은 그림에 한 선으로 그려서는 안 된다.** → `minimax_collapse.md` §5
 
 ---
 
@@ -155,12 +155,7 @@ t 이후 ρ-전개를 포함하는 원위 excursion의 EIF는 순차 가중
 
 ---
 
-## 7. 상류 문서에 반영할 변경
+## 7. 상류 반영 (완료)
 
-- `formal_framework.md` §3: Result A를 **Theorem A′**로 교체, (A1)(A2)를 (A1′)(A2′)로 교체,
-  D의 정의 (D)를 §1에 추가. SSOT를 v0.5로 올린다.
-- `formal_framework.md:69`: Result B 조건에 **(B2) simple root (Δ′(r) ≠ 0)** 가 누락되어 있다.
-  현재 문장("Δ가 연속이고 0 근방에 밀도")만으로는 결론이 성립하지 않는다 — 반드시 수정.
-- `paper/tex/main.tex`: §4.2를 D 기반으로 재작성. Hahn 인용을 "우리 (E1)의 특수사례"로 재배치.
-- `references.bib`: Khan & Tamer (2010), Muñoz & van der Laan (2012), Kennedy (2019),
-  Liu et al. (2018, curse of horizon), Hahn–Todd–van der Klaauw (2001, RD) 추가.
+`formal_framework.md`가 v0.5로 갱신되어 이 파일의 결과를 반영한다.
+논문 반영은 `paper/tex/main.tex` 및 부록 참조.

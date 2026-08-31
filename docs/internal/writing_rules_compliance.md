@@ -1,6 +1,6 @@
 # Writing-rule compliance note (INTERNAL — do not publish)
 
-> `paper/draft_jci_v02.md`에서 이동. 공개 레포에 두면 언어 선택을 전략적으로
+> `docs/internal/draft_jci_v02.md`에서 이동. 공개 레포에 두면 언어 선택을 전략적으로
 > 관리한 기록으로 읽힐 수 있어 원고 밖으로 뺐다. 규율 자체는 유지한다.
 
 ### Writing-rule compliance note (internal)

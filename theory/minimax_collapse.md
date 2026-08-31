@@ -150,10 +150,7 @@ normal에서 2.06 nats로 **족마다 다르다**. 그래서 어떤 단일 함�
 **남은 열린 문제 (discussion으로)**: 달성 쪽 상계. 즉 β̂_Hájek(또는 AIPW)의
 risk에 대한 M·(족 의존 상수) 형태의 상계를 구하면 세 국면이 위아래로 닫힌다.
 
-## 6. 상류 문서 반영
+## 6. 상류 반영 (완료)
 
-- `excursion_bound.md` §5.1의 "LAM 논증은 이 파일에 없다" → Theorem C로 해결됨을 표기.
-- `formal_framework.md` §3: Result A 뒤에 Theorem C 추가, "정보 한계" 표현이 이제 정당함을 명시.
-- `paper/tex/main.tex`: §4.2 뒤에 Proposition으로 삽입, 증명은 부록 §A에 추가.
-  초록의 rate 주장 복원 가능 (단 minimax 하한으로 정확히 진술할 것).
-- `references.bib`: Le Cam (1973), Tsybakov (2009, §2.2) 추가.
+`formal_framework.md`가 v0.5로 갱신되어 이 파일의 결과를 반영한다.
+논문 반영은 `paper/tex/main.tex` 및 부록 참조.

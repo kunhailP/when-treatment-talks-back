@@ -40,9 +40,15 @@ src/temperature_collapse.py의 DGP는 **이론과 같은 객체를 구현한다*
 
 절차: 문맥 N≈200 추출 → 모델당 k≈20 재생성 → 전략 분류 → 문맥별 엔트로피/최빈 점유율 → Result 2 대입.
 
-## 남은 이론 TODO (nonidentification_note와 동기화됨)
+## 남은 이론 TODO (v0.5 갱신)
 
-1. Result 2를 명시된 스코프(IPW/Hájek)의 정식 하한으로 — 또는 semiparametric bound로 상향 (JCI 트랙에서만)
-2. Result B 라플라스 수렴 증명 → Conjecture에서 Proposition으로 승격 (연속 H 시뮬레이션과 함께)
-3. Result 3 envelope 정리
-4. 유효온도 τ의 식별: 재생성 실험으로 τ̂ 직접 추정 절차
+1. ~~Result 2를 정식 하한으로~~ → **완료**: `excursion_bound.md` Theorem A′ (semiparametric
+   efficiency bound, D 기반). 스코프가 IPW/Hájek 클래스가 아니라 비모수 클래스 전체다.
+2. ~~Result B 라플라스 수렴 증명 → Proposition 승격~~ → **완료**: 1-D는 `proofs_w3_draft.md` §3,
+   다변량은 `localization_manifold.md` Theorem L.
+3. Result 3 envelope 정리 — **여전히 미해결.** 단 단일턴 minimax 하한은 `minimax_collapse.md`
+   Theorem C로 닫혔다. 남은 것은 다턴 excursion 버전.
+4. ~~유효온도 τ의 식별~~ → **폐기**: softmax는 (u,τ) → (cu,cτ)에 불변이므로 선택 빈도만으로
+   τ는 원리적으로 식별 불가능하다. 식별되는 것은 복합량 Δ/τ뿐이며, v0.5는 아예 τ를 버리고
+   로그에서 식별 가능한 D(h) = −log min_a π(a|h)를 지배량으로 쓴다.
+5. 달성(achievability) 상계 — **신규 열린 문제.** `minimax_collapse.md` §5.

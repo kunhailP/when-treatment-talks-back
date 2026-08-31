@@ -54,6 +54,7 @@ python analysis/src/08_policy_entropy.py --labels analysis/data/strategy_labels_
 python analysis/src/11_model_comparison.py
 python analysis/src/12_effective_temperature.py
 python analysis/src/09_fidelity_audit.py        # needs pyreadr
+python analysis/src/14_human_agreement.py       # reports that coding is not yet done
 ```
 
 ## Layout

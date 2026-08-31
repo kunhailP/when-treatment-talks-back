@@ -36,6 +36,6 @@
 
 ## 산출 규칙
 
-발표자료는 이 아웃라인과 paper/draft_jci_v02.md·tex/main.pdf에서만 가져온다. 금지어 규율 동일
+발표자료는 이 아웃라인과 docs/internal/draft_jci_v02.md·tex/main.pdf에서만 가져온다. 금지어 규율 동일
 ("theorem" 슬라이드 금지 — Proposition 표기, "필연"·"establishes" 금지, Study 0 동사는 동기화/정량화/위치).
 구판 v1의 킬러 슬라이드(bias_plot 부호 반전)는 §5 실배치 절 앞의 전환 장으로 유지.

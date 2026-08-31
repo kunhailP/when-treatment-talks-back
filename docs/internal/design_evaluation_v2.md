@@ -1,6 +1,6 @@
 # 연구 설계 재평가 v2 — Hackenburg 정독 반영
 
-평가일: 2026-07-27 (D-30, W1 세미나 완료 시점) · 이전 평가: docs/design_evaluation.md (7/22)
+평가일: 2026-07-27 (D-30, W1 세미나 완료 시점) · 이전 평가: docs/internal/design_evaluation.md (7/22)
 
 ## 1. 정독 후 더 강해진 것
 

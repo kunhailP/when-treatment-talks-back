@@ -15,9 +15,9 @@
 | theory/temperature_collapse.md | **v0.2** | Result별 지위 표기(Prop 후보/Conjecture/heuristic) · 시뮬레이션 동일-객체 선언 · 실증 브리지의 인식론적 지위("동기화", "종결" 금지) · 라벨 오차 주의 |
 | simulation/README.md | **신규** | 이론↔DGP 대응표 · τ=1 캘리브레이션 명문화 · 커널 개입으로서의 do(S) · 해석 주의 2건 · W4 TODO(라벨 노이즈, 2×2 DGP) |
 | analysis/README.md | **v0.2** | "종결"→"동기화" · Study 0-c(Hackenburg fidelity audit, 09 스크립트) 추가 · taxonomy ≠ 2×2 조작 축 혼동 금지 문단 · κ 민감도 병기 규칙 |
-| paper/outline.md | **v0.2** | Related Work 절 신설(Nakamura–Imai 피드백 유무 선 긋기 필수) · 집필 금지어 목록 |
+| docs/internal/outline.md | **v0.2** | Related Work 절 신설(Nakamura–Imai 피드백 유무 선 긋기 필수) · 집필 금지어 목록 |
 
-**변경 안 한 것 (의도적)**: docs/design_evaluation*.md, design_decision_v3.md는 **역사적 기록**으로 보존 — 진실 원천은 framework이며, 과거 문서와 충돌 시 framework가 우선한다는 규칙이 §0에 명시됨.
+**변경 안 한 것 (의도적)**: docs/internal/design_evaluation*.md, design_decision_v3.md는 **역사적 기록**으로 보존 — 진실 원천은 framework이며, 과거 문서와 충돌 시 framework가 우선한다는 규칙이 §0에 명시됨.
 
 ## B. 편집위원 비판 7개 항목 대비 상태
 
