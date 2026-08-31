@@ -1,7 +1,7 @@
 """
 DebateGPT 데이터 다운로드.
 
-주의: Anthropic 클라우드 샌드박스에서는 huggingface.co가 차단됨(403).
+주의: 일부 샌드박스/사내망에서는 huggingface.co가 차단됨(403).
 이 스크립트는 로컬(네트워크 되는 곳)에서 실행하거나, 아래 수동 방법 사용:
 
   수동 다운로드: https://huggingface.co/datasets/frasalvi/debategpt

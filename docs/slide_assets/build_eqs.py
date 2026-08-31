@@ -2,7 +2,7 @@
 """Render slide equations to transparent PNGs via pdflatex + pdftocairo."""
 import subprocess, os, textwrap
 
-OUT = "/home/claude/work/slide_assets"
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 os.makedirs(OUT, exist_ok=True)
 
 EQS = {
