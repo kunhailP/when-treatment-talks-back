@@ -101,14 +101,14 @@ environment. Turn-level contrasts computed from deployment logs face three
 distinct failures: (i) support failure where the policy is
 history-deterministic (Proposition~\ref{prop:1a}); (ii) an exponential
 collapse of the semiparametric efficiency bound in the policy's decisiveness
-even when positivity formally holds (Result~A), derived from the efficient
+even when positivity formally holds, derived from the efficient
 influence function of the excursion estimand itself, with a multi-turn
 compounding result under an additional recurrence condition
-(Proposition~A-T); and (iii) localization --- the overlap mass that survives
+and, under an additional recurrence condition, compounding across turns;
+and (iii) localization --- the overlap mass that survives
 concentrates on the policy's decision boundary, so what remains estimable
 longest is a boundary estimand $\beta^{\ov}$, distinct from the population
-effect and formally a regression-discontinuity quantity (Result~B and
-Corollary~\ref{cor:manifold}). We verify each mechanism in simulation, locate
+effect and formally a regression-discontinuity quantity. We verify each mechanism in simulation, locate
 real deployments on the resulting $(n,\tau)$ phase diagram using re-query
 experiments on three RLHF-tuned models, and audit instruction--behavior
 slippage in 56{,}831 deployed conversations.
@@ -120,13 +120,17 @@ confounding; regime-defined estimands resolve ill-defined treatments; and a
 fidelity protocol with assignment-ITT analysis handles generated-treatment
 noncompliance.
 
-Contributions, three and locked: (1) an estimand framework for generative
-treatments with a general adaptive action space; (2) temperature-indexed
-overlap collapse and localization --- Proposition~\ref{prop:1a}, Result~A
-with explicit conditions and an identified decisiveness index,
-Proposition~A-T, Result~B proved in one dimension and on a decision manifold
-in $\mathbb{R}^d$, the fixed-$\tau$ counterexample, and the $(n,\tau)$ phase
-structure; (3) the
+Contributions, three: (1) an estimand framework for generative treatments
+with a general adaptive action space, and the efficient influence function
+for its turn-level excursion estimand (Proposition~\ref{prop:eif});
+(2) collapse and localization indexed by a \emph{policy decisiveness}
+functional that is identified from logs --- an efficiency bound growing
+exponentially in it (Proposition~\ref{prop:a}), a matching minimax
+impossibility along drifting policy sequences
+(Proposition~\ref{prop:minimax}), and localization of the surviving overlap
+mass onto the decision boundary in one dimension
+(Proposition~\ref{prop:b}) and on a manifold in $\mathbb{R}^d$
+(Corollary~\ref{cor:manifold}); (3) the
 G-MRT design with a generated-treatment fidelity protocol. Everything else
 --- generator transport, internal-representation methods, simultaneous
 inference, constrained policy learning --- is explicitly out of scope
@@ -162,14 +166,13 @@ Proposition~\ref{prop:1a}, off-policy learning under \emph{deficient
 support}, where the logging policy assigns zero or near-zero probability to
 some actions \citep{sachdeva2020off}. We draw the boundary in four places.
 First, that literature works at the level of specific estimators and their
-variance or regret; Results~A--B are statements about the
-\emph{semiparametric efficiency bound} --- no regular estimator in the
-nonparametric class escapes the rate, which closes the ``use a better
-estimator'' escape by construction. Second, we index the collapse by an
-interpretable policy parameter (effective temperature of an RLHF-shaped
-softmax) and obtain exact boundary geometry in $(n,\tau)$, including a closed
-form for the phase boundary in our main design. Third, localization
-(Result~B) --- \emph{where} the surviving information lives, and the
+variance or regret; Propositions~\ref{prop:a} and \ref{prop:minimax} are
+statements about the semiparametric efficiency bound and about the minimax
+risk, which closes the ``use a better estimator'' escape by construction.
+Second, we index the collapse by a decisiveness functional of the policy
+that is identified from logs, and obtain a closed form for it in our main
+design. Third, localization
+(Proposition~\ref{prop:b}) --- \emph{where} the surviving information lives, and the
 $\tau\downarrow 0$ limit of the overlap-weighted estimand --- has, to our
 knowledge, no counterpart in that literature, whose remedies (truncation,
 regularized weights, support restriction) implicitly change the estimand
@@ -183,8 +186,8 @@ actions at decision points and target causal excursion effects via WCLS
 \citep{qian2022microrandomized,boruvka2018assessing}. We import the excursion
 estimand and add what conversation requires: a generation kernel between
 assignment and realization, ill-defined observational labels, and fidelity
-auditing of generated treatments. LLM-in-MRT precedents exist in
-behavior-change messaging; our novelty claim is confined to
+auditing of generated treatments. We make no claim to be first to combine
+language models with micro-randomization; our novelty claim is confined to
 within-conversation turn-level randomization of generative political
 persuasion with information locking.
 
@@ -192,18 +195,26 @@ persuasion with information locking.
 stochastic and modified policies
 \citep{munoz2012population,kennedy2019nonparametric,young2014identification}
 supply our formal object: $\beta$ is defined under a kernel intervention ---
-assign the label, realize from $G$. Our addition is the history-dependent
-generation kernel and the decisiveness collapse.
+assign the label, realize from $G$. We derive the efficient influence
+function for the factorial excursion contrast in that framework
+(Proposition~\ref{prop:eif}) rather than importing a bound stated for the
+average treatment effect, and our substantive addition is the decisiveness
+collapse that follows from it.
 
 \paragraph{Overlap weighting.} $\beta^{\ov}$ connects to overlap weights and
-empirical equipoise \citep{li2018balancing}; Result~B gives the
-$\tau\downarrow 0$ limit of that estimand under a softmax policy, and
-Section~\ref{sec:whynot} argues the limit object is itself policy-relevant.
+empirical equipoise \citep{li2018balancing}; Proposition~\ref{prop:b} and
+Corollary~\ref{cor:manifold} give the sharp-policy limit of that estimand,
+which is a boundary effect in the regression-discontinuity sense
+\citep{hahn2001identification,keele2015geographic} at a threshold the policy
+learned rather than one the analyst chose.
 
-\paragraph{Information equivalence.} \citet{dafoe2018information} motivate
-our separation of form from dose: a persuasive-strategy manipulation that
-also changes information content is confounded in exactly the sense our
-fidelity audit quantifies.
+\paragraph{Information equivalence.} \citet{dafoe2018information} are a
+caution rather than a licence: they argue that manipulations of one
+attribute routinely carry information about others, and are pessimistic
+about isolating a focal dimension. We take the warning literally --- it is
+why we do not call dose ``information'' but a high-information communication
+package, and why the fidelity audit measures what the instruction actually
+changed rather than assuming it changed only one thing.
 
 \paragraph{Support failure is old; its systematicity is new.}
 Nonidentification from deterministic treatment assignment is standard since
@@ -289,7 +300,7 @@ reinforcement, not inevitability.
 \subsection{Exponential collapse of the information bound}\label{sec:resultA}
 
 With $\tau > 0$, positivity holds formally, so the right response to
-Proposition~\ref{prop:1a} alone would be ``use IPW.'' Result~A closes that
+Proposition~\ref{prop:1a} alone would be ``use IPW.'' Proposition~\ref{prop:a} closes that
 escape at the level of the efficiency bound.
 
 \begin{proposition}[Result A]\label{prop:a}
@@ -309,8 +320,7 @@ with $\rho_{\min}$ the smallest reference probability on $\mathcal{A}^*$.
 \end{proposition}
 
 We derive this from the efficient influence function of the excursion
-estimand itself (Propositions~\ref{prop:eif} and \ref{prop:aprime},
-Appendix~\ref{app:eif}) rather than importing a bound stated for the average
+estimand itself (Proposition~\ref{prop:eif} and Appendix~\ref{app:eif}) rather than importing a bound stated for the average
 treatment effect. The ATE bound of \citet{hahn1998role} is recovered as the
 two-action, degenerate-reference special case. Two consequences are worth
 isolating. First, the governing quantity is a property of the behaviour
@@ -380,10 +390,26 @@ $e^{-\delta/\tau}$. Induct backward from $t = T$: by the tower property and
 (M1) --- whose action-uniformity is what lets the bound pass through each
 turn's weight --- each turn contributes a factor $p_\delta\,
 e^{\delta/\tau}/K^{2}$, and turn 1 contributes $\Prob(H_1 \in \Hd)\,
-e^{\delta/\tau}/K^{2}$. The self-contained derivation of the quoted
-efficiency bound is given in Appendix~\ref{app:eif}; our contribution is the
-insertion and the induction.
+e^{\delta/\tau}/K^{2}$. We quote rather than re-derive the finite-horizon
+efficiency bound; the form above is the discrete-horizon Cram\'er--Rao bound
+of \citet{jiang2016doubly}, which \citet{kallus2020double} extend to
+history-dependent policies. Our contribution is the insertion and the
+induction.
 \end{proof}
+
+\begin{remark}[Scope of Proposition~\ref{prop:at}]\label{rem:atscope}
+Two limitations should be read with this proposition. It bounds the
+\emph{policy value} $V(\rho)$, which we treat as a secondary estimand
+(Section~\ref{sec:framework}); the corresponding statement for the primary
+turn-level excursion effect requires redoing the induction with the
+continuation weights of Appendix~\ref{app:eif} and we do not claim it here.
+And (M1) requires the history to remain in $\Hd$ under \emph{every} action,
+i.e.\ that the treatment does not move the history state much --- close to
+the opposite of the premise in this paper's title. The per-turn factor is
+$p_\delta e^{\delta/\tau}/K^2$, and $p_\delta$ is not estimated anywhere in
+this paper, so multi-turn compounding should be read as conditional on an
+unverified quantity rather than as an empirical claim.
+\end{remark}
 
 Substantively, (M1) says decisiveness persists regardless of what the system
 does --- as with strongly reactant partisan users. The $K^2$ factor reflects
@@ -553,7 +579,7 @@ with $n \ll e^{\delta/\tau}$ rare crossover actions never appear in the
 sample and estimators become \emph{biased while looking stable} --- the
 deceptive regime. Figure~\ref{fig:phase} shows the three regimes for the main
 design $H \sim U(-1,1)$, $\Delta(H) = H$, with two \emph{reference} lines.
-The dashed line is the Result~A bound with $\delta$ chosen optimally: since
+The dashed line is the Proposition~\ref{prop:a} bound with $\delta$ chosen optimally: since
 $\Prob(\Hd) = 1-\delta$ here, $\max_\delta (1-\delta)e^{\delta/\tau}$ is
 attained at $\delta = 1-\tau$, giving $\log n = 1/\tau - 1 - \log(1/\tau)$.
 (Fixing $\delta = 1$, as an earlier version did, puts $\Prob(\Hd) = 0$ and
@@ -571,9 +597,12 @@ transition is open (Section~\ref{sec:discussion}).
 \caption{$(n,\tau)$ phase diagram; DGP $H \sim U(-1,1)$, $\beta(H) = 1+|H|$,
 H\'ajek estimator, 400 replications per cell. Left: regime classification
 (green estimable, orange variance explosion, red biased-stable). Middle,
-right: $\log_{10}$ RMSE and unconditional coverage. Dashed line: fixed-gap
-heuristic $\log n = \delta/\tau$. Solid line: exact boundary $\log n = \log
-\E[1/p_\tau] = \log(1+\tau\sinh(1/\tau))$. Regime thresholds (relative bias
+right: $\log_{10}$ RMSE and unconditional coverage. Two reference lines, neither of which is
+the observed transition. Dashed: the Proposition~\ref{prop:a} bound with
+$\delta$ optimized, $\log n = 1/\tau - 1 - \log(1/\tau)$. Solid: the
+$n_{\mathrm{eff}}=1$ contour $\log \E[1/p_\tau] =
+\log(1+\tau\sinh(1/\tau))$, a necessary condition only; measured onsets of
+estimability lie $3$--$5$ nats above it. Regime thresholds (relative bias
 0.10/0.20, coverage 0.85) are presentation choices defended by the RMSE and
 coverage panels.}
 \label{fig:phase}
@@ -618,12 +647,20 @@ Low entropy recurs across families --- the observable signature of
 
 Substituting per-strategy $\hat{p}_s$ into the effective-sample formula
 (Dirichlet-smoothed, $k = 20$ resolution): the modal strategy needs
-${\sim}3\times 10^{3}$ conversations per contrast arm, every minority
-strategy $\geq {\sim}1.1\times 10^{5}$ (a lower bound --- unobserved
-strategies may be rarer than smoothing can register), and a two-minority
-contrast needs the \emph{sum} of two such terms. These are illustrative
-insertions into Result~A's formula, not estimates of any deployment's
-$\tau$.
+${\sim}3\times 10^{3}$ conversations per contrast arm and minority
+strategies are on the order of $10^{5}$ ($7.7\times10^{4}$ to
+$1.2\times10^{5}$ across strategies and judges), with a two-minority
+contrast needing the \emph{sum} of two such terms. Three caveats are
+essential. First, these are illustrative insertions into
+Proposition~\ref{prop:a}'s formula, not estimates of any deployment's
+policy. Second, the magnitude is set by choices we make, not by the data:
+$n_{\mathrm{req}} = \sigma^2\,\E[1/\hat p]/\mathrm{SE}^{*2}$ with
+$\sigma^2 = 1$ and $\mathrm{SE}^{*} = 0.02$, and for a strategy never
+observed in $k$ draws the smoothed $\hat p$ is exactly $\alpha/(k+\alpha K)$,
+so $\E[1/\hat p]$ is the constant $(k + \alpha K)/\alpha = 48$ regardless of
+how rare the strategy truly is; halving $\alpha$ to $0.1$ moves the figure
+to ${\sim}5\times10^{5}$. Third, for the same reason these numbers say
+``below the resolution of $k=20$,'' not ``this rare.''
 
 \emph{Placing contexts on the phase diagram.} Only the composite
 $\Delta/\tau$ --- the score gap in temperature units, exactly the phase
@@ -632,11 +669,20 @@ not. Estimating the two-action reduction $\widehat{\Delta/\tau} =
 \log[(c_1+\alpha)/(c_2+\alpha)]$ per context yields a median of $3.71$ for
 all three models --- which is the \emph{resolution ceiling} of $k = 20$
 draws: 58--89.5\% of contexts are right-censored there (the runner-up action
-was never realized). The reflexive reading: measuring a deployed policy's
-decisiveness runs into the same information limit that blocks effect
-estimation, so all decisiveness figures from finite re-query are lower
-bounds; via Proposition~A-T the per-turn stratum factor $\E[1/p] \geq 42$
-compounds across turns.
+was never realized). The reflexive reading is that measuring a deployed policy's decisiveness
+runs into the same information limit that blocks effect estimation: with the
+runner-up never realized, $k$ draws cannot distinguish ``rare'' from
+``absent.'' We are deliberately careful about what that licenses. The value
+$3.71 = \log\{(k+\alpha)/\alpha\}$ is the arithmetic ceiling of the
+estimator at $k=20$, not a property of any model, which is why all three
+models return it. A defensible one-sided statement uses the exact binomial
+instead: observing the runner-up $0$ times in $20$ draws gives a
+Clopper--Pearson $95\%$ upper bound $p_2 \leq 0.139$, hence
+$\Delta/\tau \geq 1.82$ and $\E[1/p] \geq 7.2$ --- an order of magnitude
+below the ceiling value. We therefore do not propagate the ceiling figure
+through Proposition~\ref{prop:at}; with $K = 8$ strategy categories that
+proposition's compounding condition $\Delta/\tau > \log(K^2/p_\delta)$ is
+not met by the measured values in any case.
 
 Two robustness results discipline these numbers. \emph{Judge sensitivity}:
 relabeling all 4{,}000 Qwen responses with a 32B judge yields raw agreement
@@ -748,7 +794,7 @@ as such --- it is not the efficiency bound); the naive estimator becomes
 \emph{more confident while more wrong} as $\tau$ falls (coverage $\to 0$ with
 shrinking SE) (Figure~\ref{fig:collapse}). Metric discipline: global
 arm-specific Kish ESS (theory object), minimum stratum-arm cell occupancy
-(rare-crossover diagnostic --- not Kish), $\E[p(1-p)]$ (Result~B object), and
+(rare-crossover diagnostic --- not Kish), $\E[p(1-p)]$ (Proposition~\ref{prop:b} object), and
 $\E[2\min(p,1-p)]$ (diagnostic) are reported as four separate columns,
 coverage both conditional and unconditional on estimability, with zero-cell
 rates alongside. One finding we flag for practice: in the collapse regime the
@@ -777,13 +823,13 @@ $\tau = 0.045$ Horvitz--Thompson has SD 2.95 (variance explosion) while
 H\'ajek shows bias 0.46 with SD 0.30 --- biased-yet-stable; oracle AIPW
 retains nominal coverage throughout but does not rescue \emph{precision},
 its SD inflating from 0.012 to 1.38 (a factor of 116) as $\tau$ falls ---
-which is the behaviour Result~A predicts, and confirms that the efficiency
+which is the behaviour Proposition~\ref{prop:a} predicts, and confirms that the efficiency
 loss is not an IPW artifact; the oracle
 outcome-regression line is flat by construction --- the (A3) escape made
 visible, identification bought by assumption; and the overlap estimator
 remains unbiased with nominal coverage \emph{for its own target
 $\beta^{\ov}$} at every $\tau$, with $\beta^{\ov}_\tau \to \beta(0) = 1$ as
-Result~B predicts (Figure~\ref{fig:battery}). Under $N(0,1)$ the collapse is
+Proposition~\ref{prop:b} predicts (Figure~\ref{fig:battery}). Under $N(0,1)$ the collapse is
 earlier and, at extreme $\tau$, propensities underflow to machine 0/1 so IPW
 becomes numerically undefined --- reported as estimability 0, not dropped.
 
@@ -835,13 +881,13 @@ companion, not a section.
 
 \paragraph{Limitations.} Five, stated plainly.
 
-\emph{The bound is a constant, not a rate.} Proposition~\ref{prop:aprime}
-bounds the asymptotic variance at a fixed policy. For any policy with
-strictly positive action probabilities the excursion effect remains
-regularly $\sqrt{n}$-estimable, and we do not prove that no estimator
-escapes the \emph{rate}; that is a statement about drifting sequences and
-requires a local asymptotic minimax argument we do not supply
-(Remark~\ref{rem:notrate}).
+\emph{The impossibility is asymptotic in the policy, not the sample.}
+Proposition~\ref{prop:a} bounds the information constant at a fixed policy,
+where the excursion effect remains regularly $\sqrt{n}$-estimable;
+Proposition~\ref{prop:minimax} obtains a genuine impossibility only along
+sequences whose decisiveness grows with $n$. Whether a particular deployment
+is in that regime is an empirical question our Study~0 can motivate but not
+settle.
 
 \emph{We bound impossibility, not achievability.}
 Proposition~\ref{prop:minimax} says when estimation must fail; it does not
@@ -852,7 +898,7 @@ variance factor $\E[e^{D}]$ is $1.00$ nats for $U(-1,1)$ and $2.06$ for
 $N(0,1)$. No single functional can therefore track both curves, and a
 matching upper bound is left open.
 
-\emph{Proposition~A-T rests on a recurrence condition in tension with our
+\emph{Proposition~\ref{prop:at} rests on a recurrence condition in tension with our
 own framing.} Condition (M1) requires histories to remain in the high-gap
 set under \emph{every} action, i.e.\ that treatment does not move the
 history state much --- which is close to the opposite of the premise in this
@@ -966,18 +1012,7 @@ $D(h) := -\log \min_{a \in \mathcal{A}^*} \pi(a \mid h)$.
 $D$ is a functional of the behaviour policy alone and is identified from
 logs; neither $\tau$ nor a softmax parameterization enters.
 
-\begin{proposition}[Decisiveness bound; Result~A restated]\label{prop:aprime}
-Assume (A1$'$) $\Prob\{D(H) \geq d\} \geq c > 0$; (A2$'$)
-$\underline{\sigma}^2 := \inf\{\sigma^2(a,h) : D(h) \geq d,\ a \in
-\mathcal{A}^*\} > 0$; and (A3). Let $\rho_{\min} = \min_{a \in
-\mathcal{A}^*} q_j(a \mid h)$. Then
-\[
-V(\beta) \;\geq\; \underline{\sigma}^2 \rho_{\min}^2\,
-\E\big[e^{D(H)}\big] \;\geq\; \underline{\sigma}^2 \rho_{\min}^2\, c\, e^{d}.
-\]
-\end{proposition}
-
-\begin{proof}
+\begin{proof}[Proof of Proposition~\ref{prop:a}]
 Discard the first term of \eqref{eq:E1}. On $\{D \geq d\}$,
 $\sum_a (q_1-q_0)^2 \sigma^2/\pi \geq \underline{\sigma}^2 \rho_{\min}^2
 \sum_{a \in \mathcal{A}^*} 1/\pi(a \mid H) \geq \underline{\sigma}^2
@@ -994,14 +1029,14 @@ present paper therefore does not import that bound for a different estimand;
 it derives the bound for the excursion estimand and recovers Hahn's as a
 special case. If $\pi$ is a softmax at temperature $\tau$ and $K=2$, then
 $D = |\Delta|/\tau + O(e^{-|\Delta|/\tau})$ and the $e^{\delta/\tau}$ form is
-recovered; the converse fails, so Proposition~\ref{prop:aprime} applies to
+recovered; the converse fails, so Proposition~\ref{prop:a} applies to
 sharply adaptive policies that are not softmax (truncated or constrained
 decoding, learned $\arg\max$ rules, hard filters). For $K=2$ one also has the
 exact identity $1/\{p(1-p)\} = 2 + 2\cosh(\mathrm{logit}\,p)$.
 \end{remark}
 
-\begin{remark}[Scope of Proposition~\ref{prop:aprime}]\label{rem:notrate}
-The bound is a statement about the asymptotic variance at a \emph{fixed}
+\begin{remark}[Scope of Proposition~\ref{prop:a}]\label{rem:notrate}
+Proposition~\ref{prop:a} is a statement about the asymptotic variance at a \emph{fixed}
 policy. Whenever $\pi(a \mid h) > 0$ everywhere, $V(\beta) < \infty$ and
 $\beta$ remains regularly $\sqrt{n}$-estimable: on its own this is a
 constant factor, not an impossibility. The impossibility statement requires
