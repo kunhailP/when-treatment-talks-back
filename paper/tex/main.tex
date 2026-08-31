@@ -382,6 +382,44 @@ point mass and
 \]
 \end{proposition}
 
+\begin{corollary}[Decision-manifold localization, $H \in \mathbb{R}^d$]
+\label{cor:manifold}
+Let $H \in \mathbb{R}^d$ with density $f$, let $\mathcal{B} = \{h :
+\Delta(h) = 0\}$, and assume: (C1) $\Delta \in C^1$ and $f$ is bounded and
+continuous near $\mathcal{B}$; (C2) $0$ is a \emph{regular value} of
+$\Delta$, i.e.\ $\nabla\Delta(h) \neq 0$ on $\mathcal{B}$ --- the
+$d$-dimensional analogue of the simple-root condition (B2); (C3)--(C4) the
+tail-separation condition of Proposition~\ref{prop:b} holds with
+$\mathrm{dist}(\cdot,\mathcal{B})$; and (C5) $0 < \int_{\mathcal{B}}
+f/\|\nabla\Delta\| \,d\mathcal{H}^{d-1} < \infty$. Then as $\tau
+\downarrow 0$,
+\[
+\E[\omega_\tau] \;=\; \tau \int_{\mathcal{B}}
+\frac{f}{\|\nabla\Delta\|}\,d\mathcal{H}^{d-1}\,(1+o(1)),
+\]
+and the normalized overlap measure converges weakly to the measure on
+$\mathcal{B}$ with $\mathcal{H}^{d-1}$-density proportional to
+$f(h)/\|\nabla\Delta(h)\|$. Consequently $\beta^{\ov}_\tau \to
+\int_{\mathcal{B}} c\,f/\|\nabla\Delta\| \big/ \int_{\mathcal{B}}
+f/\|\nabla\Delta\|$. Proposition~\ref{prop:b} is the case $d=1$, where
+$\mathcal{H}^{0}$ is counting measure and $\|\nabla\Delta\| = |\Delta'|$.
+\end{corollary}
+
+\begin{remark}[What $\beta^{\ov}$ is]\label{rem:rd}
+The limit in Corollary~\ref{cor:manifold} is a boundary estimand in the
+regression-discontinuity sense: in one dimension it is exactly $\E[Y(1) -
+Y(0) \mid \Delta(H) = 0]$, the conditional effect at the assignment
+threshold \citep{hahn2001identification}, and in $d$ dimensions it is the
+$f/\|\nabla\Delta\|$-weighted average effect over a boundary, the object
+studied in multi-dimensional and geographic RD \citep{keele2015geographic}.
+The substantive reading is sharper than an overlap-weighting analogy: logs
+from a sharply adaptive system behave less like an observational study than
+like a natural experiment at a threshold --- but the threshold is one the
+\emph{policy} learned, not one the analyst chose. What is stably estimable
+therefore describes the histories on which the policy is \emph{undecided},
+which in a decisive deployment is precisely the minority of traffic.
+\end{remark}
+
 \begin{remark}[The surviving information also vanishes]\label{rem:bmass}
 Proposition~\ref{prop:b} says \emph{where} overlap mass concentrates, not how
 much of it there is. Since $\E[\omega_\tau] = O(\tau)$, the effective sample
