@@ -35,44 +35,39 @@ are produced by executed code in the repository; none are placeholders.}}
 \maketitle
 
 \begin{abstract}
-\noindent Large language models now conduct persuasive political conversations
-that adapt turn by turn to the human they are persuading. We formalize the
-treatment delivered by such a system as a composite object --- a strategy
-policy $\pi$, a generation kernel $G$, and an information environment $E$ ---
-and define deployment, policy, and turn-level excursion estimands for it. We
-then show that conversation logs collected under a deployed policy carry
-structurally limited information about turn-level causal effects. First, when
-the deployed policy has history-deterministic components, turn-level effects
-are nonparametrically unidentified (support failure); in RLHF-tuned
-deployments this condition is structurally frequent and design-reinforced.
-Second, even with formal positivity, we derive the efficient influence
-function for the turn-level excursion estimand and show that its
-semiparametric efficiency bound grows exponentially in a \emph{policy
-decisiveness} index $D(h) = -\log \min_a \pi(a \mid h)$ --- a functional of
-the behaviour policy alone, identified from logs, with the softmax
-temperature as one special case. The classical average-treatment-effect
-bound is recovered as a degenerate case. We then show that this is not
-merely a large constant: along policy sequences whose decisiveness grows
-fast enough relative to $n$, a two-point argument gives a minimax lower
-bound that is bounded away from zero, so no estimator recovers the
-turn-level effect at any rate. Third, the overlap weight mass
-concentrates on the policy's learned decision boundary as the policy
-sharpens: the surviving estimand is a boundary effect $\beta^{\ov}$ ---
-formally a regression-discontinuity estimand at a threshold the policy
-learned rather than one the analyst chose --- and we prove this in one
-dimension and, via a coarea argument, on a decision manifold in
-$\mathbb{R}^d$. We are explicit that this is localization, not stability:
-the surviving mass is itself $O(\tau)$. The same argument identifies the deceptively stable-but-biased regime seen
-in simulation as two-point indistinguishability rather than estimator
-pathology; where estimation becomes \emph{easy} again is a separate
-achievability question we leave open. Re-querying
-three RLHF-tuned open-weights models on 200 real debate contexts locates
-plausible deployments in the difficult region, with the important caveat
-that the measured decisiveness is a property of a label projection and is
-sensitive to the judge (Section~\ref{sec:study0}). We propose the generative
-micro-randomized trial (G-MRT) --- within-conversation turn-level
-randomization with a locked evidence bank, gated generation, and
-assignment-ITT analysis --- as the design remedy.
+\noindent Conversational AI systems choose what to say turn by turn, adapting
+to the person they are talking to. Their deployment logs are the data most
+analysts will have, and the question those logs invite is which of the
+system's behaviors caused the belief change. We show that adaptivity itself
+obstructs that question, and we quantify the obstruction.
+
+Treating the delivered treatment as a triple --- a strategy policy $\pi$, a
+generation kernel $G$, and an information environment $E$ --- we derive the
+efficient influence function for the turn-level excursion effect of such a
+system. Its semiparametric efficiency bound grows exponentially in a
+\emph{policy decisiveness} index $D(h) = -\log\min_a \pi(a \mid h)$, a
+functional of the behavior policy alone that is identified from logs and of
+which softmax temperature is one special case; the classical
+average-treatment-effect bound is the degenerate case of ours. This is more
+than a large constant. Along policy sequences whose decisiveness grows with
+sample size, a two-point argument bounds the minimax risk away from zero:
+no estimator recovers turn-level effects at any rate, and the regime in
+which estimates look stable while remaining wrong is exactly the regime in
+which two policies with different effects are statistically
+indistinguishable.
+
+What information survives is located. As the policy sharpens, the overlap
+mass concentrates on the policy's learned decision boundary, and the
+estimand that remains estimable is a boundary effect --- formally a
+regression-discontinuity quantity, at a threshold the policy chose rather
+than the analyst. We prove this in one dimension and, by a coarea argument,
+on a decision manifold in $\mathbb{R}^d$. Re-querying three RLHF-tuned
+open-weights models on real debate contexts suggests deployed policies are
+sharp enough for this to bind, though we show the measurement is a property
+of a label projection and report what it cannot establish. The design
+consequence is immediate: turn-level causal knowledge about conversational
+AI has to be randomized into the conversation, not recovered from it, and we
+give the protocol that does so.
 \end{abstract}
 
 \section{Introduction}\label{sec:intro}
@@ -80,149 +75,87 @@ assignment-ITT analysis --- as the design remedy.
 Conversational AI persuades. In randomized trials, GPT-4 debates shifted
 opponents' positions more often than human debaters did
 \citep{salvi2025conversational}, and conversations with frontier models moved
-policy attitudes with durable effects \citep{hackenburg2025levers}. Yet
-measured persuasion effects are small in absolute terms: meta-analytic
-evidence from field experiments in political persuasion puts average
-effects well under one percentage point \citep{kalla2018minimal}. Small
-average effects are what make decomposition --- \emph{which turn-level
-behaviors of the AI cause belief change} --- the scientifically and
-politically urgent question, since an aggregate near zero is consistent
-with offsetting turn-level behaviors of either sign. The strongest
-lever in \citet{hackenburg2025levers}, a reward model selecting responses turn
-by turn, is precisely the component whose interior remains a black box: it is
-an adaptive turn-level policy, and its logs are what an analyst inherits.
+policy attitudes with durable effects \citep{hackenburg2025levers}. Measured
+against the baseline of political persuasion research, where meta-analytic
+average effects sit well under one percentage point
+\citep{kalla2018minimal}, these are not small findings.
 
-This paper asks what those logs can and cannot identify. Our answer is
-pessimistic in a precise way and constructive in a precise way.
+They are also not the findings anyone wants. Knowing that a system persuades
+is the beginning of the question. The behavior we would regulate, replicate,
+or defend against is not ``conversational AI'' but something narrower: the
+system asserted rather than asked, or supplied five facts rather than one, at
+this point in this conversation. The strongest lever in
+\citet{hackenburg2025levers} --- a reward model selecting responses turn by
+turn --- is precisely a turn-level adaptive policy, and its logs are what an
+analyst inherits.
 
-Pessimistic: the treatment in these systems is not a message but a composite
-$(\pi, G, E)$ --- a strategy policy, a generation kernel, and an information
-environment. Turn-level contrasts computed from deployment logs face three
-distinct failures: (i) support failure where the policy is
-history-deterministic (Proposition~\ref{prop:1a}); (ii) an exponential
-collapse of the semiparametric efficiency bound in the policy's decisiveness
-even when positivity formally holds, derived from the efficient
-influence function of the excursion estimand itself, with a multi-turn
-compounding result under an additional recurrence condition
-and, under an additional recurrence condition, compounding across turns;
-and (iii) localization --- the overlap mass that survives
-concentrates on the policy's decision boundary, so what remains estimable
-longest is a boundary estimand $\beta^{\ov}$, distinct from the population
-effect and formally a regression-discontinuity quantity. We verify each mechanism in simulation, locate
-real deployments on the resulting $(n,\tau)$ phase diagram using re-query
-experiments on three RLHF-tuned models, and audit instruction--behavior
-slippage in 56{,}831 deployed conversations.
+The natural move is to treat those logs as observational data on a
+time-varying treatment and apply the corresponding machinery. This paper is
+about why that move fails, and it fails for a reason specific to adaptive
+systems rather than for the familiar reason of confounding. A policy that
+has learned which action is better at a given history stops taking the other
+one. The counterfactual contrast an analyst wants to estimate is exactly the
+contrast the system has learned not to generate. Competence at the task and
+informativeness about the task are in tension, and the tension is
+quantifiable.
 
-Constructive: each failure corresponds to a specific design element of a
-generative micro-randomized trial (G-MRT): uniform turn-level randomization
-restores support and overlap; exogenous assignment removes sequential
-confounding; regime-defined estimands resolve ill-defined treatments; and a
-fidelity protocol with assignment-ITT analysis handles generated-treatment
-noncompliance.
+Three things follow. Where the learned policy is history-deterministic, the
+turn-level effect is not identified at all --- a support failure, standard
+since \citet{robins1986new}, whose interest here is that RLHF preference
+optimization and low-temperature deployment make the triggering condition
+systematic rather than accidental. Where positivity survives, it survives
+uselessly: the efficiency bound for the turn-level effect grows exponentially
+in how decisive the policy is, and along sequences of increasingly decisive
+policies the minimax risk does not go to zero at any sample size. And the
+information that does survive is not a diminished version of the population
+effect but a different estimand: it lives on the policy's decision boundary,
+where the policy is undecided, which in a confident deployment is a
+vanishing minority of traffic.
 
-Contributions, three: (1) an estimand framework for generative treatments
-with a general adaptive action space, and the efficient influence function
-for its turn-level excursion estimand (Proposition~\ref{prop:eif});
-(2) collapse and localization indexed by a \emph{policy decisiveness}
-functional that is identified from logs --- an efficiency bound growing
-exponentially in it (Proposition~\ref{prop:a}), a matching minimax
-impossibility along drifting policy sequences
-(Proposition~\ref{prop:minimax}), and localization of the surviving overlap
-mass onto the decision boundary in one dimension
-(Proposition~\ref{prop:b}) and on a manifold in $\mathbb{R}^d$
-(Corollary~\ref{cor:manifold}); (3) the
-G-MRT design with a generated-treatment fidelity protocol. Everything else
---- generator transport, internal-representation methods, simultaneous
-inference, constrained policy learning --- is explicitly out of scope
-(Section~\ref{sec:discussion}).
+That last point is where the negative result turns useful. A boundary
+estimand at a learned threshold is a regression-discontinuity quantity, with
+the interpretive apparatus that comes with it --- including the knowledge
+that it does not describe the population the deployment actually served.
+Analysts who report an effect from adaptive logs are, at best, reporting
+this, and should say so.
 
-\section{Related Work}\label{sec:related}
+Since the obstruction is created by the deployed policy before the analyst
+sees anything, no estimator removes it; only a different design does. The
+final section develops the generative micro-randomized trial: randomize the
+action within the conversation, lock the evidence available to the
+generator, and treat the generate-and-check procedure as the treatment
+kernel, so that the quantity identified is assignment to a generative
+protocol rather than the effect of a realized sentence. The experiment
+itself is a companion paper; what belongs here is the argument that it is
+necessary.
 
-\paragraph{Texts as treatments, static and sequential.}
-\citet{imai2026causal} identify effects of features of generated texts using
-internal representations of the generating model. Overlap is not free in that
-setting: it is \emph{established}, under a separability condition on the
-representation, and the authors are explicit that adjusting naively on
-learned representations can destroy it. \citet{nakamura2026dynamic} extend
-the framework to \emph{sequences} of treatment features --- including their
-position within a text or video --- estimating a marginal structural model
-with a jointly learned deconfounder for each feature in the sequence, so the
-difficulty that later features depend on earlier ones is squarely within
-their scope as well as ours. The distinction we draw is therefore not
-``static versus sequential'' but where the loss of overlap originates. In
-that line the object is a generated artifact produced by a fixed procedure,
-and overlap is a property of the representation the analyst adjusts on. Here
-the object is an adaptive policy responding to a human interlocutor, and
-overlap is destroyed by the deployed policy's own decisiveness before the
-analyst does anything --- which is why our results are bounds on what any
-analysis of such logs can achieve, and are complementary to, rather than
-competitive with, their estimation framework.
-
-\paragraph{Off-policy evaluation with deficient support.} The
-estimation-side face of our problem is studied in the contextual-bandit and
-reinforcement-learning literatures: doubly robust off-policy evaluation
-\citep{dudik2011doubly,thomas2016data,jiang2016doubly}, and, closest to
-Proposition~\ref{prop:1a}, off-policy learning under \emph{deficient
-support}, where the logging policy assigns zero or near-zero probability to
-some actions \citep{sachdeva2020off}. We draw the boundary in four places.
-First, that literature works at the level of specific estimators and their
-variance or regret; Propositions~\ref{prop:a} and \ref{prop:minimax} are
-statements about the semiparametric efficiency bound and about the minimax
-risk, which closes the ``use a better estimator'' escape by construction.
-Second, we index the collapse by a decisiveness functional of the policy
-that is identified from logs, and obtain a closed form for it in our main
-design. Third, localization
-(Proposition~\ref{prop:b}) --- \emph{where} the surviving information lives, and the
-$\tau\downarrow 0$ limit of the overlap-weighted estimand --- has, to our
-knowledge, no counterpart in that literature, whose remedies (truncation,
-regularized weights, support restriction) implicitly change the estimand
-without characterizing the limit object. Fourth, our remedy is a
-\emph{design} (randomize the turns), not an estimator: the setting is
-scientific inference about turn-level persuasion effects, where the analyst
-can run an experiment, not a fixed logged dataset to be salvaged.
-
-\paragraph{Micro-randomized trials.} MRTs randomize pre-defined discrete
-actions at decision points and target causal excursion effects via WCLS
-\citep{qian2022microrandomized,boruvka2018assessing}. We import the excursion
-estimand and add what conversation requires: a generation kernel between
-assignment and realization, ill-defined observational labels, and fidelity
-auditing of generated treatments. We make no claim to be first to combine
-language models with micro-randomization; our novelty claim is confined to
-within-conversation turn-level randomization of generative political
-persuasion with information locking.
-
-\paragraph{Stochastic interventions.} Regime-specific potential outcomes for
-stochastic and modified policies
+\paragraph{Relation to existing literatures.} Three are adjacent.
+\citet{imai2026causal} and \citet{nakamura2026dynamic} identify effects of
+features of generated text, including sequences of features, using internal
+representations of the generating model. Overlap in that setting is
+established rather than assumed --- under a separability condition, and the
+authors warn that adjusting naively on representations destroys it. Our
+object differs in where overlap is lost: there it is a property of the
+representation the analyst conditions on, here it is destroyed by the
+deployed policy's own decisiveness before analysis begins. Second, the
+estimation-side face of the problem is studied as off-policy evaluation
+under deficient support \citep{sachdeva2020off,dudik2011doubly,
+thomas2016data,jiang2016doubly,kallus2020double}. That literature bounds
+particular estimators; our statements are about the efficiency bound and the
+minimax risk, which closes the ``use a better estimator'' response by
+construction, and its remedies --- truncation, regularized weights, support
+restriction --- change the estimand without characterizing what they change
+it to, which is what Section~\ref{sec:resultB} supplies. Third, the
+econometrics of limited overlap \citep{khan2010irregular,damour2021overlap,
+li2018balancing} is the closest antecedent for the shape of our results; the
+contribution here is to index the failure by a policy functional that a
+deployment actually determines, and to show what the surviving estimand is.
+Micro-randomized trials \citep{qian2022microrandomized,boruvka2018assessing}
+supply the excursion estimand we adopt, and stochastic-intervention theory
 \citep{munoz2012population,kennedy2019nonparametric,young2014identification}
-supply our formal object: $\beta$ is defined under a kernel intervention ---
-assign the label, realize from $G$. We derive the efficient influence
-function for the factorial excursion contrast in that framework
-(Proposition~\ref{prop:eif}) rather than importing a bound stated for the
-average treatment effect, and our substantive addition is the decisiveness
-collapse that follows from it.
-
-\paragraph{Overlap weighting.} $\beta^{\ov}$ connects to overlap weights and
-empirical equipoise \citep{li2018balancing}; Proposition~\ref{prop:b} and
-Corollary~\ref{cor:manifold} give the sharp-policy limit of that estimand,
-which is a boundary effect in the regression-discontinuity sense
-\citep{hahn2001identification,keele2015geographic} at a threshold the policy
-learned rather than one the analyst chose.
-
-\paragraph{Information equivalence.} \citet{dafoe2018information} are a
-caution rather than a licence: they argue that manipulations of one
-attribute routinely carry information about others, and are pessimistic
-about isolating a focal dimension. We take the warning literally --- it is
-why we do not call dose ``information'' but a high-information communication
-package, and why the fidelity audit measures what the instruction actually
-changed rather than assuming it changed only one thing.
-
-\paragraph{Support failure is old; its systematicity is new.}
-Nonidentification from deterministic treatment assignment is standard since
-\citet{robins1986new}. Our claim is not the structure but its origin: RLHF
-preference optimization widens score gaps and deployment favors low
-temperature, so history-determinism in deployed LLM policies is
-\emph{structurally frequent and design-reinforced} --- it cannot be escaped
-by collecting better logs from the same deployment.
+supplies its formal object; what conversation adds is a generation kernel
+between assignment and realization, and the fidelity problem that comes with
+it.
 
 \section{Generative Treatments}\label{sec:framework}
 
@@ -269,13 +202,15 @@ definition does not ``solve'' this nonidentification; it replaces the
 question with a well-posed one --- and the well-posed $\beta$ is identified
 only under assignment randomization (Section~\ref{sec:gmrt}).
 
-\section{Why Transcripts Are Not Enough}\label{sec:whynot}
+\section{The Information Limit}\label{sec:whynot}
 
-Model the deployed policy's action choice as softmax in a history-dependent
-score gap with effective temperature $\tau$: for the two-action case,
-$p_\tau(h) = \sigma(\Delta(h)/\tau)$ with $\sigma$ the logistic function.
-Deployment practice pushes $\tau$ down; preference optimization pushes
-$|\Delta|$ up.
+The results below are stated for a general policy through the decisiveness
+index of Definition~\ref{def:D}. It helps to keep one parameterization in
+view: a policy choosing softmax in a history-dependent score gap at
+effective temperature $\tau$, so that $p_\tau(h) = \sigma(\Delta(h)/\tau)$
+in the two-action case. Deployment practice pushes $\tau$ down; preference
+optimization pushes $|\Delta|$ up. Nothing in the theorems requires this
+form.
 
 \subsection{Support failure}\label{sec:1a}
 
@@ -454,8 +389,7 @@ $1.69$ standard deviations. What the phase diagram labels ``biased but
 stable'' is not a description of estimator behaviour but an instance of
 two-point indistinguishability.
 
-\subsection{Localization, the counterexample, and the phase
-diagram}\label{sec:resultB}
+\section{Where the Surviving Information Lives}\label{sec:resultB}
 
 \begin{proposition}[Result B, one-dimensional]\label{prop:b}
 Let $\omega_\tau(H) = p_\tau(1-p_\tau)$ and $\beta^{\ov}_\tau =
@@ -608,8 +542,7 @@ coverage panels.}
 \label{fig:phase}
 \end{figure}
 
-\subsection{Where real deployments sit: Study 0 (descriptive,
-motivating)}\label{sec:study0}
+\section{Do Deployed Policies Sit in This Regime?}\label{sec:study0}
 
 Three empirical bridges locate deployed systems on the diagram. Their
 epistemic status is \emph{motivating}: they estimate proxies of policy
@@ -713,7 +646,7 @@ reached the participant was a generated behavior, substantially decoupled
 from it. This is the observational counterpart of the fidelity problem the
 G-MRT protocol addresses by design.
 
-\section{The G-MRT Design as the Remedy}\label{sec:gmrt}
+\section{Design Consequence: Generative Micro-Randomization}\label{sec:gmrt}
 
 Each failure in Section~\ref{sec:whynot} maps to a design element:
 
@@ -757,9 +690,7 @@ K/(n\epsilon)$ at a per-turn regret cost scaling with $\epsilon$ --- a design
 corollary quantifying the trade-off, presented as an illustration because its
 exact form depends on outcome bounds, estimator, and horizon.
 
-\section{Estimation}\label{sec:estimation}
-
-Proximal excursions: WCLS with known randomization $\rho$
+\paragraph{Estimation under the design.} Proximal excursions: WCLS with known randomization $\rho$
 \citep{boruvka2018assessing,qian2022microrandomized}. Distal excursions: DCEE
 estimators \citep{qian2025dcee}, not terminal-outcome WCLS. Policy values:
 cross-fitted doubly robust estimators for 2--3 pre-specified policy pairs
@@ -768,7 +699,7 @@ $\rho$; nothing in this section rescues transcript-only analysis.
 Multiplicity: corrections for a pre-specified family, finalized after pilot;
 simultaneous confidence regions are companion-paper material.
 
-\section{Simulation Evidence}\label{sec:sims}
+\section{Simulation}\label{sec:sims}
 
 Four executed studies; theory-to-DGP correspondence is declared
 object-by-object in the repository.
@@ -852,9 +783,9 @@ upper-tail functional of $D$ reproduces a stable offset across the
 $U(-1,1)$ and $N(0,1)$ designs. We therefore present the phase structure as
 a simulation finding and leave its asymptotic characterization open.
 
-\section{Empirical Plan and Ethics}\label{sec:plan}
+\section{Discussion}\label{sec:discussion}
 
-The companion experimental paper implements the $2\times 2$ G-MRT: pilot $n =
+\paragraph{The companion experiment.} The companion paper implements the $2\times 2$ G-MRT: pilot $n =
 80$--$120$ (function verification: assignment mechanics, fidelity rates, bank
 leakage, dropout --- not effect detection), demonstration $n = 180$--$250$
 with pre-registered minority contrasts, confirmatory sample from post-pilot
@@ -866,21 +797,18 @@ bank \citep[cf.][]{costello2024durably}; no deception arms; disclosure of AI
 interlocutor; IRB before pilot. The three Study 0 analyses involve only
 public data and no new human subjects.
 
-\section{Discussion}\label{sec:discussion}
+\paragraph{What we have deliberately not done.} Effects that transport
+across model versions would require treating the generator itself as a
+treatment arm, which cross-model heterogeneity suggests is a live question
+\citep{chen2026benchmarking} but a different one. Adjustment on internal
+representations is the approach of \citet{imai2026causal} and
+\citet{nakamura2026dynamic}, and inherits its own overlap problems
+\citep{tierney2025design}; our results say nothing against it, only that it
+solves a different failure. Simultaneous inference across a family of
+excursion contrasts, and policy learning under epistemic constraints, are
+both natural continuations we have kept out to preserve a single argument.
 
-What we rule in: estimand definitions that survive the generative setting;
-explicit information limits with rates and locations; a design that restores
-identification at a quantified exploration cost. What we rule out of this
-paper: generator transport (effects across model versions --- motivated
-empirically by cross-model heterogeneity in \citealp{chen2026benchmarking}),
-internal-representation adjustment (overlap problems of representation
-conditioning are themselves design-based cautionary tales,
-cf.~\citealp{tierney2025design}), simultaneous inference over excursion
-families, and epistemically constrained policy learning. Each is a
-companion, not a section.
-
-\paragraph{Limitations.} Five, stated plainly.
-
+\paragraph{Limitations.}
 \emph{The impossibility is asymptotic in the policy, not the sample.}
 Proposition~\ref{prop:a} bounds the information constant at a fixed policy,
 where the excursion effect remains regularly $\sqrt{n}$-estimable;
@@ -940,11 +868,14 @@ conversations are the released persuasion rows, not that paper's full
 sample. Simulation entry points and expected runtimes are documented in the
 repository README.
 
-The one-sentence version of this paper: \emph{adaptive systems generate the
+The result that organizes the rest is that adaptive systems produce the
 least population-level causal information exactly where they are most
-decisive, and the information that survives lives on their decision
-boundary} --- so if you want turn-level causal knowledge from conversational
-AI, you must randomize the turns.
+decisive, and that what survives is not a weaker estimate of the population
+effect but a boundary effect at a threshold the system chose. A deployment
+that has learned its job well is, for this purpose, a deployment that has
+learned to stop informing us about it. Turn-level causal knowledge about
+conversational AI therefore has to be randomized into the conversation
+rather than recovered from it.
 
 \appendix
 

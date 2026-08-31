@@ -25,10 +25,13 @@ Thomas~H. Costello, Gordon Pennycook, and David~G. Rand.
 \newblock \emph{Science}, 385\penalty0 (6714), 2024.
 \newblock \doi{10.1126/science.adq1814}.
 
-\bibitem[Dafoe et~al.(2018)Dafoe, Zhang, and Caughey]{dafoe2018information}
-Allan Dafoe, Baobao Zhang, and Devin Caughey.
-\newblock Information equivalence in survey experiments.
-\newblock \emph{Political Analysis}, 26\penalty0 (4):\penalty0 399--416, 2018.
+\bibitem[D'Amour et~al.(2021)D'Amour, Ding, Feller, Lei, and
+  Sekhon]{damour2021overlap}
+Alexander D'Amour, Peng Ding, Avi Feller, Lihua Lei, and Jasjeet Sekhon.
+\newblock Overlap in observational studies with high-dimensional covariates.
+\newblock \emph{Journal of Econometrics}, 221\penalty0 (2):\penalty0 644--654,
+  2021.
+\newblock \doi{10.1016/j.jeconom.2019.10.014}.
 
 \bibitem[D{\'i}az~Mu{\~n}oz and van~der Laan(2012)]{munoz2012population}
 Iv{\'a}n D{\'i}az~Mu{\~n}oz and Mark~J. van~der Laan.
