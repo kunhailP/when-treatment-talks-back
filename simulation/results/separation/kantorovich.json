@@ -1,0 +1,11 @@
+{
+  "out": "/tmp/claude-0/-root/ed2d4681-8e2c-4e6e-8b73-4017b98f4af8/scratchpad/repo/simulation/results/separation",
+  "subcommand": "kantorovich",
+  "git_commit": "65b8f516daf894bc42b93090132bbd3e6106e0ee",
+  "numpy": "1.26.3",
+  "python": "3.11.10",
+  "wall_seconds": 21.8,
+  "finished": "2026-09-17T05:35:20",
+  "git_tree": "75ba40d3342096265d3365564536be2fd2bd2a83",
+  "note": "run at 16730991; that commit was amended (message only, identical tree) to 65b8f516"
+}

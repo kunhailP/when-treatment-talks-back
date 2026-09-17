@@ -155,14 +155,57 @@ For τ_n = n^{−α}: nτ² → 0 iff α > 1/2, and ne^{−u_0n^α} → 0 always
 
 ## Monte Carlo evidence
 
-Source: `simulation/results/separation/coverage.csv`, with settings and seeds in the matching `.json`.
-DGP: H ~ U(−1, 1), μ_0(h) = h, c(h) = 1 + |h|, σ = 1, α = 0.6. The kink makes the bias O(τ).
+Sources: `simulation/results/separation/{coverage,boundary}.csv`, with seeds and settings in the `.json`
+files. The earlier exploratory runs (seed 7 and 11) are summarized in the last table.
+DGP: H ~ U(−1, 1), μ_0(h) = h, c(h) = 1 + |h|, σ = 1. The kink makes the bias O(τ).
 
-**Wording for the manuscript:**
-> A lower coverage observed with few replications (0.91 with 200 replications at n = 10⁶) did not recur
-> with more replications. In the enlarged experiment coverage is close to nominal. At the smallest sample
-> size a slight under-coverage remains, consistent with the standard error underestimating the sampling
-> SD by about 1–1.5%.
+**Coverage diagnostics, α = 0.6 (`run.py coverage`, seed 20260919)**
+
+| n | reps | eff. obs/arm | bias/SD | SD MC (pred.) | SE/SD | cover (SE hat) | cover (true SD) | MCSE |
+|---|---|---|---|---|---|---|---|---|
+| 10⁴ | 3000 | 37 | 0.02 | .222 (.224) | .985 | .936 | .945 | .004 |
+| 10⁵ | 3000 | 96 | 0.04 | .140 (.141) | 1.000 | .951 | .952 | .004 |
+| 10⁶ | 1000 | 244 | 0.05 | .092 (.089) | .963 | .934 | .951 | .007 |
+
+**Boundary runs (`run.py boundary`, seed 20260918)**
+
+| α | n | nτ | reps | RMSE | coverage of β_0 | cum. loss (pred.) |
+|---|---|---|---|---|---|---|
+| .60 | 10⁴ | 40 | 1000 | .215 | .949 | .129 (.130) |
+| .60 | 10⁵ | 100 | 500 | .142 | .944 | .082 (.082) |
+| .60 | 10⁶ | 251 | 200 | .082 | .970 | .051 (.052) |
+| .75 | 10⁴ | 10 | 1000 | .465 | **.887** | .0081 (.0082) |
+| .75 | 10⁵ | 56 | 500 | .340 | .924 | .0026 (.0026) |
+| .75 | 10⁶ | 316 | 200 | .247 | .930 | .0008 (.0008) |
+
+**Earlier exploratory runs (`coverage_diag.py`, not in this runner)**
+
+| n | reps | seed | SE/SD | coverage |
+|---|---|---|---|---|
+| 10⁴ | 3000 | 7 | .986 | .941 |
+| 10⁵ | 3000 | 7 | .986 | .946 |
+| 10⁶ | 1000 | 11 | .991 | .948 |
+
+**Reading of the evidence (to be carried into the manuscript)**
+- Exploration loss matches the Step 7 constant in every cell.
+- Bias relative to SD is ≤ 5%, and skewness and kurtosis are near 0. No evidence of target drift or
+  non-normality.
+- **Finite-sample under-coverage is real when the effective boundary sample is small.** At α = .75 and
+  n = 10⁴ (nτ = 10), coverage is .887 over 1,000 replications. It recovers slowly as nτ grows.
+  Asymptotic validity (Part 4) says nothing about this regime, and the manuscript must state that.
+- At α = .6 and n = 10⁶, the two seeds give .948 and .934 (MCSE .007 each). The pooled estimate is
+  about .941, so a small under-coverage cannot be ruled out. A 5,000-replication run at this cell
+  (`results/separation/coverage_n1e6_r5000/`) is intended to settle it.
+- SE hat agrees with the asymptotic formula: mean SE ≈ .089 = predicted. The deviation of SE/SD from 1
+  at n = 10⁶ comes from the Monte Carlo SD exceeding the formula (.092 vs .089). The relative MCSE of an
+  SD estimate from 1,000 replications is about 2.2%.
+
+**Draft wording:**
+> Coverage of the fixed boundary effect is close to nominal once the effective boundary sample nτ is
+> in the hundreds (0.93–0.95 across seeds). With a very small effective boundary sample (nτ ≈ 10)
+> the Wald interval under-covers (0.89). A low coverage seen in a small exploratory run did not recur
+> at the same setting with more replications, but a second seed at n = 10⁶ gave 0.934, and we report
+> both.
 
 For reference, a bias-free normal estimator whose SE is 0.986 × SD has coverage
 2Φ(1.96 × 0.986) − 1 ≈ 0.9467.
