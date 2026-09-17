@@ -120,7 +120,10 @@ sup_𝓜 MSE ≤ δ_n² and
 
   R_n ≤ (σ² + B²) (E√g)² / δ_n² · (1 + o(1)).
 
-The uniform design p ≡ ε_n = (σ² + B²)/(nδ_n²) (1 + o(1)) gives R_n = (σ² + B²) E[g] / δ_n² (1 + o(1)).
+With C = σ² + B² and nδ_n² ≥ 4C, the uniform design p ≡ C/(nδ_n² − 2C) also has sup_𝓜 MSE ≤ δ_n²,
+and R_n = C E[g] / δ_n² (1 + o(1)).
+(Correction, 2026-09-17 review of 899e1cc: p = C/(nδ_n²) is not enough. At μ_0 = μ_1 ≡ B the HT MSE
+equals C/(np(1 − p)) > δ_n², e.g. 0.010204 > 0.01 for B = σ = 1, n = 10⁴, δ = .1.)
 
 **Proof.**
 1. HT is unbiased with variance ≤ n⁻¹(σ² + B²) E[1/e_1 + 1/(1 − e_1)] ≤ n⁻¹(σ² + B²)(E[1/p_c] + 2),
@@ -130,10 +133,11 @@ The uniform design p ≡ ε_n = (σ² + B²)/(nδ_n²) (1 + o(1)) gives R_n = (�
 3. R_n = n E[g p_c] ≤ n c_n E√g = (E√g)² n / (nδ_n²/(σ² + B²) − 4). ∎
 
 **Sandwich.** σ²(E√g)² ≤ liminf δ_n² R*_n ≤ limsup δ_n² R*_n ≤ (σ² + B²)(E√g)².
-- The rate 1/δ² and the functional (E√g)² are sharp.
-- The constant gap σ² vs σ² + B² comes from not learning μ_a in 𝓜.
-- With finitely many contexts, the stratified difference-in-means estimator attains σ² exactly
-  (up to 1 + o(1)).
+- The order 1/δ² and the functional (E√g)² appear in both bounds.
+- The constants differ: the lower bound has σ², and the HT upper bound retains B². **The optimal
+  constant is not established.**
+- With finitely many contexts, a stratified difference-in-means estimator should reduce the constant
+  toward σ². This is not proved here.
 
 ---
 
@@ -147,8 +151,8 @@ to all contexts** (τ may depend on n); non-adaptive. The operational gap is g =
 - (B2) φ(u) ≥ κu on [0, u_0].
 - (B3) G := ess sup |Δ(H)| < ∞, and q_η := max_j P(|Δ(H)| ≥ G − η, a*(H) = j) > 0 for every η ∈ (0, G).
 
-**Claim.** Let θ̂_n be any estimator with sup_𝓜 MSE ≤ δ_n² under p_{τ_n}, with δ_n → 0. Then for
-every η ∈ (0, G) and all large n,
+**Claim.** Fix η ∈ (0, G). Let θ̂_n be any estimator with sup_𝓜 MSE ≤ δ_n² under p_{τ_n}, where
+δ_n² ≤ q_η²B²/(2π²) and 2nδ_n² > q_ησ². δ_n may be fixed. Then
 
   R_n ≥ κ f_min c_0 · n · min{ u_0², (G − η)² / log²( 2nδ_n² / (q_η σ²) ) },  c_0 = ∫_0^1 v σ(−v) dv > 0.
 
@@ -203,8 +207,10 @@ lesson of B is about a single common temperature.
 2. For the design of Theorem A′, p*(h) = c_n/√φ(|Δ(h)|) wherever the cap is slack, and
    τ*(h) = |Δ(h)| / ( log(1/c_n) + ½ log φ(|Δ(h)|) + log(1 − p*(h)) ).
    Since c_n → 0, τ*(h) log(1/c_n) → |Δ(h)| for each h with Δ(h) ≠ 0.
-   **Asymptotically, the optimal temperature grows linearly in the policy's confidence |Δ|: cold at the
-   boundary, hot where the policy is sure.** ∎
+   The limit is pointwise for fixed h with g(h) > 0. It does **not** say that the implementing temperature
+   is small near the boundary at finite n: where the cap binds (e.g. 0 < |h| ≤ 4c_n² when g = |h|), the
+   implementing temperature is ∞. (The earlier slogan "cold at the boundary, hot where the policy is sure"
+   was withdrawn after the 899e1cc review.) ∎
 
 ---
 

@@ -85,7 +85,7 @@ on (−∞, u_1], and have the same boundary effect.
 In particular, uniform consistency for θ over 𝓜_D requires sup_{𝓜_D} R_n → ∞.
 
 **What is not claimed in 𝓜_D.**
-- The sharp constant σ²(E√g)² of (A.3) is proved in 𝓜(B, σ) only. Whether it survives in 𝓜_D is left
+- The constant σ²(E√g)² of (A.3) is a lower bound proved in 𝓜(B, σ) only. Whether it survives in 𝓜_D is left
   open.
 - No uniform boundary guarantee over 𝓜_D.
 - No lower bound on the boundary side.

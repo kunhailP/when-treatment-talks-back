@@ -5,10 +5,10 @@
 
 Write $e=e_\tau(H)=\sgm(H/\tau)=\Prob(A=1\mid H)$ and $\omega=e(1-e)=K(H/\tau)$ with $K(u)=\exp(u)/\{1+\exp(u)\}^2$,
 and $m_\tau=\E\omega$. We use
-\[
-\int K=1,\quad \int|u|K(u)\,du=2\log2,\quad \int K(u)\sgm(u)\,du=\tfrac12,\quad
-K(u)\le \exp(-|u|),\quad \int_0^\infty v\,\sgm(-v)\,dv=\tfrac{\pi^2}{12}.
-\]
+\begin{gather*}
+\int K=1,\qquad \int|u|K(u)\,du=2\log2,\qquad \int K(u)\sgm(u)\,du=\tfrac12,\\
+K(u)\le \exp(-|u|),\qquad \int_0^\infty v\,\sgm(-v)\,dv=\tfrac{\pi^2}{12}.
+\end{gather*}
 
 \paragraph{Step 1 (kernel integrals).} For $\varrho$ bounded and continuous at $0$,
 $j\ge1$ and $r,s\ge0$, substituting $h=\tau u$ and using dominated convergence
@@ -141,7 +141,11 @@ estimator is unbiased with variance at most
 $n^{-1}(\sigma^2+B^2)\E[1/e+1/(1-e)]=n^{-1}(\sigma^2+B^2)\E[1/q+1/(1-q)]\le n^{-1}(\sigma^2+B^2)(\E[1/q]+2)$,
 since $\{e,1-e\}=\{q,1-q\}$ and $q\le1/2$. Pointwise $1/q=\max\{2,\sqrt g/c_n\}\le\sqrt g/c_n+2$,
 and the choice of $c_n$ gives $\E[1/q]+2\le n\delta_n^2/(\sigma^2+B^2)$. The
-loss is $n\E[gq]\le nc_n\E\sqrt g$. The uniform design is analogous. \qed
+loss is $n\E[gq]\le nc_n\E\sqrt g$. For uniform mixing with
+$C=\sigma^2+B^2$ and $q=C/(n\delta_n^2-2C)\le1/2$, the same variance bound
+gives $C(1/q+2)/n=\delta_n^2$, and the loss is $nq\E[g]=C\E[g]\,n/(n\delta_n^2-2C)$.
+Without the correction, $q=C/(n\delta_n^2)$ gives risk $C/\{nq(1-q)\}>\delta_n^2$
+at $\mu_0=\mu_1\equiv B$, where the bound is attained. \qed
 
 %-----------------------------------------------------------------------------
 \section{Proof of Theorem~\ref{thm:separation}}\label{app:separation}
@@ -182,12 +186,21 @@ Trees step of Theorem~\ref{thm:info} with $K=1$ gives
 $\delta_n^2\ge \nu^2\sigma^2/(n\nu \exp(-(G-\eta')/\tau)+\sigma^2\pi^2/B^2)$. Once
 $\delta_n^2\le \nu^2B^2/(2\pi^2)$, this forces
 $n\nu \exp(-(G-\eta')/\tau)\ge \nu^2\sigma^2/(2\delta_n^2)$, that is,
-$\tau_n\ge(G-\eta')/\log\{2n\delta_n^2/(\nu\sigma^2)\}$. On the other hand
-$R_n=n\E[\phi(|\Delta|)q_\tau]=n\E[\phi(|\Delta|)\sgm(-|\Delta|/\tau)]\ge n\kappa f_{\min}\tau^2\int_0^{u_0/\tau}v\sgm(-v)dv\ge
-n\kappa f_{\min}c_0\min\{\tau,u_0\}^2$. Combining the two displays proves the
+$\tau_n\ge(G-\eta')/\log\{2n\delta_n^2/(\nu\sigma^2)\}$, where the logarithm is
+positive because $2n\delta_n^2>\nu\sigma^2$. Nothing here requires
+$\delta_n\to0$. On the other hand
+\[
+R_n=n\E[\phi(|\Delta|)\sgm(-|\Delta|/\tau)]
+\ge n\kappa f_{\min}\tau^2\int_0^{u_0/\tau}v\sgm(-v)\,dv
+\ge n\kappa f_{\min}c_0\min\{\tau,u_0\}^2 .
+\]
+Combining the two bounds proves the
 claim. With finitely many score values, the same argument gives
-$\tau\ge\Delta_{\max}/\log(Cn\delta^2)$ for $\delta$ small enough, and the
-$\Delta_{\min}$ cell contributes $n f\phi(\Delta_{\min})\exp(-\Delta_{\min}/\tau)/2$. \qed
+$\tau\ge\Delta_{\max}/\log(Cn\delta^2)$ for $\delta$ small enough. The
+$\Delta_{\min}$ cell, with mass $f$, then contributes at least
+\[
+n f\phi(\Delta_{\min})\exp(-\Delta_{\min}/\tau)/2 . \qquad\qed
+\]
 
 \paragraph{Remark~\ref{rem:mixture}.} Write $u=|H|$, $r(u)=\sgm(-u)$ for the
 off-greedy probability at temperature $1$, and
@@ -205,8 +218,8 @@ $c_n<\sqrt{g(h)}/2$, and
 $\log\{(1-q^*)/q^*\}=\log(1/c_n)+\tfrac12\log g(h)+\log(1-q^*)$ with
 $c_n\to0$, which gives the limit. \qed
 
-\paragraph{Proof of Lemma~\ref{lem:robust}.} With the cap slack, $q=c/\sqrt{\hat g}$ and
-$\E[1/q]=T$, the loss is $n\E[\sqrt{\hat g}]\E[g/\sqrt{\hat g}]/T$, against
+\paragraph{Proof of Lemma~\ref{lem:robust}.} With the cap slack, let
+$q=c/\sqrt{\hat g}$ and $\E[1/q]=T$. The loss is $n\E[\sqrt{\hat g}]\E[g/\sqrt{\hat g}]/T$, against
 $n(\E\sqrt g)^2/T$ for $\hat g=g$. With $s=(\hat g/g)^{1/2}\in[\sqrt a,\sqrt b]$
 and the probability measure $w\propto\sqrt g\,dF$, the ratio is
 $\E_w[s]\E_w[1/s]$, which Kantorovich's inequality bounds by

@@ -30,7 +30,7 @@ Novelty is claimed only relative to `related_work.md`, and only for the combinat
 1. The treatment is the **strategy choice**. The text-generation kernel, including token temperature, is fixed.
 2. g is the deployer's **operational** gap (its own objective), not the human-outcome effect.
 3. Thm A's impossibility holds in 𝓜(B, σ) **without extrapolation structure**. Corollary S gives
-   divergence (not the sharp constant) in the smaller Lipschitz-near-boundary model 𝓜_D. The separation
+   divergence (not the constant of A.3) in the smaller Lipschitz-near-boundary model 𝓜_D. The separation
    can disappear in models where boundary data **identify** θ (e.g. constant effects).
 4. Thm B concerns **exactly one deterministic common temperature per n**. Random mixtures of finite
    temperatures are not covered: a mixture of temperatures 1 and 1/n has constant cost (46.36 at
