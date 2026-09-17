@@ -9,6 +9,6 @@ B_mixture_temperatures 1000000.0    0.1    0.000272         0.010000 46.362321 4
       R_iff_with_atoms       NaN    NaN         NaN              NaN       NaN      NaN   NaN      NaN                NaN              NaN              1.674943                         1.347193 2.041667
 -> /tmp/claude-0/-root/ed2d4681-8e2c-4e6e-8b73-4017b98f4af8/scratchpad/repo/simulation/results/separation/audit.csv (+ .json)
 
-real	0m26.070s
-user	0m7.191s
-sys	0m22.777s
+real	0m13.666s
+user	0m7.353s
+sys	0m12.149s

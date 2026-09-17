@@ -5,6 +5,6 @@
 0.01 100 10000.0      25.5025 25.5025              1.124997
 -> /tmp/claude-0/-root/ed2d4681-8e2c-4e6e-8b73-4017b98f4af8/scratchpad/repo/simulation/results/separation/kantorovich.csv (+ .json)
 
-real	0m22.448s
-user	0m9.467s
-sys	0m18.297s
+real	0m23.649s
+user	0m9.952s
+sys	0m18.516s

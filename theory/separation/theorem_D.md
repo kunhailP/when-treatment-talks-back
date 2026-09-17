@@ -214,7 +214,7 @@ DGP: H ~ U(−1, 1), μ_0(h) = h, c(h) = 1 + |h|, σ = 1. The kink makes the bia
   Asymptotic validity (Part 4) says nothing about this regime, and the manuscript must state that.
 - At ζ = .6 and n = 10⁶ the first two seeds gave .948 and .934 (1,000 replications each). A
   5,000-replication run (`results/separation/coverage_n1e6_r5000/`, seed 20260920) gives:
-  - coverage .9458 (MCSE .0031) with the estimated SE;
+  - coverage .9458 (MCSE .0032, from the observed coverage) with the estimated SE;
   - coverage .9496 using the Monte Carlo SD of the same replications (column renamed from
     `coverage_true_sd` to `coverage_mc_sd`);
   - SE/SD .993, MC SD .0896 vs predicted .0892;

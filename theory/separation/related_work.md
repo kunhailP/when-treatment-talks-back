@@ -14,7 +14,7 @@ Absence claims mean only "not found in the papers we checked".
 | Simchi-Levi & Wang (AISTATS 2023 / Mgmt Sci), Thm 1: inf max e·√R = Ω(1) | full | The 1/δ² trade-off between regret and ATE error, K-armed, **no contexts**, orders only | Contexts with heterogeneous operational gap g(h). The functional (E√g)² with an explicit constant. Model scope stated (no extrapolation). Adaptive designs covered via van Trees |
 | Wan, Kveton & Song (ICML 2022), Lemma 1, Thm 1 | full | Variance-optimal exploration under a safety (value-loss) constraint, solved numerically | Closed form in g; lower bound over all estimators |
 | Douglas, Persson & Provost (arXiv 2605.15108), Props 5–6 | full | Neyman-type optimal logging π ∝ π_t√μ for IPW; theory under several information conditions | They minimize variance with no loss price. A prices exploration in g and bounds all estimators |
-| Koppel, Bhatt, Zeng & Ganesh (NeurIPS 2025 Constrained Optimization for ML workshop; listed at constrained-opt-ml.github.io/papers) | **abstract** | Inverse-gap-weighting contextual bandit with regret/ATE trade-offs | To be checked: whether a lower bound or a √g allocation appears |
+| Koppel, Bhatt, Zeng & Ganesh (NeurIPS 2025 Constrained Optimization for ML workshop; listed at constrained-opt-ml.github.io/papers) | **abstract only** (2026-09-17 retry: the workshop page has no PDF, OpenReview returned a browser-verification challenge, no arXiv preprint found) | Abstract: extends inverse-gap-weighting contextual bandits so that ATE estimators converge; "explicit tradeoffs between regret and the quality of ATE estimates"; "optimal adaptive hypothesis testing" alongside sublinear regret | Abstract gives no lower bound, no √g allocation (standard IGW weights ∝ 1/gap), nothing on temperature or boundary effects. **Must be read in a browser (openreview.net/pdf?id=KTn5igMOmS) before submission**; it may overlap with the achievability side of Theorem A |
 | Cochran optimum allocation with costs | textbook | n_h ∝ N_h S_h/√c_h | The allocation form of A′ is this rule. **We do not claim the allocation as new** |
 | Mou, Ding, Wainwright & Bartlett (arXiv 2301.06240), Thm 1 | full | Local minimax lower bound for off-policy linear functionals over convex classes; implies two-point bounds of our type | A couples the information bound to the exploration loss (the Cauchy–Schwarz step). Mou et al. has no loss |
 | Hong, Leung & Li (Econometrics J 2020), Thm 1 | full | Finite strata with drifting propensity: n·a_n → ∞ gives a CLT | Superpopulation, general F, all-estimator lower bound |
@@ -25,7 +25,7 @@ Absence claims mean only "not found in the papers we checked".
 |---|---|---|---|
 | Douglas, Persson & Provost (2026), Fig. 6 | full | Simulation: softmax logging worse than top-k; MSE → ∞ as it approaches greedy | A rate: loss ≳ n/log²(nδ²) at fixed precision against a constant optimum. Scope limited to one deterministic common temperature per n; random mixtures of finite temperatures can avoid the rate |
 | Cesa-Bianchi, Gentile, Lugosi & Neu (NeurIPS 2017), Thms 1–2 | full | Boltzmann exploration with a common schedule can have linear regret; arm-dependent schedules fix it | Different objective (population-effect precision, not regret). B concerns estimation cost at fixed precision |
-| Khan & Tamer (Econometrica 2010) | **abstract** | Irregular identification with unbounded weights; slower-than-√n rates | Must read Thm 3.2/4.1 before submission |
+| Khan & Tamer (Econometrica 2010) | see note below | Irregular identification with unbounded weights; slower-than-√n rates | See the full-text check below |
 
 ## Proposition C and Lemma R
 
@@ -39,8 +39,8 @@ Absence claims mean only "not found in the papers we checked".
 | Prior result | Read | What it already gives | What D adds |
 |---|---|---|---|
 | Narita & Yata, *Algorithm as Experiment* (arXiv 2104.12909 v6), Prop 1, Thm 1, eq. (6) | full | e(1−e)-type weights on an approximate propensity score converge to a boundary estimand (Hausdorff measure). Needs undersmoothing nδ_n² → 0; equivalent to local linear RD | The bandwidth is a **system-chosen score-space temperature**, not an analyst-chosen X-space ball. Exploration loss R_n is computed jointly, giving valid inference with R_n → 0 |
-| Eckles, Ignatiadis, Wager & Wu (Biometrika), noise-induced randomization | abstract | Known noise near a cutoff as a source of randomization | No exploration-loss accounting |
-| Li, Morgan & Zaslavsky (JASA 2018) | abstract | Overlap weights and their target population | Source of the weight only |
+| Eckles, Ignatiadis, Wager & Wu (arXiv 2004.09458 v5; Biometrika), noise-induced randomization | full | A sharp cutoff on a noisy running variable with **known noise density and fixed scale**. The estimand is a weighted average of CATE over a latent variable (eq. 6). Hájek-type estimator: consistency (Thm 1), CLT (Thm 2), bias-aware CIs over a sensitivity class (Cor 2). Weights come from a heuristic QP; no rate theorem. No cost or exploration quantity; no TV or indistinguishability result | Boundary CLT: **partial** overlap (design-based weighting and a CLT near a threshold), but no noise scale → 0, no O(τ) bias or nτ³ condition, and the target is over latent U, not the observed H = 0. Vanishing-loss statement and same-model separation: **different** |
+| Li, Morgan & Zaslavsky (arXiv 1404.1785 v3) | full | Overlap weights h = e(1−e) (Sec. 4.1, eq. 10), target "ATO". The weights peak where e = 1/2. Exact balance under logistic PS (Thm 3); minimum asymptotic variance under homoskedasticity (Cor 1). Sec. 3 notes that as the PS model sharpens toward 0/1, the weights shrink and precision falls. No limiting estimand, no boundary or RD, no algorithmic or known propensities, no exploration cost | Cite for the weight, "ATO", and "peaks at 1/2". The sharpening limit to a boundary measure and the loss comparison are **not anticipated** |
 | Cattaneo–Titiunik–Yu; Imbens & Wager (REStat 2019); Keele & Titiunik (2015) | abstract/full | Boundary RD estimation and rates | D uses no analyst bandwidth and claims no optimal rate |
 
 ## The separation (Corollary S; A with D) — the representative claim
@@ -63,6 +63,28 @@ common-temperature consequence, **not** any single ingredient.
 | Imai & Nakamura (arXiv 2410.00903); Nakamura & Imai (arXiv 2605.07834) | full/abstract | Text-as-treatment with deterministic decoding. We hold the generation kernel fixed and randomize strategies |
 | Fong & Grimmer (AJPS 2023); Egami et al. (Sci Adv 2022) | abstract | Latent-treatment confounding in text. Motivates fixing the kernel |
 
-## To read in full before submission
-Khan & Tamer (2010); Koppel et al. (2025); Eckles et al.; Li–Morgan–Zaslavsky (for exact wording of
-the target population).
+## Khan & Tamer (2010) full-text check
+Read: the July 2009 working paper (34 pp., archived from Tamer's former Northwestern page), not the
+published Econometrica PDF, which was paywalled. **Theorem numbers may differ in the published version.**
+- Setting: weighted moments θ = E[g] with E‖g‖² = ∞; trimmed estimators; iid data; no designs.
+  - Sec. 3: Lewbel binary choice.
+  - Sec. 4: ATE under unconfoundedness with 0 < p(x) < 1, and the remark that "identification is lost
+    when we remove any region in the support of x".
+- Thms 3.1 and 4.1: studentized, rate-adaptive CLTs for trimmed estimators, under a Lindeberg condition
+  and negligible trimming bias. The variance scale is v(γ) = E[1{|x| ≤ γ}/(p(1 − p))].
+- Sec. 4.2: rates for trimmed IPW with known propensities that go to 0 or 1 in the covariate tails, e.g.
+  √(n/log n) for logistic regressors with logit propensity, and n^{−1/4} for normal errors with logistic
+  regressors.
+- Thm A.1: infinite efficiency bound for binary choice (Chamberlain-type).
+- No minimax or van Trees bound, no TV/indistinguishability argument, no n·p_min condition, no
+  propensity varying with n, no cost or exploration loss.
+
+Verdicts:
+- Theorem A (information–exploration inequality): **different**.
+- Corollary S (TV at vanishing loss; boundary inference): **different**. "Thin-set identification" is a
+  conceptual precursor and should be cited.
+- The recoverability characterization and trimmed-IPW rates: **partial**. Same trimming bias–variance
+  structure and v(γ), but with a fixed propensity and no iff.
+
+## Still to read in full before submission
+Koppel et al. (2025): needs a browser download from OpenReview.

@@ -11,6 +11,6 @@
   0.03 100000000    0.071174 555.558333 493.830861         493.830861         416629.599654        493.830861        555.558333                 843.668618     691.602587
 -> /tmp/claude-0/-root/ed2d4681-8e2c-4e6e-8b73-4017b98f4af8/scratchpad/repo/simulation/results/separation/costs.csv (+ .json)
 
-real	0m27.699s
-user	0m12.130s
-sys	0m19.314s
+real	0m27.161s
+user	0m12.072s
+sys	0m19.696s
