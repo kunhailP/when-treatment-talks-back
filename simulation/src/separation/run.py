@@ -365,9 +365,15 @@ def _curve_rep(job):
     a = rng.uniform(size=n) < e
     y = h + (1 + np.abs(h)) * a + rng.normal(size=n)
     out = {}
-    # population effect: Horvitz-Thompson with known e
-    with np.errstate(over="ignore", divide="ignore", invalid="ignore"):
-        psi = a * y / e - (~a) * y / (1 - e)
+    # population effect: Horvitz-Thompson with known e. Inverse probabilities are computed as
+    # 1 + exp(-+h/tau) and used only for the arm actually taken, so no 0 * inf arises when e
+    # underflows (such arms are never observed).
+    with np.errstate(over="ignore"):
+        inv_e = 1.0 + np.exp(np.clip(-h / tau, -700, 700))
+        inv_1me = 1.0 + np.exp(np.clip(h / tau, -700, 700))
+    w_1 = np.where(a, inv_e, 0.0)
+    w_0 = np.where(a, 0.0, inv_1me)
+    psi = w_1 * y - w_0 * y
     out["ht"], out["ht_se"] = psi.mean(), psi.std(ddof=1) / np.sqrt(n)
     # population effect: AIPW with a linear working model in (1, h, |h|) per arm
     X = np.column_stack([np.ones(n), h, np.abs(h)])
@@ -375,8 +381,7 @@ def _curve_rep(job):
         b1 = np.linalg.lstsq(X[a], y[a], rcond=None)[0]
         b0 = np.linalg.lstsq(X[~a], y[~a], rcond=None)[0]
         m1, m0 = X @ b1, X @ b0
-        with np.errstate(over="ignore", divide="ignore", invalid="ignore"):
-            psi = m1 - m0 + a * (y - m1) / e - (~a) * (y - m0) / (1 - e)
+        psi = m1 - m0 + w_1 * (y - m1) - w_0 * (y - m0)
         out["aipw"], out["aipw_se"] = psi.mean(), psi.std(ddof=1) / np.sqrt(n)
     else:
         out["aipw"], out["aipw_se"] = np.nan, np.nan
