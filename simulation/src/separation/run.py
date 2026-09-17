@@ -11,6 +11,8 @@ manuscript can be traced to one invocation.
   python run.py boundary     # Thm D: RMSE, coverage of beta_0, exploration loss vs n (tau_n = n^-zeta), MC
   python run.py coverage     # Thm D coverage diagnostics (bias, SE/SD, normality), MC
   python run.py audit        # counterexamples from the 2026-09-17 audit (quadrature)
+  python run.py phase        # Figure 1: exact risks and loss over temperatures (quadrature)
+  python run.py curve        # Figure 2: estimators vs temperature at fixed n (MC + exact)
 
 Naming: `costs` and `finite` evaluate closed forms / quadrature under the sparse-exploration
 design-variance criterion E[sigma^2/p]/n = delta^2; they do not run estimators. `designs`,
@@ -315,6 +317,116 @@ def cmd_audit(args):
     save(pd.DataFrame(rows), "audit", args, t0)
 
 
+# ---------------------------------------------------------------- figures (manuscript Figures 1-2)
+def exact_moments(tau, m=4_000_000):
+    """Exact (quadrature) moments for the simulation DGP under common temperature tau.
+
+    H ~ U(-1,1), Delta = h, e = sig(h/tau) = P(A=1|H), q = sig(-|h|/tau), g = |h|,
+    mu0 = h, mu1 = h + 1 + |h|, sigma = 1.  Returns per-unit quantities; divide by n where noted.
+      v_ht     : n * Var(HT estimator of theta)                (exact)
+      v_aipw   : n * Var(AIPW with the true regression)         (exact; = Var(c) + E[1/e + 1/(1-e)])
+      bias_b   : beta_ov,tau - beta_0                           (exact)
+      v_b      : n * first-order variance of the boundary estimator (exact linearization)
+      loss_1   : E[g q], so R_n = n * loss_1                     (exact)
+      offgreedy: E[q], expected fraction of off-greedy actions  (exact)
+    """
+    h = -1 + (np.arange(m) + 0.5) * (2.0 / m)          # midpoint rule on (-1, 1), density 1/2
+    e = sig(h / tau)
+    q = sig(-np.abs(h) / tau)
+    mu0, mu1 = h, h + 1 + np.abs(h)
+    c = mu1 - mu0
+    theta = c.mean()
+    inv_e = 1.0 + np.exp(np.clip(-h / tau, -700, 700))    # 1/e without underflow
+    inv_1me = 1.0 + np.exp(np.clip(h / tau, -700, 700))   # 1/(1-e)
+    v_ht = np.mean((mu1 ** 2 + 1) * inv_e + (mu0 ** 2 + 1) * inv_1me) - theta ** 2
+    v_aipw = np.var(c) + np.mean(inv_e + inv_1me)
+    w = e * (1 - e)
+    mt = w.mean()
+    bar1, bar0 = (w * mu1).mean() / mt, (w * mu0).mean() / mt
+    bias_b = (w * c).mean() / mt - 1.0
+    v_b = np.mean(w * ((1 - e) * (1 + (mu1 - bar1) ** 2) + e * (1 + (mu0 - bar0) ** 2))) / mt ** 2
+    return dict(tau=tau, inv_tau=1 / tau, theta=theta, v_ht=v_ht, v_aipw=v_aipw, bias_b=bias_b,
+                v_b=v_b, loss_1=np.mean(np.abs(h) * q), offgreedy=q.mean())
+
+
+def cmd_phase(args):
+    """Figure 1 input: exact per-unit moments on a grid of temperatures (no Monte Carlo)."""
+    t0 = time.time()
+    inv_taus = np.unique(np.round(np.geomspace(args.inv_tau_min, args.inv_tau_max, args.points), 6))
+    rows = [exact_moments(1 / it, m=args.quad) for it in inv_taus]
+    save(pd.DataFrame(rows), "phase", args, t0)
+
+
+def _curve_rep(job):
+    n, tau, seed = job
+    rng = np.random.default_rng(seed)
+    h = rng.uniform(-1, 1, n)
+    e = sig(h / tau)
+    a = rng.uniform(size=n) < e
+    y = h + (1 + np.abs(h)) * a + rng.normal(size=n)
+    out = {}
+    # population effect: Horvitz-Thompson with known e
+    with np.errstate(over="ignore", divide="ignore", invalid="ignore"):
+        psi = a * y / e - (~a) * y / (1 - e)
+    out["ht"], out["ht_se"] = psi.mean(), psi.std(ddof=1) / np.sqrt(n)
+    # population effect: AIPW with a linear working model in (1, h, |h|) per arm
+    X = np.column_stack([np.ones(n), h, np.abs(h)])
+    if a.sum() > 3 and (~a).sum() > 3:
+        b1 = np.linalg.lstsq(X[a], y[a], rcond=None)[0]
+        b0 = np.linalg.lstsq(X[~a], y[~a], rcond=None)[0]
+        m1, m0 = X @ b1, X @ b0
+        with np.errstate(over="ignore", divide="ignore", invalid="ignore"):
+            psi = m1 - m0 + a * (y - m1) / e - (~a) * (y - m0) / (1 - e)
+        out["aipw"], out["aipw_se"] = psi.mean(), psi.std(ddof=1) / np.sqrt(n)
+    else:
+        out["aipw"], out["aipw_se"] = np.nan, np.nan
+    # boundary effect: overlap-weighted Hajek estimator of Theorem 1
+    w1, w0 = a * (1 - e), (~a) * e
+    if w1.sum() > 0 and w0.sum() > 0:
+        mm1, mm0 = (w1 * y).sum() / w1.sum(), (w0 * y).sum() / w0.sum()
+        psi = w1 * (y - mm1) / w1.mean() - w0 * (y - mm0) / w0.mean()
+        out["bnd"], out["bnd_se"] = mm1 - mm0, psi.std(ddof=1) / np.sqrt(n)
+    else:
+        out["bnd"], out["bnd_se"] = np.nan, np.nan
+    out["loss"] = (np.abs(h) * (a != (h > 0))).sum()
+    out["offgreedy"] = (a != (h > 0)).sum()
+    return out
+
+
+def cmd_curve(args):
+    """Figure 2 input: Monte Carlo at fixed n over temperatures, plus exact moments."""
+    from multiprocessing import Pool
+    t0 = time.time()
+    ss = np.random.SeedSequence(args.seed)
+    rows = []
+    with Pool(args.procs) as pool:
+        for inv_tau in args.inv_taus:
+            tau = 1.0 / inv_tau
+            seeds = [int(s.generate_state(1)[0]) for s in ss.spawn(args.reps)]
+            reps = pool.map(_curve_rep, [(args.n, tau, sd) for sd in seeds], chunksize=4)
+            df = pd.DataFrame(reps)
+            ex = exact_moments(tau)
+            row = dict(n=args.n, inv_tau=inv_tau, tau=tau, reps=args.reps, n_tau=args.n * tau)
+            for key, target in (("ht", ATE), ("aipw", ATE), ("bnd", BETA0)):
+                est, se = df[key].to_numpy(), df[key + "_se"].to_numpy()
+                ok = np.isfinite(est) & np.isfinite(se)
+                covered = np.zeros(len(est), dtype=bool)
+                covered[ok] = np.abs(est[ok] - target) <= 1.96 * se[ok]
+                row[f"{key}_rmse_mc"] = float(np.sqrt(np.mean((est[ok] - target) ** 2))) if ok.any() else np.nan
+                row[f"{key}_sd_mc"] = float(np.std(est[ok], ddof=1)) if ok.sum() > 1 else np.nan
+                row[f"{key}_coverage"] = cov_rate(covered)
+                row[f"{key}_coverage_mcse"] = cov_mcse(covered)
+                row[f"{key}_failures"] = int((~ok).sum())
+            row.update(ht_sd_exact=np.sqrt(ex["v_ht"] / args.n), aipw_sd_exact=np.sqrt(ex["v_aipw"] / args.n),
+                       bnd_bias_exact=ex["bias_b"], bnd_sd_exact=np.sqrt(ex["v_b"] / args.n),
+                       bnd_rmse_exact=np.sqrt(ex["bias_b"] ** 2 + ex["v_b"] / args.n),
+                       loss_mc=float(df["loss"].mean()), loss_exact=args.n * ex["loss_1"],
+                       offgreedy_mc=float(df["offgreedy"].mean()), offgreedy_exact=args.n * ex["offgreedy"])
+            rows.append(row)
+            print(f"1/tau={inv_tau}: done", flush=True)
+    save(pd.DataFrame(rows), "curve", args, t0)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", default=DEFAULT_OUT)
@@ -347,6 +459,20 @@ def main():
     s.add_argument("--seed", type=int, default=20260918)
 
     s = sub.add_parser("audit"); s.set_defaults(func=cmd_audit)
+
+    s = sub.add_parser("phase"); s.set_defaults(func=cmd_phase)
+    s.add_argument("--inv-tau-min", type=float, default=1.0)
+    s.add_argument("--inv-tau-max", type=float, default=300.0)
+    s.add_argument("--points", type=int, default=90)
+    s.add_argument("--quad", type=int, default=4_000_000, help="midpoint-rule points on (-1, 1)")
+
+    s = sub.add_parser("curve"); s.set_defaults(func=cmd_curve)
+    s.add_argument("--n", type=int, default=100_000)
+    s.add_argument("--inv-taus", type=float, nargs="+",
+                   default=[1, 2, 3, 5, 7, 10, 14, 20, 30, 50, 80, 120])
+    s.add_argument("--reps", type=int, default=1000)
+    s.add_argument("--seed", type=int, default=20260921)
+    s.add_argument("--procs", type=int, default=min(64, os.cpu_count() or 8))
 
     s = sub.add_parser("coverage"); s.set_defaults(func=cmd_coverage)
     s.add_argument("--zeta", type=float, default=0.6, help="tau_n = n^-zeta")
