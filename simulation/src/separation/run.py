@@ -8,7 +8,7 @@ manuscript can be traced to one invocation.
   python run.py finite       # (A.1) tightness in finite contexts; Thm B finite slope (deterministic)
   python run.py kantorovich  # Lemma R bound attained (deterministic)
   python run.py designs      # uniform / optimal / context-temperature / common-temperature, MC
-  python run.py boundary     # Thm D: RMSE, coverage of beta_0, exploration loss vs n, MC
+  python run.py boundary     # Thm D: RMSE, coverage of beta_0, exploration loss vs n (tau_n = n^-zeta), MC
   python run.py coverage     # Thm D coverage diagnostics (bias, SE/SD, normality), MC
   python run.py audit        # counterexamples from the 2026-09-17 audit (quadrature)
 
@@ -164,6 +164,16 @@ def cmd_kantorovich(args):
 
 
 # ---------------------------------------------------------------- Monte Carlo
+def cov_rate(covered):
+    return float(np.mean(covered))
+
+
+def cov_mcse(covered):
+    """Monte Carlo SE of an observed coverage proportion (uses the observed rate, not 0.95)."""
+    c = float(np.mean(covered))
+    return float(np.sqrt(c * (1 - c) / len(covered)))
+
+
 def aipw_once(h, u_sel, noise, p):
     """One replication given shared draws (common random numbers across designs)."""
     greedy = h > 0
@@ -206,8 +216,8 @@ def cmd_designs(args):
                 rows.append(dict(n=n, delta=delta, design=name, reps=args.reps, common_tau=t,
                                  max_abs_p_opt_minus_p_ctx=impl_gap,
                                  rmse=np.sqrt(np.mean((est - ATE) ** 2)), bias=est.mean() - ATE,
-                                 coverage=np.mean(np.abs(est - ATE) <= 1.96 * se),
-                                 coverage_mcse=np.sqrt(0.95 * 0.05 / args.reps),
+                                 coverage=cov_rate(np.abs(est - ATE) <= 1.96 * se),
+                                 coverage_mcse=cov_mcse(np.abs(est - ATE) <= 1.96 * se),
                                  explored=r[:, 3].mean(), cum_loss=r[:, 2].mean()))
     save(pd.DataFrame(rows), "designs_rate" if args.rate else "designs", args, t0)
 
@@ -231,17 +241,18 @@ def cmd_boundary(args):
     t0 = time.time()
     rng = np.random.default_rng(args.seed)
     rows = []
-    for alpha in args.alphas:
+    for zeta in args.zetas:
         for n, reps in zip(args.ns, args.reps_list):
-            tau = n ** -alpha
+            tau = n ** -zeta
             out = np.array([boundary_rep(rng, n, tau) for _ in range(reps)])
             est, se, loss = out[:, 0], out[:, 1], out[:, 2]
             ok = ~np.isnan(est)
-            rows.append(dict(alpha=alpha, n=n, tau=tau, reps=reps, failures=int((~ok).sum()),
+            covered = np.zeros(reps, dtype=bool)
+            covered[ok] = np.abs(est[ok] - BETA0) <= 1.96 * se[ok]
+            rows.append(dict(zeta=zeta, n=n, n_tau=n * tau, tau=tau, reps=reps, failures=int((~ok).sum()),
                              rmse=np.sqrt(np.mean((est[ok] - BETA0) ** 2)),
                              sd_pred=np.sqrt(2 / (n * tau)),
-                             coverage_beta0=np.sum(np.abs(est[ok] - BETA0) <= 1.96 * se[ok]) / reps,
-                             coverage_mcse=np.sqrt(0.95 * 0.05 / reps),
+                             coverage_beta0=cov_rate(covered), coverage_mcse=cov_mcse(covered),
                              cum_loss=np.nanmean(loss), cum_loss_pred=n * tau ** 2 * np.pi ** 2 / 12))
     save(pd.DataFrame(rows), "boundary", args, t0)
 
@@ -252,19 +263,21 @@ def cmd_coverage(args):
     hg = np.linspace(-1, 1, 4_000_001)[1:-1]
     rows = []
     for n, reps in zip(args.ns, args.reps_list):
-        tau = n ** -args.alpha
+        tau = n ** -args.zeta
         w = sig(hg / tau) * (1 - sig(hg / tau))
         beta_ov = (w * (1 + np.abs(hg))).sum() / w.sum()
         out = np.array([boundary_rep(rng, n, tau) for _ in range(reps)])
         est, se, neff = out[:, 0], out[:, 1], out[:, 3]
         sd = np.nanstd(est, ddof=1)
         z = (est - np.nanmean(est)) / sd
-        rows.append(dict(alpha=args.alpha, n=n, tau=tau, reps=reps, neff_per_arm=np.nanmean(neff),
+        cov_hat = np.abs(est - BETA0) <= 1.96 * se
+        rows.append(dict(zeta=args.zeta, n=n, n_tau=n * tau, tau=tau, reps=reps,
+                         kish_neff_per_arm=np.nanmean(neff),
                          bias_beta0=np.nanmean(est) - BETA0, bias_beta_ov=np.nanmean(est) - beta_ov,
                          sd_mc=sd, sd_pred=np.sqrt(2 / (n * tau)), se_over_sd=np.nanmean(se) / sd,
-                         coverage_se_hat=np.nanmean(np.abs(est - BETA0) <= 1.96 * se),
+                         coverage_se_hat=cov_rate(cov_hat),
                          coverage_mc_sd=np.nanmean(np.abs(est - BETA0) <= 1.96 * sd),
-                         coverage_mcse=np.sqrt(0.95 * 0.05 / reps),
+                         coverage_mcse=cov_mcse(cov_hat),
                          skew=np.nanmean(z ** 3), excess_kurtosis=np.nanmean(z ** 4) - 3))
     save(pd.DataFrame(rows), "coverage", args, t0)
 
@@ -327,7 +340,8 @@ def main():
     s.add_argument("--seed", type=int, default=20260917)
 
     s = sub.add_parser("boundary"); s.set_defaults(func=cmd_boundary)
-    s.add_argument("--alphas", type=float, nargs="+", default=[0.6, 0.75])
+    s.add_argument("--zetas", type=float, nargs="+", default=[0.6, 0.75],
+                   help="temperature exponents: tau_n = n^-zeta")
     s.add_argument("--ns", type=int, nargs="+", default=[10 ** 4, 10 ** 5, 10 ** 6])
     s.add_argument("--reps-list", type=int, nargs="+", default=[1000, 500, 200])
     s.add_argument("--seed", type=int, default=20260918)
@@ -335,7 +349,7 @@ def main():
     s = sub.add_parser("audit"); s.set_defaults(func=cmd_audit)
 
     s = sub.add_parser("coverage"); s.set_defaults(func=cmd_coverage)
-    s.add_argument("--alpha", type=float, default=0.6)
+    s.add_argument("--zeta", type=float, default=0.6, help="tau_n = n^-zeta")
     s.add_argument("--ns", type=int, nargs="+", default=[10 ** 4, 10 ** 5, 10 ** 6])
     s.add_argument("--reps-list", type=int, nargs="+", default=[3000, 3000, 1000])
     s.add_argument("--seed", type=int, default=20260919)

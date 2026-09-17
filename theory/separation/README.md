@@ -2,7 +2,7 @@
 
 This directory contains the proposed core of the JCI revision:
 
-> In one model (Corollary S), logged data from a common temperature τ_n = n^{−α}, α ∈ (1/2, 1),
+> In one model (Corollary S), logged data from a common temperature τ_n = n^{−ζ}, ζ ∈ (1/2, 1),
 > give asymptotically valid inference for the **boundary effect** at every model member while
 > cumulative exploration loss vanishes. The same data cannot consistently estimate the **population
 > average effect** across model members that share the boundary effect. Uniformly consistent population
@@ -22,7 +22,7 @@ Novelty is claimed only relative to `related_work.md`, and only for the combinat
 | File | Results |
 |---|---|
 | `theorems_A_B_C.md` | Setup; **Thm A** (all-estimator information–exploration inequality in 𝓜(B, σ), adaptive designs included); A′ (achievability sandwich σ² vs σ² + B²); **Thm B** (one deterministic common temperature per n: loss ≳ n/log²(nδ²)); **Prop C** (context temperatures in (0, ∞] implement designs with p = 1/2 on {Δ = 0}); **Lemma R** (misspecified gaps: Kantorovich bound; iff only when attained) |
-| `theorem_D.md` | **Thm D**: one-dimensional boundary effect, Wald CI valid at β_0 while R_n → 0 for τ_n = n^{−α}, α ∈ (1/2, 1); full proof; Monte Carlo evidence |
+| `theorem_D.md` | **Thm D**: one-dimensional boundary effect, Wald CI valid at β_0 while R_n → 0 for τ_n = n^{−ζ}, ζ ∈ (1/2, 1); full proof; Monte Carlo evidence |
 | `corollary_S.md` | **Corollary S**: the separation inside the Theorem D model (pointwise TV bound at vanishing loss; uniform van Trees bound) |
 | `related_work.md` | Theorem-by-theorem comparison with prior results, with reading depth |
 
@@ -88,5 +88,5 @@ output with timing.
 | 2 | B's scope sentence covered bounded-support temperature mixtures; false | B restricted; counterexample in `run.py audit` |
 | 3 | D remark "differentiable ⇒ O(τ²) bias" false (c = 1 + \|h\|^{3/2}) | Remark corrected with a C^{1,1} + Lipschitz-f condition |
 | 4 | R's "iff" fails with atoms (F = (.99, .01), g = (1, 100), ρ = 36) | "if" in general; iff under attainment |
-| 5 | nτ table errors at α = .75 (17.8, 31.6); design comparisons used different random numbers; optimal and ctx_temperature are the same design | Table fixed; common random numbers; implementation gap recorded |
+| 5 | nτ table errors at ζ = .75 (17.8, 31.6); design comparisons used different random numbers; optimal and ctx_temperature are the same design | Table fixed; common random numbers; implementation gap recorded |
 | 6 | Minor: C endpoints, D Step 2 constant (4B), D Step 5 notation, A.2 constant, B finite-context small-δ condition, identification wording, column `coverage_true_sd` | All fixed |

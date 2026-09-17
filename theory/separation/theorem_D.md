@@ -57,19 +57,19 @@ Assume (D1)–(D5), τ_n → 0 and nτ_n → ∞.
 2. **Bias.** |β_ov,τ − β_0| ≤ C_1τ_n for n large.
 3. **Variance estimation.** ŝ²/s_n² →_p 1.
 4. **Validity at the fixed boundary effect.** If also nτ_n³ → 0, then (β̂ − β_0)/(ŝ/√n) ⇒ N(0, 1), so
-   the Wald interval for β_0 has asymptotic coverage 1 − α.
+   the Wald interval for β_0 has asymptotic coverage 1 − η.
 5. **Exploration loss.**
    R_n = nE[g(H)σ(−|H|/τ_n)] ≤ nτ_n²κ̄f̄π²/6 + nḠe^{−u_0/τ_n}.
    In the strong form, R_n = nτ_n²κf(0)π²/6 · (1 + o(1)).
 
-**Corollary.** For τ_n = n^{−α} with α ∈ (1/2, 1), the Wald interval for β_0 is asymptotically valid and
+**Corollary.** For τ_n = n^{−ζ} with ζ ∈ (1/2, 1), the Wald interval for β_0 is asymptotically valid and
 R_n → 0 simultaneously. The three rate conditions are:
 
 | Condition | Needed for | Holds when |
 |---|---|---|
-| nτ_n → ∞ | effective boundary sample grows | α < 1 |
-| nτ_n³ → 0 | bias negligible relative to SE | α > 1/3 |
-| nτ_n² → 0 | cumulative exploration loss vanishes | α > 1/2 |
+| nτ_n → ∞ | effective boundary sample grows | ζ < 1 |
+| nτ_n³ → 0 | bias negligible relative to SE | ζ > 1/3 |
+| nτ_n² → 0 | cumulative exploration loss vanishes | ζ > 1/2 |
 
 The achievable error is |β̂ − β_0| = O_p((nτ_n)^{−1/2}). Under the strong form of (D5),
 R_n ≍ nτ_n², so this equals O_p((nR_n)^{−1/4}). **We state this as achievable, not optimal.** No lower
@@ -167,7 +167,7 @@ The off-greedy probability is σ(−|h|/τ).
   convergence gives the asymptotic equality, and the region v > u_0/τ is the exponentially small term
   above.
 
-For τ_n = n^{−α}: nτ² → 0 iff α > 1/2, and ne^{−u_0n^α} → 0 always. ∎
+For τ_n = n^{−ζ}: nτ² → 0 iff ζ > 1/2, and ne^{−u_0n^ζ} → 0 always. ∎
 
 ---
 
@@ -177,7 +177,7 @@ Sources: `simulation/results/separation/{coverage,boundary}.csv`, with seeds and
 files. The earlier exploratory runs (seed 7 and 11) are summarized in the last table.
 DGP: H ~ U(−1, 1), μ_0(h) = h, c(h) = 1 + |h|, σ = 1. The kink makes the bias O(τ).
 
-**Coverage diagnostics, α = 0.6 (`run.py coverage`, seed 20260919)**
+**Coverage diagnostics, ζ = 0.6 (`run.py coverage`, seed 20260919)**
 
 | n | reps | Kish eff. obs/arm | bias/SD | SD MC (pred.) | SE/SD | cover (SE hat) | cover (MC SD) | MCSE |
 |---|---|---|---|---|---|---|---|---|
@@ -187,7 +187,7 @@ DGP: H ~ U(−1, 1), μ_0(h) = h, c(h) = 1 + |h|, σ = 1. The kink makes the bia
 
 **Boundary runs (`run.py boundary`, seed 20260918)**
 
-| α | n | nτ = n^{1−α} | reps | RMSE | coverage of β_0 | cum. loss (pred.) |
+| ζ | n | nτ = n^{1−ζ} | reps | RMSE | coverage of β_0 | cum. loss (pred.) |
 |---|---|---|---|---|---|---|
 | .60 | 10⁴ | 39.8 | 1000 | .215 | .949 | .129 (.130) |
 | .60 | 10⁵ | 100.0 | 500 | .142 | .944 | .082 (.082) |
@@ -208,11 +208,11 @@ DGP: H ~ U(−1, 1), μ_0(h) = h, c(h) = 1 + |h|, σ = 1. The kink makes the bia
 - Exploration loss matches the Step 7 constant in every cell.
 - Bias relative to SD is ≤ 5%, and skewness and kurtosis are near 0. No evidence of target drift or
   non-normality.
-- **Finite-sample under-coverage is real when the effective boundary sample is small.** At α = .75 and
+- **Finite-sample under-coverage is real when the effective boundary sample is small.** At ζ = .75 and
   n = 10⁴ (nτ = 10), coverage is .887 over 1,000 replications. It recovers slowly: .924 at nτ = 17.8
-  and .930 at nτ = 31.6. Here nτ = n^{1−α} is a scale, not the Kish effective sample.
+  and .930 at nτ = 31.6. Here nτ = n^{1−ζ} is a scale, not the Kish effective sample.
   Asymptotic validity (Part 4) says nothing about this regime, and the manuscript must state that.
-- At α = .6 and n = 10⁶ the first two seeds gave .948 and .934 (1,000 replications each). A
+- At ζ = .6 and n = 10⁶ the first two seeds gave .948 and .934 (1,000 replications each). A
   5,000-replication run (`results/separation/coverage_n1e6_r5000/`, seed 20260920) gives:
   - coverage .9458 (MCSE .0031) with the estimated SE;
   - coverage .9496 using the Monte Carlo SD of the same replications (column renamed from
@@ -227,8 +227,8 @@ DGP: H ~ U(−1, 1), μ_0(h) = h, c(h) = 1 + |h|, σ = 1. The kink makes the bia
   SD estimate from 1,000 replications is about 2.2%.
 
 **Draft wording:**
-> With α = 0.6 (nτ between 40 and 250), coverage of the fixed boundary effect is between 0.936 and
-> 0.970 across runs; the runs with at least 3,000 replications give 0.936–0.951. With α = 0.75 and nτ between 10 and 32, the Wald interval under-covers
+> With ζ = 0.6 (nτ between 40 and 250), coverage of the fixed boundary effect is between 0.936 and
+> 0.970 across runs; the runs with at least 3,000 replications give 0.936–0.951. With ζ = 0.75 and nτ between 10 and 32, the Wald interval under-covers
 > (0.887–0.930). At n = 10⁶ (nτ ≈ 250), 5,000 replications give 0.946
 > (Monte Carlo SE 0.003); the small shortfall is consistent with the standard error being about 0.7%
 > below the sampling SD. Lower values seen in smaller runs (0.91 with 200, 0.934 with 1,000
