@@ -1,0 +1,17 @@
+{
+  "out": "../../results/separation/coverage_n1e6_r5000",
+  "alpha": 0.6,
+  "ns": [
+    1000000
+  ],
+  "reps_list": [
+    5000
+  ],
+  "seed": 20260920,
+  "subcommand": "coverage",
+  "git_commit": "6d111fc34a866c16e2fd78846f1cfc417e359bb9",
+  "numpy": "1.26.3",
+  "python": "3.11.10",
+  "wall_seconds": 295.0,
+  "finished": "2026-09-17T05:48:25"
+}

@@ -1,0 +1,7 @@
+ alpha       n      tau  reps  neff_per_arm  bias_beta0  bias_beta_ov    sd_mc  sd_pred  se_over_sd  coverage_se_hat  coverage_true_sd  coverage_mcse      skew  excess_kurtosis
+   0.6 1000000 0.000251  5000    244.164503   -0.000044     -0.000392 0.089611 0.089231    0.992582           0.9458            0.9496       0.003082 -0.056722        -0.047305
+-> ../../results/separation/coverage_n1e6_r5000/coverage.csv (+ .json)
+
+real	4m55.448s
+user	4m54.922s
+sys	0m3.967s

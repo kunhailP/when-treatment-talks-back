@@ -193,9 +193,15 @@ DGP: H ~ U(−1, 1), μ_0(h) = h, c(h) = 1 + |h|, σ = 1. The kink makes the bia
 - **Finite-sample under-coverage is real when the effective boundary sample is small.** At α = .75 and
   n = 10⁴ (nτ = 10), coverage is .887 over 1,000 replications. It recovers slowly as nτ grows.
   Asymptotic validity (Part 4) says nothing about this regime, and the manuscript must state that.
-- At α = .6 and n = 10⁶, the two seeds give .948 and .934 (MCSE .007 each). The pooled estimate is
-  about .941, so a small under-coverage cannot be ruled out. A 5,000-replication run at this cell
-  (`results/separation/coverage_n1e6_r5000/`) is intended to settle it.
+- At α = .6 and n = 10⁶ the first two seeds gave .948 and .934 (1,000 replications each). A
+  5,000-replication run (`results/separation/coverage_n1e6_r5000/`, seed 20260920) gives:
+  - coverage .9458 (MCSE .0031) with the estimated SE;
+  - coverage .9496 with the true SD;
+  - SE/SD .993, MC SD .0896 vs predicted .0892;
+  - bias/SD < .001, skewness −.06, excess kurtosis −.05.
+
+  The remaining shortfall (≈ .004, 1.3 MCSE) matches an SE about 0.7% below the sampling SD. The .934
+  run is attributed to Monte Carlo variation.
 - SE hat agrees with the asymptotic formula: mean SE ≈ .089 = predicted. The deviation of SE/SD from 1
   at n = 10⁶ comes from the Monte Carlo SD exceeding the formula (.092 vs .089). The relative MCSE of an
   SD estimate from 1,000 replications is about 2.2%.
@@ -203,9 +209,10 @@ DGP: H ~ U(−1, 1), μ_0(h) = h, c(h) = 1 + |h|, σ = 1. The kink makes the bia
 **Draft wording:**
 > Coverage of the fixed boundary effect is close to nominal once the effective boundary sample nτ is
 > in the hundreds (0.93–0.95 across seeds). With a very small effective boundary sample (nτ ≈ 10)
-> the Wald interval under-covers (0.89). A low coverage seen in a small exploratory run did not recur
-> at the same setting with more replications, but a second seed at n = 10⁶ gave 0.934, and we report
-> both.
+> the Wald interval under-covers (0.89). At n = 10⁶ (nτ ≈ 250), 5,000 replications give 0.946
+> (Monte Carlo SE 0.003); the small shortfall is consistent with the standard error being about 0.7%
+> below the sampling SD. Lower values seen in smaller runs (0.91 with 200, 0.934 with 1,000
+> replications) did not recur at this scale.
 
 For reference, a bias-free normal estimator whose SE is 0.986 × SD has coverage
 2Φ(1.96 × 0.986) − 1 ≈ 0.9467.
