@@ -27,6 +27,12 @@ def f(x, d=3):
     return f"{x:.{d}f}"
 
 
+def sci(x):
+    """Two significant digits in LaTeX scientific notation."""
+    m, e = f"{x:.1e}".split("e")
+    return f"${m}\\times10^{{{int(e)}}}$"
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     macros, commits = {}, set()
@@ -76,12 +82,13 @@ def main():
     tab_designs = "\n".join(lines)
 
     lines = [r"\begin{tabular}{rrrrrrrr}", r"\toprule",
-             r"$\zeta$ & $n$ & $n\tau_n$ & reps & RMSE & coverage of $\beta_0$ & MCSE & loss $R_n$ (theory) \\",
+             r"$\zeta$ & $n$ & $n\tau_n$ & reps & RMSE & coverage of $\beta_0$ & MCSE & loss $R_n$ (Thm.~1) \\",
              r"\midrule"]
     for _, row in boundary.sort_values(["zeta", "n"]).iterrows():
         lines.append(f"{row.zeta:.2f} & {int(row.n):,} & {row.n_tau:.1f} & {int(row.reps):,} & {f(row.rmse)} & "
-                     f"{f(row.coverage_beta0)} & {f(row.coverage_mcse)} & {row.cum_loss:.4f} ({row.cum_loss_pred:.4f}) \\\\")
-    lines.append(f"0.60 & 1,000,000 & {r.n_tau:.1f} & {int(r.reps):,} & -- & {f(r.coverage_se_hat)} & "
+                     f"{f(row.coverage_beta0)} & {f(row.coverage_mcse)} & {sci(row.cum_loss)} ({sci(row.cum_loss_pred)}) \\\\")
+    rmse5k = (r.sd_mc ** 2 + r.bias_beta0 ** 2) ** 0.5
+    lines.append(f"0.60 & 1,000,000 & {r.n_tau:.1f} & {int(r.reps):,} & {f(rmse5k)} & {f(r.coverage_se_hat)} & "
                  f"{f(r.coverage_mcse)} & -- \\\\")
     lines += [r"\bottomrule", r"\end{tabular}"]
     tab_boundary = "\n".join(lines).replace(",", "{,}")
