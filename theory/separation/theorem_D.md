@@ -1,5 +1,7 @@
 # Boundary side of the separation: Theorem D
 
+> **Notation.** In this file p = p_n(h) = P(A = 1 | H = h). The manuscript (`paper/tex/main_jci.tex`) writes this as e_τ(h), and reserves q_τ(h) = P(A ≠ a*(h) | H = h) = sigmoid(−|h|/τ) for the off-greedy probability. The weights are w_1 = A(1 − e_τ) and w_0 = (1 − A)e_τ; the exploration loss is nE[g q_τ].
+
 Status (2026-09-17, rev. 2): full proof written and self-checked. The audit of commit 6d111fc has been
 incorporated: the smoothness remark is corrected, the Step 2 constant fixed, Step 5 notation clarified,
 the nτ table corrected, and the coverage column renamed. **Not reviewed by a domain expert.**

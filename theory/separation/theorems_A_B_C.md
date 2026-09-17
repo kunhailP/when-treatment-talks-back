@@ -1,5 +1,7 @@
 # Population side of the separation: Theorems A, B, Proposition C, Lemma R
 
+> **Notation.** In this file p(h) is the **off-greedy** probability P(A ≠ a*(h) | H = h). The manuscript writes it as q(h) and uses e(h) = P(A = 1 | H = h) for the probability of strategy 1. The causal assumptions (consistency, iid units without interference, known sequential assignment) are stated in Section 2 of the manuscript.
+
 Status (2026-09-17, rev. 2): proofs written out in full and self-checked. One audit round (review of
 commit 6d111fc) has been incorporated: scope of B, endpoints of C, the "iff" in R, and wording of A.2
 and of the extrapolation remark. **Not yet reviewed by a domain expert.**

@@ -63,12 +63,14 @@ zero, so no estimator is consistent for the population effect at both.
 Uniformly consistent estimation of the population effect requires divergent
 exploration loss. In a larger model without extrapolation structure we give an
 information--exploration inequality valid for all estimators and adaptive
-designs: attaining mean squared error $\delta^2$ requires loss of order
-$(\E\sqrt g)^2/\delta^2$, where $g$ is the operational value gap, and this
-does not decrease with deployment scale. A single deterministic common
-temperature makes the loss grow like $n/\log^2(n\delta^2)$, whereas uniform
-mixing, context-dependent temperatures, or suitable temperature mixtures keep
-it bounded. The results say which question adaptive logs can answer, and what
+designs: attaining mean squared error $\delta^2$ requires loss at least of
+order $(\E\sqrt g)^2/\delta^2$, where $g$ is the operational value gap; this
+order is attainable and does not decrease with deployment scale. At a fixed
+precision $\delta$, a single deterministic common temperature requires loss at
+least of order $n/\log^2(n\delta^2)$, whereas uniform mixing,
+context-dependent temperatures, or suitable temperature mixtures attain the
+same precision with loss bounded in $n$. As $\delta\to0$, every design's loss
+diverges. The results say which question adaptive logs can answer, and what
 it costs to answer the other one.
 \end{abstract}
 
@@ -136,9 +138,10 @@ below by $\sigma^2(\sum_k f_k\sqrt{g_k})^2$. Precision $\delta$ therefore costs
 exploration loss of order $(\E\sqrt g)^2/\delta^2$, independent of $n$; a
 design exploring with probability proportional to $g^{-1/2}$ attains this order
 (Proposition~\ref{prop:achieve}).
-\item \emph{What this means for temperature.} A single deterministic common
-temperature must be so high that exploration loss grows like
-$n/\log^2(n\delta^2)$ (Theorem~\ref{thm:common}). Context-dependent
+\item \emph{What this means for temperature.} At a given precision $\delta$, a
+single deterministic common temperature requires exploration loss at least of
+order $n/\log^2(n\delta^2)$ (Theorem~\ref{thm:common}), against a loss of
+order $\delta^{-2}$, bounded in $n$, for the designs below. Context-dependent
 temperatures implement any admissible exploration design, and the optimal one
 is cold at the boundary and hot where the policy is confident
 (Proposition~\ref{prop:ctx}). Random mixtures of finite temperatures can also
@@ -175,7 +178,10 @@ regret--estimation trade-off in multi-armed bandits without contexts;
 \citet{wan2022safe} optimize exploration for policy evaluation under a value
 constraint; \citet{douglas2026logging} derive optimal logging policies for
 inverse-propensity estimation and report that softmax logging performs worse
-than top-$k$ logging in simulation. The allocation $p\propto g^{-1/2}$ has the
+than top-$k$ logging in simulation; \citet{koppel2025explore} extend
+inverse-gap-weighting contextual bandits to balance regret against the quality
+of average-treatment-effect estimates (we have read only the abstract of that
+workshop paper). The allocation $q\propto g^{-1/2}$ has the
 form of optimum stratified allocation with costs \citep{cochran1977sampling};
 we do not claim the allocation as new. \citet{cesabianchi2017boltzmann} show
 that Boltzmann exploration with a common schedule can fail for regret and that
@@ -219,7 +225,21 @@ potential outcomes $Y_i(a)$ are defined under the kernel intervention that
 sets $A_i=a$ and draws the message from $G$
 \citep{munoz2012population,young2014identification}. A label attached to a
 realized message after the fact is a different object, and changing $G$, for
-example by changing token temperature, changes the treatment.
+example by changing token temperature, changes the treatment. We assume:
+\begin{enumerate}[label=(C\arabic*),leftmargin=3em,itemsep=1pt]
+\item \emph{consistency}: $Y_i=Y_i(A_i)$, where the randomness of the message
+drawn from $G$ is part of $Y_i(a)$;
+\item \emph{independent units}: $(H_i,Y_i(0),Y_i(1))$ are independent and
+identically distributed across $i$, with no interference;
+\item \emph{known sequential assignment}: given $H_i$ and the past data
+$\mathcal F_{i-1}$, $A_i$ is drawn with known probabilities, independently of
+$(Y_i(0),Y_i(1))$ and of all future units.
+\end{enumerate}
+Under (C1)--(C3),
+$\E[Y_i\mid A_i=a,H_i=h,\mathcal F_{i-1}]=\E[Y(a)\mid H=h]$, and the law of
+$Y_i$ given $(A_i=a,H_i=h,\mathcal F_{i-1})$ is that of $Y(a)$ given $H=h$.
+All statements below about conditional outcome laws are therefore statements
+about potential outcomes.
 
 \paragraph{Deployer.} The deployer has a score gap $\Delta(h)=s_1(h)-s_0(h)$
 from its own objective, a greedy strategy $a^*(h)=\mathbf 1\{\Delta(h)>0\}$,
@@ -227,23 +247,30 @@ and an operational value gap $g(h)\ge0$, the value its objective loses by
 choosing $\bar a(h)=1-a^*(h)$. We write $g=\phi(|\Delta|)$ when the gap is a
 function of the score.
 
-\paragraph{Designs.} A design specifies
-$P_i=\Prob(A_i=\bar a(H_i)\mid H_i,\mathcal F_{i-1})$, where $\mathcal
-F_{i-1}$ is the past data; it is non-adaptive if $P_i=p(H_i)$. A \emph{common
-temperature} design sets $\Prob(A_i=1\mid H_i)=\sgm(\Delta(H_i)/\tau)$ with
-one deterministic $\tau=\tau_n$, so $p(h)=\sgm(-|\Delta(h)|/\tau_n)$, where
-$\sgm(x)=1/(1+e^{-x})$. The assignment probabilities are known.
+\paragraph{Designs and notation for probabilities.} We use two probabilities
+and keep them distinct:
+\[
+e(h)=\Prob(A=1\mid H=h),\qquad q(h)=\Prob(A\neq a^*(h)\mid H=h),
+\]
+the probability of strategy $1$ and the probability of the off-greedy
+strategy. A design specifies $Q_i=\Prob(A_i=\bar a(H_i)\mid H_i,\mathcal
+F_{i-1})$; it is non-adaptive if $Q_i=q(H_i)$. A \emph{common temperature}
+design uses one deterministic $\tau=\tau_n$ and
+\[
+e_\tau(h)=\sgm(\Delta(h)/\tau),\qquad q_\tau(h)=\sgm(-|\Delta(h)|/\tau),
+\]
+where $\sgm(x)=1/(1+\exp(-x))$.
 
 \paragraph{Exploration loss.}
 $R_n=\E\big[\sum_{i=1}^n g(H_i)\,\mathbf 1\{A_i=\bar a(H_i)\}\big]$; for
-non-adaptive designs $R_n=n\E[g(H)p(H)]$.
+non-adaptive designs $R_n=n\E[g(H)q(H)]$.
 
 \paragraph{Estimands.} Let $\mu_a(h)=\E[Y(a)\mid H=h]$ and $c=\mu_1-\mu_0$.
 The population average effect is $\theta=\E[c(H)]$. With a one-dimensional
 score $\Delta(h)=h$, the boundary effect is $\beta_0=c(0)$. For a given
 temperature, the overlap-weighted effect
 $\beta_{\ov,\tau}=\E[\omega_\tau(H)c(H)]/\E[\omega_\tau(H)]$ with
-$\omega_\tau=p_\tau(1-p_\tau)$ \citep{li2018balancing} is a third,
+$\omega_\tau=e_\tau(1-e_\tau)$ \citep{li2018balancing} is a third,
 temperature-indexed, target; we use it only as an intermediate object.
 
 %=============================================================================
@@ -262,7 +289,7 @@ strong form $\phi'(0)=\kappa>0$.
 \end{enumerate}
 \end{assumption}
 
-With $w_1=A(1-p)$ and $w_0=(1-A)p$, let
+With $e=e_{\tau_n}$, $w_1=A(1-e)$ and $w_0=(1-A)e$, let
 $\hat\beta=\sum w_{1i}Y_i/\sum w_{1i}-\sum w_{0i}Y_i/\sum w_{0i}$, with
 variance estimator $\hat s^2=n^{-1}\sum\hat\psi_i^2$, where
 $\hat\psi=w_1(Y-\hat m_1)/\hat D_1-w_0(Y-\hat m_0)/\hat D_0$,
@@ -277,7 +304,7 @@ $s_n^2=\{\sigma_1^2(0)+\sigma_0^2(0)\}/\{2\tau_nf(0)\}\,(1+o(1))$;
 \item $\hat s^2/s_n^2\to1$ in probability;
 \item if also $n\tau_n^3\to0$, the Wald interval $\hat\beta\pm
 z_{1-\eta/2}\hat s/\sqrt n$ has asymptotic coverage $1-\eta$ for $\beta_0$;
-\item $R_n\le n\tau_n^2\bar\kappa\bar f\pi^2/6+n\bar Ge^{-u_0/\tau_n}$, and in
+\item $R_n=n\E[g(H)q_{\tau_n}(H)]\le n\tau_n^2\bar\kappa\bar f\pi^2/6+n\bar G\exp(-u_0/\tau_n)$, and in
 the strong form $R_n=n\tau_n^2\kappa f(0)\pi^2/6\,(1+o(1))$.
 \end{enumerate}
 In particular, for $\tau_n=n^{-\zeta}$ with $\zeta\in(1/2,1)$, the interval in
@@ -325,11 +352,11 @@ constant estimator has bounded error.
 
 \begin{proposition}[Achievability]\label{prop:achieve}
 Suppose $\E\sqrt g>0$ and $n\delta_n^2\to\infty$. The non-adaptive design
-$p(h)=\min\{1/2,c_n/\sqrt{g(h)}\}$ with
+$q(h)=\min\{1/2,c_n/\sqrt{g(h)}\}$ with
 $c_n=\E\sqrt g/\{n\delta_n^2/(\sigma^2+B^2)-4\}$ and the Horvitz--Thompson
 estimator give $\sup_{\M(B,\sigma)}\E(\hat\theta-\theta)^2\le\delta_n^2$ and
 $R_n\le(\sigma^2+B^2)(\E\sqrt g)^2\delta_n^{-2}(1+o(1))$. Uniform mixing
-$p\equiv(\sigma^2+B^2)/(n\delta_n^2)$ gives
+$q\equiv(\sigma^2+B^2)/(n\delta_n^2)$ gives
 $R_n=(\sigma^2+B^2)\E[g]\,\delta_n^{-2}(1+o(1))$.
 \end{proposition}
 
@@ -391,19 +418,22 @@ boundary data identify $\theta$, the perturbation family is excluded and
 Consider common-temperature designs with one deterministic $\tau_n$ per $n$.
 Assume $|\Delta(H)|$ has a density at least $f_{\min}>0$ on $[0,u_0]$;
 $\phi(u)\ge\kappa u$ on $[0,u_0]$; $G=\operatorname{ess\,sup}|\Delta(H)|<\infty$;
-and for every $\eta'\in(0,G)$, $q_{\eta'}=\max_j\Prob(|\Delta(H)|\ge
+and for every $\eta'\in(0,G)$, $\nu_{\eta'}=\max_j\Prob(|\Delta(H)|\ge
 G-\eta',a^*(H)=j)>0$. If an estimator has $\sup_{\M(B,\sigma)}\E(\hat\theta-\theta)^2\le\delta_n^2\to0$,
 then for every $\eta'\in(0,G)$ and all large $n$
 \[
-R_n\ \ge\ \kappa f_{\min}c_0\,n\min\Big\{u_0^2,\ \frac{(G-\eta')^2}{\log^2\{2n\delta_n^2/(q_{\eta'}\sigma^2)\}}\Big\},
+R_n\ \ge\ \kappa f_{\min}c_0\,n\min\Big\{u_0^2,\ \frac{(G-\eta')^2}{\log^2\{2n\delta_n^2/(\nu_{\eta'}\sigma^2)\}}\Big\},
 \qquad c_0=\int_0^1v\,\sgm(-v)\,dv .
 \]
 \end{theorem}
 
-Compared with Proposition~\ref{prop:achieve}, the relative cost grows like
-$n\delta_n^2/\log^2(n\delta_n^2)$. With finitely many score values
+This is a lower bound. Relative to the loss attainable by
+Proposition~\ref{prop:achieve}, it is larger by a factor of order at least
+$n\delta_n^2/\log^2(n\delta_n^2)$, which diverges whenever
+$n\delta_n^2\to\infty$; at a fixed $\delta$ the attainable loss is bounded in
+$n$ while the common-temperature loss is not. With finitely many score values
 $0<\Delta_{\min}<\Delta_{\max}$ and fixed, sufficiently small $\delta$, the
-loss grows like $n^{1-\Delta_{\min}/\Delta_{\max}}$. The reason is not that a
+common-temperature loss is at least of order $n^{1-\Delta_{\min}/\Delta_{\max}}$. The reason is not that a
 common temperature explores in the wrong place: the optimal design also
 explores most near the boundary, where exploration is cheap. It is that the
 exploration probability of a common temperature decays exponentially in
@@ -414,23 +444,29 @@ temperature is raised everywhere, which is expensive near the boundary.
 Theorem~\ref{thm:common} does not extend to random mixtures of finite
 temperatures. With $|\Delta|=|H|$, $H\sim U(-1,1)$, $g=|H|$, mixing
 temperature $1$ with weight $w_n=\E[1/\sgm(-|H|)]/(n\delta^2)$ and temperature
-$1/n$ otherwise keeps the design variance at $\delta^2$ with bounded loss
+$1/n$ otherwise keeps the design variance $\E[1/q]/n$ at most $\delta^2$, for
+fixed $\delta$, with loss bounded in $n$
 (\mixtureCost{} at $\delta=0.1$ for $n=10^4,10^5,10^6$). The lesson concerns a
 single common temperature, not temperature as such.
 \end{remark}
 
 \begin{proposition}[Context temperatures]\label{prop:ctx}
-For $\Delta(h)\neq0$ and $p(h)\in(0,1/2)$, the temperature
-$\tau(h)=|\Delta(h)|/\log\{(1-p(h))/p(h)\}$ gives off-greedy probability
-$p(h)$; $p=1/2$ requires $\tau=\infty$, and on $\{\Delta=0\}$ only $p=1/2$ is
-implementable. The design of Proposition~\ref{prop:achieve} satisfies these
-conditions, and its temperature satisfies $\tau^*(h)\log(1/c_n)\to|\Delta(h)|$
-for each $h$ with $\Delta(h)\ne0$: cold at the boundary, hot where the policy
-is confident.
+For $\Delta(h)\neq0$ and $q(h)\in(0,1/2)$, the context temperature
+$\tau(h)=|\Delta(h)|/\log\{(1-q(h))/q(h)\}$ gives off-greedy probability
+$q(h)$. The value $q(h)=1/2$ requires $\tau(h)=\infty$, and on $\{\Delta=0\}$ every
+temperature gives $q=1/2$. Suppose $g=\phi(|\Delta|)$ with $\phi(0)=0$, so that
+$g=0$ on $\{\Delta=0\}$. Then the design $q^*$ of
+Proposition~\ref{prop:achieve} is implementable with temperatures in
+$(0,\infty]$: $q^*=1/2$ wherever $g=0$, and for each $h$ with $\Delta(h)\neq0$
+and $g(h)>0$, $q^*(h)<1/2$ for large $n$ and $\tau^*(h)\log(1/c_n)\to|\Delta(h)|$.
+The optimal temperature is cold at the boundary and hot where the policy is
+confident.
 \end{proposition}
 
 \begin{lemma}[Misspecified gaps]\label{lem:robust}
-Allocate with $\hat g$ in place of $g$ at the same design variance, with
+Compare the designs $q=c/\sqrt{\hat g}$ and $q=c'/\sqrt g$, with $c,c'$ chosen
+so that both have the same design variance $\sigma^2\E[1/q]/n$, and assume
+the cap is slack, that is, both designs are at most $1/2$ on $\{g>0\}$. Let
 $\hat g/g\in[a,b]$ on $\{g>0\}$ and $\rho=b/a$. Then the loss ratio is at most
 $K(\rho)=(1+\sqrt\rho)^2/(4\sqrt\rho)$. The bound is attained when the measure
 $w\propto\sqrt g\,dF$ has a set of mass exactly one half, for example when it
@@ -441,6 +477,8 @@ A common rescaling of $\hat g$ changes nothing; only relative
 misspecification across contexts matters. Gap-based allocation beats uniform
 mixing for every admissible $\hat g$ if $\E[g]/(\E\sqrt g)^2>K(\rho)$; the
 condition is also necessary when the bound is attained, but not in general.
+When $g$ approaches zero near the boundary, the cap binds on a set whose
+$F$-mass vanishes as $c\to0$, and the lemma describes the limit.
 Proofs are in Appendix~\ref{app:temperature}.
 
 %=============================================================================
@@ -452,12 +490,12 @@ $N(0,1)$ noise.
 
 \paragraph{Exploration designs.} At $n=10^5$ and design variance
 $\delta^2=0.01$, the closed-form exploration loss is \costUniform{} for
-uniform mixing, \costOptimal{} for $p\propto g^{-1/2}$, and \costCommon{} for
+uniform mixing, \costOptimal{} for $q\propto g^{-1/2}$, and \costCommon{} for
 a common temperature ($\tau=\costCommonTau$), a ratio of
 \costRatioCommonUniform{} to uniform mixing. Table~\ref{tab:designs} runs the
 augmented inverse-propensity estimator with a linear working model on common
 random numbers across designs. The context-temperature implementation of
-$p\propto g^{-1/2}$ produces identical rows and is not listed separately. In a
+$q\propto g^{-1/2}$ produces identical rows and is not listed separately. In a
 two-context example the bound \eqref{eq:info} evaluates to \finiteBound{}
 against the asymptotic constant \finiteConstant{}, and the common-temperature
 loss has local growth exponent \finiteSlope{} against the predicted $0.8$.

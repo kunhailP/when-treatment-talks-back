@@ -1,5 +1,7 @@
 # Corollary S — the separation inside one model
 
+> **Notation.** The manuscript writes e_τ = P(A = 1 | H) and q_τ = P(A ≠ a*(H) | H); the causal assumptions (C1)–(C3) are in its Section 2.
+
 Status (2026-09-17, rev. 2): written in response to the audit of commit 6d111fc (Theorems A and D were
 proved in different models). Revised after the audit of 6c096a0: γ is now an explicit essential-infimum
 assumption (φ is not assumed monotone), the perturbation assumptions are collected in (S-A), the

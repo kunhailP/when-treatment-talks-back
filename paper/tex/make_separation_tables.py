@@ -65,7 +65,7 @@ def main():
     # Table: exploration designs, estimator runs (common random numbers)
     lines = [r"\begin{tabular}{llrrrrr}", r"\toprule",
              r"$\delta$ & design & RMSE & coverage & MCSE & explored & loss $R_n$ \\", r"\midrule"]
-    names = {"uniform": "uniform mixing", "optimal": r"$p\propto g^{-1/2}$ (= context temp.)",
+    names = {"uniform": "uniform mixing", "optimal": r"$q\propto g^{-1/2}$ (= context temp.)",
              "common_temperature": "common temperature"}
     for delta in sorted(designs.delta.unique(), reverse=True):
         for key, label in names.items():
