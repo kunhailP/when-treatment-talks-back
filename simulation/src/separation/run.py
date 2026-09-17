@@ -10,6 +10,11 @@ manuscript can be traced to one invocation.
   python run.py designs      # uniform / optimal / context-temperature / common-temperature, MC
   python run.py boundary     # Thm D: RMSE, coverage of beta_0, exploration loss vs n, MC
   python run.py coverage     # Thm D coverage diagnostics (bias, SE/SD, normality), MC
+  python run.py audit        # counterexamples from the 2026-09-17 audit (quadrature)
+
+Naming: `costs` and `finite` evaluate closed forms / quadrature under the sparse-exploration
+design-variance criterion E[sigma^2/p]/n = delta^2; they do not run estimators. `designs`,
+`boundary` and `coverage` run estimators by Monte Carlo.
 
 DGP for MC subcommands: H ~ U(-1,1), score Delta = H, greedy a* = 1{H > 0},
 operational gap g = |H|, mu_0(h) = h, effect c(h) = 1 + |h| (ATE 1.5, boundary 1),
@@ -125,7 +130,7 @@ def cmd_finite(args):
     s2, B, delta = 1.0, args.B, args.delta
     rows = [dict(kind="A1_bound", n=np.nan,
                  value=s2 * (f @ np.sqrt(gap)) ** 2 / delta ** 2 - s2 * np.pi ** 2 / B ** 2 * gap.sum()),
-            dict(kind="A_prime_attained_stratified", n=np.nan,
+            dict(kind="asymptotic_constant_closed_form", n=np.nan,
                  value=s2 * (f @ np.sqrt(gap)) ** 2 / delta ** 2)]
     prev = None
     for k in range(3, 10):
@@ -159,41 +164,51 @@ def cmd_kantorovich(args):
 
 
 # ---------------------------------------------------------------- Monte Carlo
+def aipw_once(h, u_sel, noise, p):
+    """One replication given shared draws (common random numbers across designs)."""
+    greedy = h > 0
+    off = u_sel < p
+    a = np.where(off, ~greedy, greedy)
+    e1 = np.where(greedy, 1 - p, p)
+    y = h + (1 + np.abs(h)) * a + noise
+    X = np.column_stack([np.ones_like(h), h, np.abs(h)])
+    b1 = np.linalg.lstsq(X[a], y[a], rcond=None)[0] if a.sum() > 3 else np.zeros(3)
+    b0 = np.linalg.lstsq(X[~a], y[~a], rcond=None)[0] if (~a).sum() > 3 else np.zeros(3)
+    m1, m0 = X @ b1, X @ b0
+    psi = m1 - m0 + a / e1 * (y - m1) - (~a) / (1 - e1) * (y - m0)
+    return psi.mean(), psi.std(ddof=1) / np.sqrt(len(h)), (np.abs(h) * off).sum(), off.sum()
+
+
 def cmd_designs(args):
+    """Designs compared on common random numbers: in each replication all designs share the
+    same H, the same selection uniforms and the same outcome noise. `optimal` and
+    `ctx_temperature` are the same probability design (Prop. C); the second is an
+    implementation check, and max |p_opt - p_ctx| is recorded."""
     t0 = time.time()
     rng = np.random.default_rng(args.seed)
     hg = grid(200_000)
-    X_cols = lambda h: np.column_stack([np.ones_like(h), h, np.abs(h)])
     rows = []
     for n in args.ns:
         deltas = [n ** -0.25] if args.rate else args.deltas
         for delta in deltas:
             ds, t = designs_for(n, delta, hg=hg)
-            for name, pf in ds.items():
-                est, cov, reg, nex = [], [], [], []
-                for _ in range(args.reps):
-                    h = rng.uniform(-1, 1, n)
-                    p = pf(h)
-                    greedy = h > 0
-                    off = rng.uniform(size=n) < p
-                    a = np.where(off, ~greedy, greedy)
-                    e1 = np.where(greedy, 1 - p, p)
-                    y = h + (1 + np.abs(h)) * a + rng.normal(size=n)
-                    X = X_cols(h)
-                    b1 = np.linalg.lstsq(X[a], y[a], rcond=None)[0] if a.sum() > 3 else np.zeros(3)
-                    b0 = np.linalg.lstsq(X[~a], y[~a], rcond=None)[0] if (~a).sum() > 3 else np.zeros(3)
-                    m1, m0 = X @ b1, X @ b0
-                    psi = m1 - m0 + a / e1 * (y - m1) - (~a) / (1 - e1) * (y - m0)
-                    e, se = psi.mean(), psi.std(ddof=1) / np.sqrt(n)
-                    est.append(e)
-                    cov.append(abs(e - ATE) <= 1.96 * se)
-                    reg.append((np.abs(h) * off).sum())
-                    nex.append(off.sum())
-                est = np.array(est)
+            impl_gap = float(np.max(np.abs(ds["optimal"](hg) - ds["ctx_temperature"](hg))))
+            res = {name: [] for name in ds}
+            for _ in range(args.reps):
+                h = rng.uniform(-1, 1, n)
+                u_sel = rng.uniform(size=n)
+                noise = rng.normal(size=n)
+                for name, pf in ds.items():
+                    res[name].append(aipw_once(h, u_sel, noise, pf(h)))
+            for name, r in res.items():
+                r = np.array(r)
+                est, se = r[:, 0], r[:, 1]
                 rows.append(dict(n=n, delta=delta, design=name, reps=args.reps, common_tau=t,
+                                 max_abs_p_opt_minus_p_ctx=impl_gap,
                                  rmse=np.sqrt(np.mean((est - ATE) ** 2)), bias=est.mean() - ATE,
-                                 coverage=np.mean(cov), coverage_mcse=np.sqrt(0.95 * 0.05 / args.reps),
-                                 explored=np.mean(nex), cum_loss=np.mean(reg)))
+                                 coverage=np.mean(np.abs(est - ATE) <= 1.96 * se),
+                                 coverage_mcse=np.sqrt(0.95 * 0.05 / args.reps),
+                                 explored=r[:, 3].mean(), cum_loss=r[:, 2].mean()))
     save(pd.DataFrame(rows), "designs_rate" if args.rate else "designs", args, t0)
 
 
@@ -248,10 +263,43 @@ def cmd_coverage(args):
                          bias_beta0=np.nanmean(est) - BETA0, bias_beta_ov=np.nanmean(est) - beta_ov,
                          sd_mc=sd, sd_pred=np.sqrt(2 / (n * tau)), se_over_sd=np.nanmean(se) / sd,
                          coverage_se_hat=np.nanmean(np.abs(est - BETA0) <= 1.96 * se),
-                         coverage_true_sd=np.nanmean(np.abs(est - BETA0) <= 1.96 * sd),
+                         coverage_mc_sd=np.nanmean(np.abs(est - BETA0) <= 1.96 * sd),
                          coverage_mcse=np.sqrt(0.95 * 0.05 / reps),
                          skew=np.nanmean(z ** 3), excess_kurtosis=np.nanmean(z ** 4) - 3))
     save(pd.DataFrame(rows), "coverage", args, t0)
+
+
+def cmd_audit(args):
+    """Counterexamples raised in the 2026-09-17 audit, by quadrature."""
+    t0 = time.time()
+    rows = []
+    # (1) Theorem B scope: mixture of two finite temperatures, 1 and 1/n, keeps cost O(1/delta^2).
+    u = np.linspace(0, 1, 2_000_001)[1:]
+    q = sig(-u)
+    for delta in (0.1,):
+        for n in (10 ** 4, 10 ** 5, 10 ** 6):
+            w = np.mean(1 / q) / (n * delta ** 2)
+            p = w * q + (1 - w) * sig(-n * u)
+            rows.append(dict(check="B_mixture_temperatures", n=n, delta=delta, weight_hot=w,
+                             design_variance=np.mean(1 / p) / n, cum_loss=n * np.mean(u * p),
+                             bound=np.mean(1 / q) * np.mean(u * q) / delta ** 2))
+    # (2) Theorem D remark: c(h) = 1 + |h|^{3/2} is differentiable at 0 but has tau^{3/2} bias.
+    h = np.linspace(-1, 1, 40_000_001)
+    for tau in (0.04, 0.02, 0.01, 0.005):
+        om = sig(h / tau) * (1 - sig(h / tau))
+        b = (om * np.abs(h) ** 1.5).sum() / om.sum()
+        rows.append(dict(check="D_smoothness_remark", tau=tau, bias=b,
+                         bias_over_tau_1p5=b / tau ** 1.5, bias_over_tau_2=b / tau ** 2))
+    # (3) Lemma R: with atoms the Kantorovich bound need not be attained, so "iff" fails.
+    f = np.array([0.99, 0.01]); g = np.array([1.0, 100.0]); rho = 36.0
+    w = f * np.sqrt(g); w = w / w.sum()
+    s_lo, s_hi = 1.0, np.sqrt(rho)
+    worst = max((w @ s) * (w @ (1 / s)) for s in
+                (np.array([s_lo, s_hi]), np.array([s_hi, s_lo]), np.array([s_lo, s_lo])))
+    rows.append(dict(check="R_iff_with_atoms", uniform_over_optimal=(f @ g) / (f @ np.sqrt(g)) ** 2,
+                     worst_misspecified_over_optimal=worst,
+                     K_rho=(1 + np.sqrt(rho)) ** 2 / (4 * np.sqrt(rho))))
+    save(pd.DataFrame(rows), "audit", args, t0)
 
 
 def main():
@@ -283,6 +331,8 @@ def main():
     s.add_argument("--ns", type=int, nargs="+", default=[10 ** 4, 10 ** 5, 10 ** 6])
     s.add_argument("--reps-list", type=int, nargs="+", default=[1000, 500, 200])
     s.add_argument("--seed", type=int, default=20260918)
+
+    s = sub.add_parser("audit"); s.set_defaults(func=cmd_audit)
 
     s = sub.add_parser("coverage"); s.set_defaults(func=cmd_coverage)
     s.add_argument("--alpha", type=float, default=0.6)

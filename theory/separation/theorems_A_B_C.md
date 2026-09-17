@@ -1,6 +1,9 @@
 # Population side of the separation: Theorems A, B, Proposition C, Lemma R
 
-Status (2026-09-17): proofs written out in full and self-checked; **not yet externally reviewed**.
+Status (2026-09-17, rev. 2): proofs written out in full and self-checked. One audit round (review of
+commit 6d111fc) has been incorporated: scope of B, endpoints of C, the "iff" in R, and wording of A.2
+and of the extrapolation remark. **Not yet reviewed by a domain expert.**
+How Theorem A connects to the boundary model of Theorem D is in `corollary_S.md`.
 Numerical checks are in `simulation/src/separation/run.py` (subcommands named below).
 Scope statements are part of the results and must be carried into the manuscript verbatim.
 
@@ -72,7 +75,7 @@ estimator θ̂,
    where a_k := (N̄_k + σ²J)/f_k.
 
    (The middle bound is the van Trees inequality maximized over the direction vector.)
-5. *Cauchy–Schwarz.* σ(Σ_k f_k √g_k) = Σ_k (f_k √(g_k a_k)) · (σ/√a_k), so
+5. *Cauchy–Schwarz.* σ Σ_k f_k √g_k = Σ_k √(f_k g_k a_k) · σ√(f_k/a_k), so
    σ²(Σ_k f_k √g_k)² ≤ (Σ_k f_k g_k a_k)(Σ_k f_k σ²/a_k).
 6. *Linking to loss.* Σ_k f_k g_k a_k = Σ_k g_k N̄_k + σ²J Σ_k g_k. Since g ≥ g_k on S_k,
    Σ_k g_k N_k ≤ Σ_i g(H_i) 1{A_i = ā(H_i)}. Therefore
@@ -81,8 +84,10 @@ estimator θ̂,
 
 ### Proof of (A.2)–(A.3)
 
-- (A.2): take K = 1 and S_1 = {g ≥ γ} ∩ {a* = j}, where j is a side with positive mass. Then (A.1)
-  gives sup R_n ≥ σ² f_1² γ / sup MSE − σ²π²γ/B² → ∞.
+- (A.2): take K = 1 and S_1 = {g ≥ γ} ∩ {a* = j}, where j is a side with F(S_1) = f_1 > 0, and write
+  g_1 = inf_{S_1} g (so g_1 ≥ γ). (A.1) gives
+  sup R_n ≥ σ² f_1² g_1 / sup MSE − σ²π² g_1/B² ≥ g_1(σ² f_1²/sup MSE − σ²π²/B²).
+  The right side → ∞ as sup MSE → 0.
 - (A.3): fix K and take level-set cells S_{k,j} = {g ∈ [γ_k, γ_{k+1})} ∩ {a* = j} with positive mass.
   (A.1) gives δ_n² sup R_n ≥ σ²(Σ f √g_k)² − δ_n² C_K, so liminf δ_n² sup R_n ≥ σ²(Σ f_k √g_k)².
   The lower Lebesgue sums Σ F(S) inf_S √g approach E√g as the level mesh → 0 (monotone convergence;
@@ -90,8 +95,10 @@ estimator θ̂,
 
 ### Scope remarks (to appear in the paper)
 
-1. **Extrapolation structure removes the separation.** Under a constant effect μ_1 − μ_0 ≡ θ, or a
-   correctly specified parametric model, boundary data identify θ and (A.2) fails. Under intermediate
+1. **Extrapolation structure removes the separation.** (A.2) can fail in any model where the data near
+   the decision boundary identify θ. Examples: a constant effect μ_1 − μ_0 ≡ θ, or a parametric model
+   whose parameters, and hence θ, are identified from boundary data. Being parametric is not by itself
+   enough; what matters is that identification holds. Under intermediate
    restrictions (e.g. global Lipschitz effects) the perturbations in step 1 must respect the restriction,
    and the constants change; compare Mou, Ding, Wainwright & Bartlett (2023) and Khan, Saveski &
    Ugander (2024). We claim (A.1) only for 𝓜(B, σ).
@@ -157,22 +164,40 @@ Consequently R_n / [(σ² + B²)(E√g)²/δ_n²] ≳ nδ_n² / log²(nδ_n²) �
 3. Combine 1 and 2. ∎
 
 **Finite-context version.** If |Δ| takes finitely many values, with 0 < Δ_min < Δ_max, φ(Δ_min) > 0 and
-masses bounded below, then for fixed δ, R_n ≥ c n^{1 − Δ_min/Δ_max}. The proof is the same:
+masses bounded below, then for fixed δ small enough that step 1 applies (δ² ≤ q²B²/(2π²), where q is
+the mass of the Δ_max cell), R_n ≥ c n^{1 − Δ_min/Δ_max}. For large δ a constant estimator can meet
+the precision target with no exploration, and the statement is vacuous. The proof is the same:
 τ ≥ Δ_max / log(C nδ²), and the Δ_min cell contributes n f φ(Δ_min) e^{−Δ_min/τ}/2.
 
-**Scope.**
-- The result concerns one finite common temperature, or a temperature distribution with bounded support
-  chosen independently of h.
-- It does **not** cover context-dependent temperatures (Proposition C), nor mixtures that put mass at
-  τ = ∞ (these contain uniform ε-mixing).
+**Scope.** Theorem B concerns **exactly one deterministic common temperature per sample size n**. It
+does **not** cover:
+- context-dependent temperatures (Proposition C);
+- random mixtures of finite temperatures, even with bounded support and chosen independently of h.
+
+**Counterexample for mixtures (audit, 2026-09-17; `run.py audit`).** Take H ~ U(−1, 1), u = |H|,
+g = u, and q(u) = σ(−u) (temperature 1). Let p_n = w_n q + (1 − w_n) σ(−nu), a mixture of temperature
+1 with weight w_n and temperature 1/n.
+- With w_n = E[1/q]/(nδ²), p_n ≥ w_n q gives E[1/p_n]/n ≤ δ².
+- R_n ≤ E[1/q] E[uq]/δ² + O(1/n), a constant in n.
+- Numerically, at δ = .1: R_n = 46.362 at n = 10⁴, 10⁵, 10⁶.
+- The same construction with w_n = E[1/q]/(nδ_n²/(σ² + B²) − 2) gives HT risk ≤ δ_n² uniformly over 𝓜.
+
+So a small, shrinking weight on one moderate temperature escapes the n/log² n cost, and no infinite
+temperature is needed. Such mixtures are a legitimate implementation of polynomial exploration. The
+lesson of B is about a single common temperature.
 
 ---
 
 ## Proposition C (context-dependent temperature implements any design)
 
-1. For any p : 𝓗 → (0, 1/2] and Δ(h) ≠ 0, the temperature τ(h) = |Δ(h)| / log((1 − p(h))/p(h)) gives
-   σ(−|Δ(h)|/τ(h)) = p(h). Where Δ(h) = 0 every τ gives 1/2. Hence the context-temperature class equals
-   the class of all non-adaptive designs.
+1. For Δ(h) ≠ 0 and p(h) ∈ (0, 1/2), the finite temperature τ(h) = |Δ(h)| / log((1 − p(h))/p(h)) gives
+   σ(−|Δ(h)|/τ(h)) = p(h).
+   - p(h) = 1/2 with Δ(h) ≠ 0 needs the extended value τ(h) = ∞.
+   - Where Δ(h) = 0, every τ gives p = 1/2, so only p = 1/2 is implementable there.
+
+   Hence context temperatures in (0, ∞] implement exactly the non-adaptive designs with p ∈ (0, 1/2]
+   and p = 1/2 on {Δ = 0}. The capped design p* of Theorem A′ satisfies this, because g = φ(|Δ|) = 0 on
+   {Δ = 0} gives p* = 1/2 there.
 2. For the design of Theorem A′, p*(h) = c_n/√φ(|Δ(h)|) wherever the cap is slack, and
    τ*(h) = |Δ(h)| / ( log(1/c_n) + ½ log φ(|Δ(h)|) + log(1 − p*(h)) ).
    Since c_n → 0, τ*(h) log(1/c_n) → |Δ(h)| for each h with Δ(h) ≠ 0.
@@ -188,21 +213,27 @@ p = c/√ĝ with E[1/p] = T. Suppose ĝ/g ∈ [a, b] on {g > 0}, and set ρ = b/
 
   R(ĝ) / R(g) ≤ K(ρ) := (1 + √ρ)² / (4√ρ),
 
-and the bound is attained.
+The bound is attained whenever the weighted law w below can be split into two parts of mass exactly
+1/2, for example when w is non-atomic.
 
 **Proof.**
 - R(ĝ) = n E[g p] = n E[√ĝ] E[g/√ĝ] / T, and R(g) = n (E√g)² / T.
 - With s = (ĝ/g)^{1/2} ∈ [√a, √b] and the probability measure w ∝ √g dF,
   R(ĝ)/R(g) = E_w[s] E_w[1/s].
-- By Kantorovich's inequality this is ≤ (√a + √b)²/(4√(ab)) = K(b/a). It is attained by s two-point on
-  {√a, √b} with w-masses 1/2. ∎
+- By Kantorovich's inequality this is ≤ (√a + √b)²/(4√(ab)) = K(b/a).
+- If w admits a set of mass exactly 1/2, putting s = √a on it and s = √b elsewhere attains the bound. ∎
 
 **Consequences.**
 - A common rescaling ĝ = c·g changes nothing: only the **relative** misspecification ρ = b/a across
   contexts matters.
-- Gap-based allocation beats uniform exploration in the worst case iff E[g]/(E√g)² > K(ρ).
-- Example (H ~ U(−1, 1), g = |H|): E[g]/(E√g)² = 9/8 = K(4). So with ρ ≥ 4, uniform exploration is at
-  least as good in the worst case. The worst case is over allocations that misstate the gap by a factor a
+- **Sufficient condition.** If E[g]/(E√g)² > K(ρ), gap-based allocation beats uniform exploration for
+  every admissible ĝ.
+- **Necessary and sufficient** only when the bound is attained, e.g. when w ∝ √g dF is non-atomic.
+  With atoms it can fail. Example (`run.py audit`): F = (.99, .01), g = (1, 100), ρ = 36. Then
+  uniform/optimal = 1.675 < K(36) = 2.042, yet the worst admissible misspecification gives only 1.347,
+  so gap-based allocation still beats uniform.
+- Example (H ~ U(−1, 1), g = |H|; w is non-atomic): E[g]/(E√g)² = 9/8 = K(4). So with ρ ≥ 4, uniform
+  exploration is at least as good in the worst case. The worst case is over allocations that misstate the gap by a factor a
   on {|H| < cut} and b elsewhere. **This conclusion is specific to the example.**
 
 ---
@@ -211,7 +242,9 @@ and the bound is attained.
 
 | Claim | Subcommand | Reference result |
 |---|---|---|
-| (A.1) tight in finite contexts | `run.py finite` | lower bound 51.9 vs attained 52.4 (f = (.5, .5), g = (.2, 1), σ = 1, B = 5, δ = .1) |
-| A′ constants; uniform vs optimal vs temperatures | `run.py costs`, `run.py designs` | see `simulation/results/separation/` |
+| (A.1) close to the asymptotic constant in finite contexts | `run.py finite` | bound formula 51.887 vs **asymptotic constant** σ²(Σf√g)²/δ² = 52.361 (f = (.5, .5), g = (.2, 1), σ = 1, B = 5, δ = .1). Both are closed-form evaluations; no finite-sample MSE is measured |
+| Design-variance costs (sparse-exploration criterion E[σ²/p]/n = δ²) | `run.py costs` | closed-form / quadrature, not estimator runs |
+| Estimator runs (AIPW, Wald coverage), common random numbers across designs | `run.py designs` | Monte Carlo |
+| Audit counterexamples (mixture temperatures, R without atomlessness, smoothness remark of D) | `run.py audit` | quadrature |
 | Theorem B rates | `run.py costs` (continuous), `run.py finite` (slope → 1 − Δ_min/Δ_max) | |
 | Lemma R attained | `run.py kantorovich` | |

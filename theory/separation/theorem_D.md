@@ -1,6 +1,10 @@
 # Boundary side of the separation: Theorem D
 
-Status (2026-09-17): full proof written and self-checked; **not externally reviewed**.
+Status (2026-09-17, rev. 2): full proof written and self-checked. The audit of commit 6d111fc has been
+incorporated: the smoothness remark is corrected, the Step 2 constant fixed, Step 5 notation clarified,
+the nτ table corrected, and the coverage column renamed. **Not reviewed by a domain expert.**
+The version of this result placed in the same model as the population-side impossibility is
+`corollary_S.md`.
 
 This is the one-dimensional score version (Δ(h) = h). A multivariate boundary would follow the
 coarea argument of the manuscript's localization appendix. It is not claimed here.
@@ -67,11 +71,23 @@ R_n → 0 simultaneously. The three rate conditions are:
 | nτ_n³ → 0 | bias negligible relative to SE | α > 1/3 |
 | nτ_n² → 0 | cumulative exploration loss vanishes | α > 1/2 |
 
-The achievable error is |β̂ − β_0| = O_p((nτ_n)^{−1/2}) = O_p((nR_n)^{−1/4}). **We state this as
-achievable, not optimal.** No lower bound on the boundary side is claimed.
+The achievable error is |β̂ − β_0| = O_p((nτ_n)^{−1/2}). Under the strong form of (D5),
+R_n ≍ nτ_n², so this equals O_p((nR_n)^{−1/4}). **We state this as achievable, not optimal.** No lower
+bound on the boundary side is claimed. The statement is in probability. An RMSE bound would need
+separate L² control and a convention for the event Σw_a = 0; neither is given here.
 
-**Remark (smoother effects).** If c and f are differentiable at 0, the symmetry of K makes the bias
-O(τ²), and condition 4 relaxes to nτ⁵ → 0.
+**Remark (smoother effects).** Differentiability of c at 0 is **not** enough for O(τ²) bias.
+Counterexample (audit; `run.py audit`): H ~ U(−1, 1) and c(h) = 1 + |h|^{3/2}, which is differentiable
+at 0. Its bias is 2.034·τ^{3/2} (bias/τ² = 10.2, 14.4, 20.3, 28.8 at τ = .04, .02, .01, .005).
+
+A sufficient condition for O(τ²) is: c is C^{1,1} near 0 (|c(h) − c(0) − c′(0)h| ≤ M_2h²), and f is
+Lipschitz near 0 (constant L_f). Then:
+- the linear term c′(0)E[ωH]/m_τ is O(τ²): E[ωH] = τ²∫uK(u)f(τu)du = τ²∫uK(u)(f(τu) − f(0))du
+  (because ∫uK = 0), and |f(τu) − f(0)| ≤ L_fτ|u| near 0, so E[ωH] = O(τ³) up to an exponentially small
+  tail;
+- the remainder is ≤ M_2 f̄ τ³ ∫u²K / m_τ = O(τ²).
+
+Under these conditions part 4 holds with nτ⁵ → 0. The main theorem uses only the O(τ) bound.
 
 ---
 
@@ -88,9 +104,9 @@ In particular m_τ = τf(0)(1 + o(1)).
 ### Step 2: bias
 β_ov,τ − β_0 = E[ω(c(H) − c(0))]/m_τ. Split the expectation:
 - On |H| ≤ u_0: |c(h) − c(0)| ≤ 2L|h|, and E[ω|H|] ≤ f̄τ²∫|u|K = 2 log 2 · f̄τ².
-- On |H| > u_0: ω ≤ e^{−u_0/τ}, and |c| ≤ 2B.
+- On |H| > u_0: ω ≤ e^{−u_0/τ}, and |c(h) − c(0)| ≤ 4B.
 
-So |β_ov,τ − β_0| ≤ (4 log 2 · Lf̄τ² + 2Be^{−u_0/τ})/m_τ = (4 log 2 · Lf̄/f(0))τ(1 + o(1)). ∎
+So |β_ov,τ − β_0| ≤ (4 log 2 · Lf̄τ² + 4Be^{−u_0/τ})/m_τ = (4 log 2 · Lf̄/f(0))τ(1 + o(1)). ∎
 
 ### Step 3: linearization
 Let μ̄_a = E[ωμ_a]/m_τ. Since E[w_1 | H] = ω and E[w_1Y | H] = ωμ_1, we have E[w_1(Y − μ̄_1)] = 0, and
@@ -131,8 +147,10 @@ probability.
 
 (ii) For arm 1, ψ̂_{1,i} − ξ_{1,i} = w_1(Y − μ̄_1)(1/D̂_1 − 1/m_τ) + w_1(μ̄_1 − m̂_1)/D̂_1. Hence
 - n⁻¹Σ[w_1(Y − μ̄_1)(1/D̂_1 − 1/m_τ)]² = (n⁻¹Σξ_{1,i}²)(m_τ/D̂_1 − 1)² = O_p(s_n²) · O_p((nτ)⁻¹);
-- n⁻¹Σ[w_1(μ̄_1 − m̂_1)/D̂_1]² ≤ (m̂_1 − μ̄_1)² D̂_1/D̂_1² = O_p((nτ)⁻¹)/O_p(τ) = O_p(1/(nτ²)),
-  using w_1² ≤ w_1. Relative to s_n² ≍ τ⁻¹ this is O_p((nτ)⁻¹).
+- n⁻¹Σ[w_1(μ̄_1 − m̂_1)/D̂_1]² ≤ (m̂_1 − μ̄_1)²/D̂_1, using w_1² ≤ w_1 so that n⁻¹Σw_1² ≤ D̂_1.
+  By Step 4, (m̂_1 − μ̄_1)² = O_p((nτ)⁻¹), and D̂_1/m_τ →_p 1 with m_τ = τf(0)(1 + o(1)). Hence
+  1/D̂_1 = (τf(0))⁻¹(1 + o_p(1)), and this term is O_p(1/(nτ²)). Relative to s_n² ≍ τ⁻¹ it is
+  O_p((nτ)⁻¹).
 
 Arm 0 is identical. By Minkowski, n⁻¹Σ(ψ̂_i − ξ_i)² = o_p(s_n²). Then Cauchy–Schwarz gives
 |n⁻¹Σψ̂_i² − n⁻¹Σξ_i²| = o_p(s_n²), which is Part 3. ∎
@@ -161,7 +179,7 @@ DGP: H ~ U(−1, 1), μ_0(h) = h, c(h) = 1 + |h|, σ = 1. The kink makes the bia
 
 **Coverage diagnostics, α = 0.6 (`run.py coverage`, seed 20260919)**
 
-| n | reps | eff. obs/arm | bias/SD | SD MC (pred.) | SE/SD | cover (SE hat) | cover (true SD) | MCSE |
+| n | reps | Kish eff. obs/arm | bias/SD | SD MC (pred.) | SE/SD | cover (SE hat) | cover (MC SD) | MCSE |
 |---|---|---|---|---|---|---|---|---|
 | 10⁴ | 3000 | 37 | 0.02 | .222 (.224) | .985 | .936 | .945 | .004 |
 | 10⁵ | 3000 | 96 | 0.04 | .140 (.141) | 1.000 | .951 | .952 | .004 |
@@ -169,14 +187,14 @@ DGP: H ~ U(−1, 1), μ_0(h) = h, c(h) = 1 + |h|, σ = 1. The kink makes the bia
 
 **Boundary runs (`run.py boundary`, seed 20260918)**
 
-| α | n | nτ | reps | RMSE | coverage of β_0 | cum. loss (pred.) |
+| α | n | nτ = n^{1−α} | reps | RMSE | coverage of β_0 | cum. loss (pred.) |
 |---|---|---|---|---|---|---|
-| .60 | 10⁴ | 40 | 1000 | .215 | .949 | .129 (.130) |
-| .60 | 10⁵ | 100 | 500 | .142 | .944 | .082 (.082) |
-| .60 | 10⁶ | 251 | 200 | .082 | .970 | .051 (.052) |
+| .60 | 10⁴ | 39.8 | 1000 | .215 | .949 | .129 (.130) |
+| .60 | 10⁵ | 100.0 | 500 | .142 | .944 | .082 (.082) |
+| .60 | 10⁶ | 251.2 | 200 | .082 | .970 | .051 (.052) |
 | .75 | 10⁴ | 10 | 1000 | .465 | **.887** | .0081 (.0082) |
-| .75 | 10⁵ | 56 | 500 | .340 | .924 | .0026 (.0026) |
-| .75 | 10⁶ | 316 | 200 | .247 | .930 | .0008 (.0008) |
+| .75 | 10⁵ | 17.8 | 500 | .340 | .924 | .0026 (.0026) |
+| .75 | 10⁶ | 31.6 | 200 | .247 | .930 | .0008 (.0008) |
 
 **Earlier exploratory runs (`coverage_diag.py`, not in this runner)**
 
@@ -191,12 +209,14 @@ DGP: H ~ U(−1, 1), μ_0(h) = h, c(h) = 1 + |h|, σ = 1. The kink makes the bia
 - Bias relative to SD is ≤ 5%, and skewness and kurtosis are near 0. No evidence of target drift or
   non-normality.
 - **Finite-sample under-coverage is real when the effective boundary sample is small.** At α = .75 and
-  n = 10⁴ (nτ = 10), coverage is .887 over 1,000 replications. It recovers slowly as nτ grows.
+  n = 10⁴ (nτ = 10), coverage is .887 over 1,000 replications. It recovers slowly: .924 at nτ = 17.8
+  and .930 at nτ = 31.6. Here nτ = n^{1−α} is a scale, not the Kish effective sample.
   Asymptotic validity (Part 4) says nothing about this regime, and the manuscript must state that.
 - At α = .6 and n = 10⁶ the first two seeds gave .948 and .934 (1,000 replications each). A
   5,000-replication run (`results/separation/coverage_n1e6_r5000/`, seed 20260920) gives:
   - coverage .9458 (MCSE .0031) with the estimated SE;
-  - coverage .9496 with the true SD;
+  - coverage .9496 using the Monte Carlo SD of the same replications (column renamed from
+    `coverage_true_sd` to `coverage_mc_sd`);
   - SE/SD .993, MC SD .0896 vs predicted .0892;
   - bias/SD < .001, skewness −.06, excess kurtosis −.05.
 
@@ -207,9 +227,9 @@ DGP: H ~ U(−1, 1), μ_0(h) = h, c(h) = 1 + |h|, σ = 1. The kink makes the bia
   SD estimate from 1,000 replications is about 2.2%.
 
 **Draft wording:**
-> Coverage of the fixed boundary effect is close to nominal once the effective boundary sample nτ is
-> in the hundreds (0.93–0.95 across seeds). With a very small effective boundary sample (nτ ≈ 10)
-> the Wald interval under-covers (0.89). At n = 10⁶ (nτ ≈ 250), 5,000 replications give 0.946
+> With α = 0.6 (nτ between 40 and 250), coverage of the fixed boundary effect is between 0.936 and
+> 0.970 across runs; the runs with at least 3,000 replications give 0.936–0.951. With α = 0.75 and nτ between 10 and 32, the Wald interval under-covers
+> (0.887–0.930). At n = 10⁶ (nτ ≈ 250), 5,000 replications give 0.946
 > (Monte Carlo SE 0.003); the small shortfall is consistent with the standard error being about 0.7%
 > below the sampling SD. Lower values seen in smaller runs (0.91 with 200, 0.934 with 1,000
 > replications) did not recur at this scale.
