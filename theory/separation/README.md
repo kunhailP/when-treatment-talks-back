@@ -80,6 +80,10 @@ python run.py designs       # MC, minutes
 python run.py designs --rate --ns 10000 100000 1000000 --reps 200
 python run.py boundary      # MC
 python run.py coverage      # MC, longest
+python run.py phase         # Figure 1 input: exact moments over temperatures (quadrature, ~30 s)
+python run.py curve         # Figure 2 input: fixed-n temperature sweep (MC + exact, parallel)
+python plot_figures.py      # writes paper/tex/figs/fig1_separation_map.pdf, fig2_temperature_curve.pdf
+python ../../../paper/tex/make_separation_tables.py   # numbers and tables quoted in main_jci.tex
 ```
 Each run writes `simulation/results/separation/<name>.csv` and `<name>.json`. The JSON records
 arguments, seed, git commit, numpy and python versions, and wall time. `log_*.txt` holds console

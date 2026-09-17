@@ -3,6 +3,7 @@
 \usepackage[margin=1.1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{booktabs}
+\usepackage{graphicx}
 \usepackage[numbers,square,sort&compress]{natbib}
 \usepackage[colorlinks=true,citecolor=blue,linkcolor=blue,urlcolor=blue]{hyperref}
 \usepackage{microtype}
@@ -120,7 +121,8 @@ $R_n\to0$ (Theorem~\ref{thm:boundary}). In the same model, whenever $R_n\to0$,
 two members that coincide near the boundary but differ in the population
 effect have total variation distance tending to zero, so no estimator is
 consistent for the population effect at both; and uniform consistency for the
-population effect requires $\sup R_n\to\infty$.
+population effect requires $\sup R_n\to\infty$. Figure~\ref{fig:map} shows the
+separation in exact risks for a simple design.
 \item \emph{An information--exploration inequality}
 (Theorem~\ref{thm:info}). In the model of all bounded mean functions, for
 every estimator and every adaptive or non-adaptive design, the product of
@@ -413,6 +415,32 @@ $\M_D$, nor any uniform guarantee on the boundary side. If a submodel lets
 boundary data identify $\theta$, the perturbation family is excluded and
 (S2)--(S3) do not apply. Proofs are in Appendix~\ref{app:separation}.
 
+Figure~\ref{fig:map} illustrates the separation with exact risks, computed by
+numerical integration, for the design used in Section~\ref{sec:sims}. Under one
+common temperature, the population effect reaches root mean squared error
+$\figDelta$ only where the exploration loss is large: on the plotted grid the
+smallest such loss is about $\figPopMinLoss$. The boundary effect reaches the
+same precision with loss $\figBndMinLoss$ at the edge of the grid, and with less
+loss at larger $n$ and sharper policies.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figs/fig1_separation_map.pdf}
+\caption{Exact root mean squared error (colour, $\log_{10}$ scale) under one
+common temperature $\tau$ for the design of Section~\ref{sec:sims}: $H\sim
+U(-1,1)$, $\Delta(h)=h$, $g(h)=|h|$, $c(h)=1+|h|$, unit noise. (a) The
+Horvitz--Thompson estimator of the population effect $\theta$. (b) The
+estimator of Theorem~\ref{thm:boundary} for the boundary effect $\beta_0$,
+including its bias. Hatched regions, bounded by white curves, have root mean
+squared error at most $\figDelta$. Dashed curves are levels of the cumulative
+exploration loss $R_n=n\E[g(H)q_\tau(H)]$. Stars mark the smallest loss that
+attains the precision on the plotted grid ($1\le1/\tau\le300$,
+$10^2\le n\le10^9$). Panel (a) concerns one estimator under one outcome law; the
+lower bounds for all estimators are Theorems~\ref{thm:info}
+and~\ref{thm:separation}.}
+\label{fig:map}
+\end{figure}
+
 %=============================================================================
 \section{Temperature as an exploration device}\label{sec:temperature}
 
@@ -541,6 +569,36 @@ Monte Carlo standard deviation. With a very small boundary sample the interval
 under-covers: \covSmallNtau{} at $n\tau_n\approx\smallNtau$. The guarantee of
 Theorem~\ref{thm:boundary} is asymptotic.
 
+\paragraph{Temperature sweep.} Figure~\ref{fig:sweep} fixes $n=\curveN$ and
+sharpens a common temperature, with \curveReps{} replications per temperature.
+Wald coverage of the population effect falls from \curvePopCovLo{} at $1/\tau=1$
+to \curvePopCovHi{} (Horvitz--Thompson) and \curveAipwCovHi{} (augmented
+estimator) at $1/\tau=\curveInvTauMax$. Over the same range, coverage of the
+boundary effect rises from \curveBndCovLo{} to \curveBndCovHi{}, and the
+exploration loss falls from \curveLossLo{} to \curveLossHi{}. The Monte Carlo
+error of the population estimators understates their exact standard deviation
+once the policy is sharp: at $1/\tau=\curveInvTauMax$ the Monte Carlo root mean
+squared error of the Horvitz--Thompson estimator is \curveHtMcRmseHi{}, while its
+exact standard deviation is of order $10^{\curveHtExactSdHiExp}$. Its variance is
+carried by rare, very large terms that the replications do not observe. For the
+population estimators, the exact curves rather than the Monte Carlo points
+describe the error.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figs/fig2_temperature_curve.pdf}
+\caption{Common temperature at fixed $n=\curveN$, \curveReps{} replications
+per temperature, same design as Figure~\ref{fig:map}. (a) Lines: exact standard
+deviation of the Horvitz--Thompson and augmented (true regression) estimators
+of $\theta$, and exact root mean squared error of the boundary estimator of
+$\beta_0$. Markers: Monte Carlo root mean squared error; the augmented
+estimator uses a linear working model. (b) Wald coverage with 95\% Monte Carlo
+intervals. Boundary coverage is low while $n\tau^3$ is large, as
+Theorem~\ref{thm:boundary}(iv) requires. (c) Exploration loss $R_n$ and expected
+number of off-greedy actions; lines are exact, markers Monte Carlo.}
+\label{fig:sweep}
+\end{figure}
+
 \begin{table}[htbp]
 \centering\small
 \tabBoundary
@@ -587,8 +645,8 @@ of realized text features are also outside the formal results.
 \section*{Data availability statement}
 No new data were collected or analysed. All results are theoretical or based on
 simulations. The simulation code, the result files (with arguments, random
-seeds and code commits), plain-text versions of the proofs, and the script that
-generates every number and table in Section~\ref{sec:sims} are available in
+seeds and code commits), plain-text versions of the proofs, and the scripts that
+generate every number, table and figure in the paper are available in
 the repository
 \begin{center}\url{https://github.com/kunhailP/when-treatment-talks-back}\end{center}
 (branch \texttt{jci-separation}, tagged submission version
