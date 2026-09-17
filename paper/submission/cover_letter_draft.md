@@ -58,7 +58,7 @@ https://github.com/kunhailP/when-treatment-talks-back ([TO CONFIRM: tagged submi
 - Related work by the author: [TO CONFIRM — e.g. whether an earlier version of this manuscript or a
   companion empirical/experimental paper has been posted or submitted anywhere; describe the
   relationship if so, or state that there is none].
-- Conflicts of interest: [TO CONFIRM]. Funding: [TO CONFIRM].
+- Conflicts of interest: none. Funding: this research received no external funding.
 - Use of AI-assisted tools: [TO CONFIRM against De Gruyter's policy; the manuscript contains a draft
   disclosure].
 - Article processing charge: I intend to request a waiver or discount. [TO CONFIRM — see
@@ -69,5 +69,5 @@ Thank you for considering this submission.
 Sincerely,
 
 Kunwoo Park
-[TO CONFIRM: department], Kookmin University, Seoul, Republic of Korea
-[TO CONFIRM: e-mail]
+Department of Political Science and International Relations, Kookmin University, Seoul, Republic of Korea
+pkw6094@kookmin.ac.kr

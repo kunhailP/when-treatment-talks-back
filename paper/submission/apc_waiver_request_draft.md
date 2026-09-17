@@ -12,7 +12,7 @@ Dear Editorial Office,
 I am submitting (or have just submitted) the manuscript "The exploration cost of boundary and population effects" to the *Journal of Causal Inference*. I write to request a waiver or
 discount of the article processing charge (€1,050) in case the manuscript is accepted.
 
-- **Funding:** [TO CONFIRM — e.g. "The research received no external funding, and no grant or
+- **Funding:** The research received no external funding. [TO CONFIRM — add, if true: "no grant or
   institutional budget is available to cover the APC."]
 - **Institutional agreement:** [TO CONFIRM — "I have checked with Kookmin University and found no
   open-access agreement with De Gruyter covering this journal" / the result of that check.]
@@ -23,5 +23,5 @@ editorial decision.
 
 Kind regards,
 Kunwoo Park
-[TO CONFIRM: department], Kookmin University
-[TO CONFIRM: e-mail]
+Department of Political Science and International Relations, Kookmin University
+pkw6094@kookmin.ac.kr
