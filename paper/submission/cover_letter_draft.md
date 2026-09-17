@@ -54,20 +54,19 @@ commits, plain-text proofs, and the script that generates every reported number 
 https://github.com/kunhailP/when-treatment-talks-back ([TO CONFIRM: tagged submission version]).
 
 **Declarations.**
-- This manuscript is not published and is not under consideration elsewhere. [TO CONFIRM]
-- Related work by the author: [TO CONFIRM — e.g. whether an earlier version of this manuscript or a
-  companion empirical/experimental paper has been posted or submitted anywhere; describe the
-  relationship if so, or state that there is none].
+- The manuscript has not been published previously, in any language, and is not under simultaneous
+  consideration by another journal. No preprint has been posted.
+- Related work by the author: [TO CONFIRM — state that there is none, or describe any related
+  submission].
 - Conflicts of interest: none. Funding: this research received no external funding.
 - Use of AI-assisted tools: [TO CONFIRM against De Gruyter's policy; the manuscript contains a draft
   disclosure].
-- Article processing charge: I intend to request a waiver or discount. [TO CONFIRM — see
-  `apc_waiver_request_draft.md`; send to jci_editorial@degruyter.com at or right after submission.]
 
 Thank you for considering this submission.
 
 Sincerely,
 
 Kunwoo Park
-Department of Political Science and International Relations, Kookmin University, Seoul, Republic of Korea
-pkw6094@kookmin.ac.kr
+Department of Political Science and International Relations, Kookmin University
+77 Jeongneung-ro, Seongbuk-gu, Seoul 02707, Republic of Korea [TO CONFIRM postal address]
+pkw6094@kookmin.ac.kr · ORCID 0009-0007-9067-8964
