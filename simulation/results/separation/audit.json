@@ -1,19 +1,9 @@
 {
   "out": "/tmp/claude-0/-root/ed2d4681-8e2c-4e6e-8b73-4017b98f4af8/scratchpad/repo/simulation/results/separation",
-  "ns": [
-    100000
-  ],
-  "deltas": [
-    0.1,
-    0.05
-  ],
-  "rate": false,
-  "reps": 400,
-  "seed": 20260917,
-  "subcommand": "designs",
+  "subcommand": "audit",
   "git_commit": "ddc6789e92692053b301eb736d680c89f1887b00",
   "numpy": "1.26.3",
   "python": "3.11.10",
-  "wall_seconds": 127.3,
-  "finished": "2026-09-17T06:08:34"
+  "wall_seconds": 25.6,
+  "finished": "2026-09-17T06:06:26"
 }

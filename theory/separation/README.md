@@ -2,37 +2,56 @@
 
 This directory contains the proposed core of the JCI revision:
 
-> For effects at the policy's decision boundary, valid inference is possible while cumulative exploration
-> loss vanishes. For the population average effect, in a model without extrapolation structure, precision
-> can be bought only with exploration loss, and deployment scale n does not substitute for it. A single
-> common temperature makes that loss diverge; uniform mixing or context-dependent temperatures prevent it.
+> In one model (Corollary S), logged data from a common temperature τ_n = n^{−α}, α ∈ (1/2, 1),
+> give asymptotically valid inference for the **boundary effect** at every model member while
+> cumulative exploration loss vanishes. The same data cannot consistently estimate the **population
+> average effect** across model members that share the boundary effect. Uniformly consistent population
+> estimation requires divergent exploration loss. In the larger model without extrapolation structure
+> (Theorem A), the loss needed for precision δ is of order (E√g)²/δ², independent of n. **A single
+> deterministic common temperature** makes that loss grow like n/log²(nδ²). Uniform mixing, context
+> temperatures, or suitable temperature mixtures avoid this.
 
-**Status.** Proofs are written in full and self-checked. **None is externally reviewed.** Novelty is
-claimed only relative to the literature listed in `related_work.md`.
+These are two different causal targets. Estimating one well does not substitute for the other.
+
+**Status.** Proofs are written in full and self-checked. One external audit round (of commit 6d111fc)
+has been incorporated; its findings are listed at the end. **Not yet reviewed by a domain expert.**
+Novelty is claimed only relative to `related_work.md`, and only for the combination described there.
 
 ## Contents
 
 | File | Results |
 |---|---|
-| `theorems_A_B_C.md` | Setup; **Thm A** (all-estimator information–exploration inequality, adaptive designs included); A′ (achievability sandwich); **Thm B** (single common temperature: loss ≳ n/log²(nδ²)); **Prop C** (context temperatures implement any design; optimal τ* grows with \|Δ\|); **Lemma R** (misspecified gaps, Kantorovich) |
-| `theorem_D.md` | **Thm D**: boundary effect, Wald CI valid at β_0 while R_n → 0 for τ_n = n^{−α}, α ∈ (1/2, 1); full proof including variance-estimator consistency |
+| `theorems_A_B_C.md` | Setup; **Thm A** (all-estimator information–exploration inequality in 𝓜(B, σ), adaptive designs included); A′ (achievability sandwich σ² vs σ² + B²); **Thm B** (one deterministic common temperature per n: loss ≳ n/log²(nδ²)); **Prop C** (context temperatures in (0, ∞] implement designs with p = 1/2 on {Δ = 0}); **Lemma R** (misspecified gaps: Kantorovich bound; iff only when attained) |
+| `theorem_D.md` | **Thm D**: one-dimensional boundary effect, Wald CI valid at β_0 while R_n → 0 for τ_n = n^{−α}, α ∈ (1/2, 1); full proof; Monte Carlo evidence |
+| `corollary_S.md` | **Corollary S**: the separation inside the Theorem D model (pointwise TV bound at vanishing loss; uniform van Trees bound) |
 | `related_work.md` | Theorem-by-theorem comparison with prior results, with reading depth |
 
 ## Scope statements that must survive into the manuscript
 1. The treatment is the **strategy choice**. The text-generation kernel, including token temperature, is fixed.
 2. g is the deployer's **operational** gap (its own objective), not the human-outcome effect.
-3. Thm A's impossibility holds in 𝓜(B, σ) **without extrapolation structure**. Constant or parametric
-   effects remove the separation.
-4. Thm B concerns **one finite common temperature**. Temperature mixtures with mass at τ = ∞ contain
-   uniform mixing.
-5. Thm D is one-dimensional (Δ(h) = h). Its error rate O_p((nR)^{−1/4}) is **achievable, not claimed optimal**.
+3. Thm A's impossibility holds in 𝓜(B, σ) **without extrapolation structure**. Corollary S gives
+   divergence (not the sharp constant) in the smaller Lipschitz-near-boundary model 𝓜_D. The separation
+   can disappear in models where boundary data **identify** θ (e.g. constant effects).
+4. Thm B concerns **exactly one deterministic common temperature per n**. Random mixtures of finite
+   temperatures are not covered: a mixture of temperatures 1 and 1/n has constant cost (46.36 at
+   δ = .1; `run.py audit`).
+5. Thm D is one-dimensional (Δ(h) = h). Its error O_p((nτ)^{−1/2}), equal to O_p((nR)^{−1/4}) under the
+   strong form of (D5), is **achievable, not claimed optimal**, and holds in probability, not in RMSE.
+   Guarantees are pointwise in μ.
 6. The main gain is preventing divergence (common temperature vs uniform: ≈ 20× at n = 10⁵, δ = 0.1).
-   Gap-based allocation saves a further 11% in the example, and Lemma R says when that is worth it.
-7. Wald coverage is asymptotic. Finite-sample under-coverage appears when few observations are
-   explored or the effective boundary sample is small:
-   - optimal design at n = 10⁵, δ = .1 (≈ 130 explored): .915 over 400 replications;
-   - boundary at nτ = 10: .887 over 1,000 replications.
-   See `theorem_D.md` and `simulation/results/separation/designs*.csv`.
+   Gap-based allocation saves a further 11% in the example. Lemma R gives a sufficient condition for
+   when that is worth it (necessary and sufficient only when the Kantorovich bound is attained).
+7. Wald coverage is asymptotic. Finite-sample under-coverage appears when the effective boundary sample
+   is small: .887 at nτ = 10 over 1,000 replications. Design comparisons in `designs*.csv` use common
+   random numbers. `optimal` and `ctx_temperature` are the same probability design (implementation gap
+   recorded as 0.0 on the evaluation grid), so their rows are identical and serve as an implementation
+   check, not a method comparison. With common random numbers (400 replications, MCSE .011), AIPW
+   coverage at n = 10⁵ is .950 (uniform), .933 (optimal) and .965 (common temperature) at δ = .1, and
+   .955 / .940 / .948 at δ = .05. With δ_n = n^{−1/4} (200 replications, MCSE .015), the optimal design
+   gives .945, .945, .955 at n = 10⁴, 10⁵, 10⁶. The earlier .915 came from a run without common random
+   numbers and is not used.
+8. `costs` and `finite` are closed-form evaluations under the sparse-exploration design-variance
+   criterion, not estimator runs. `designs`, `boundary` and `coverage` are estimator runs.
 
 ## Relation to the current manuscript (`paper/tex/main.tex`, commit b160d3d)
 - **Prop. 4 (minimax collapse) is incorrect** as stated. The B-branch of the bound omits the mass
@@ -60,3 +79,14 @@ python run.py coverage      # MC, longest
 Each run writes `simulation/results/separation/<name>.csv` and `<name>.json`. The JSON records
 arguments, seed, git commit, numpy and python versions, and wall time. `log_*.txt` holds console
 output with timing.
+
+## Audit of 6d111fc (2026-09-17) — findings and resolution
+
+| # | Finding | Resolution |
+|---|---|---|
+| 1 | A (bounded measurable μ) and D (Lipschitz near boundary) proved in different models | `corollary_S.md` |
+| 2 | B's scope sentence covered bounded-support temperature mixtures; false | B restricted; counterexample in `run.py audit` |
+| 3 | D remark "differentiable ⇒ O(τ²) bias" false (c = 1 + \|h\|^{3/2}) | Remark corrected with a C^{1,1} + Lipschitz-f condition |
+| 4 | R's "iff" fails with atoms (F = (.99, .01), g = (1, 100), ρ = 36) | "if" in general; iff under attainment |
+| 5 | nτ table errors at α = .75 (17.8, 31.6); design comparisons used different random numbers; optimal and ctx_temperature are the same design | Table fixed; common random numbers; implementation gap recorded |
+| 6 | Minor: C endpoints, D Step 2 constant (4B), D Step 5 notation, A.2 constant, B finite-context small-δ condition, identification wording, column `coverage_true_sd` | All fixed |

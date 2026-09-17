@@ -9,9 +9,9 @@
   ],
   "seed": 20260920,
   "subcommand": "coverage",
-  "git_commit": "6d111fc34a866c16e2fd78846f1cfc417e359bb9",
+  "git_commit": "ddc6789e92692053b301eb736d680c89f1887b00",
   "numpy": "1.26.3",
   "python": "3.11.10",
-  "wall_seconds": 295.0,
-  "finished": "2026-09-17T05:48:25"
+  "wall_seconds": 299.8,
+  "finished": "2026-09-17T06:19:00"
 }

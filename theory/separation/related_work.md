@@ -14,7 +14,7 @@ Absence claims mean only "not found in the papers we checked".
 | Simchi-Levi & Wang (AISTATS 2023 / Mgmt Sci), Thm 1: inf max e·√R = Ω(1) | full | The 1/δ² trade-off between regret and ATE error, K-armed, **no contexts**, orders only | Contexts with heterogeneous operational gap g(h). The functional (E√g)² with an explicit constant. Model scope stated (no extrapolation). Adaptive designs covered via van Trees |
 | Wan, Kveton & Song (ICML 2022), Lemma 1, Thm 1 | full | Variance-optimal exploration under a safety (value-loss) constraint, solved numerically | Closed form in g; lower bound over all estimators |
 | Douglas, Persson & Provost (arXiv 2605.15108), Props 5–6 | full | Neyman-type optimal logging π ∝ π_t√μ for IPW; theory under several information conditions | They minimize variance with no loss price. A prices exploration in g and bounds all estimators |
-| Koppel, Bhatt, Zeng & Ganesh (NeurIPS 2025 workshop) | **abstract** | Inverse-gap-weighting contextual bandit with regret/ATE trade-offs | To be checked: whether a lower bound or a √g allocation appears |
+| Koppel, Bhatt, Zeng & Ganesh (NeurIPS 2025 Constrained Optimization for ML workshop; listed at constrained-opt-ml.github.io/papers) | **abstract** | Inverse-gap-weighting contextual bandit with regret/ATE trade-offs | To be checked: whether a lower bound or a √g allocation appears |
 | Cochran optimum allocation with costs | textbook | n_h ∝ N_h S_h/√c_h | The allocation form of A′ is this rule. **We do not claim the allocation as new** |
 | Mou, Ding, Wainwright & Bartlett (arXiv 2301.06240), Thm 1 | full | Local minimax lower bound for off-policy linear functionals over convex classes; implies two-point bounds of our type | A couples the information bound to the exploration loss (the Cauchy–Schwarz step). Mou et al. has no loss |
 | Hong, Leung & Li (Econometrics J 2020), Thm 1 | full | Finite strata with drifting propensity: n·a_n → ∞ gives a CLT | Superpopulation, general F, all-estimator lower bound |
@@ -23,7 +23,7 @@ Absence claims mean only "not found in the papers we checked".
 
 | Prior result | Read | What it already gives | What B adds |
 |---|---|---|---|
-| Douglas, Persson & Provost (2026), Fig. 6 | full | Simulation: softmax logging worse than top-k; MSE → ∞ as it approaches greedy | A rate: loss ≳ n/log²(nδ²) at fixed precision against a constant optimum. Scope limited to one common finite temperature |
+| Douglas, Persson & Provost (2026), Fig. 6 | full | Simulation: softmax logging worse than top-k; MSE → ∞ as it approaches greedy | A rate: loss ≳ n/log²(nδ²) at fixed precision against a constant optimum. Scope limited to one deterministic common temperature per n; random mixtures of finite temperatures can avoid the rate |
 | Cesa-Bianchi, Gentile, Lugosi & Neu (NeurIPS 2017), Thms 1–2 | full | Boltzmann exploration with a common schedule can have linear regret; arm-dependent schedules fix it | Different objective (population-effect precision, not regret). B concerns estimation cost at fixed precision |
 | Khan & Tamer (Econometrica 2010) | **abstract** | Irregular identification with unbounded weights; slower-than-√n rates | Must read Thm 3.2/4.1 before submission |
 
@@ -43,11 +43,14 @@ Absence claims mean only "not found in the papers we checked".
 | Li, Morgan & Zaslavsky (JASA 2018) | abstract | Overlap weights and their target population | Source of the weight only |
 | Cattaneo–Titiunik–Yu; Imbens & Wager (REStat 2019); Keele & Titiunik (2015) | abstract/full | Boundary RD estimation and rates | D uses no analyst bandwidth and claims no optimal rate |
 
-## The separation (A with D) — the representative claim
+## The separation (Corollary S; A with D) — the representative claim
 
-We found no paper stating that, on the same exploration-loss scale, a boundary effect admits valid
-inference with vanishing cumulative exploration loss, while any uniformly consistent estimator of the
-population ATE (in a model without extrapolation structure) needs divergent loss. Every component has
+Among the papers checked, we found none stating the following in one model (Corollary S), on the same
+exploration-loss scale:
+- a boundary effect admits valid inference with vanishing cumulative exploration loss;
+- the same data cannot consistently estimate the population ATE across model members sharing that
+  boundary effect;
+- uniform consistency for the population ATE requires divergent loss. Every component has
 close antecedents, listed above. The novelty claim is the comparison on a common cost scale and the
 common-temperature consequence, **not** any single ingredient.
 

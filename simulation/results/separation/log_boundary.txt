@@ -7,6 +7,6 @@
   0.75 1000000 0.000032   200         0 0.246850 0.251487           0.930       0.015411  0.000821       0.000822
 -> /tmp/claude-0/-root/ed2d4681-8e2c-4e6e-8b73-4017b98f4af8/scratchpad/repo/simulation/results/separation/boundary.csv (+ .json)
 
-real	0m39.499s
-user	0m30.970s
-sys	0m12.420s
+real	0m39.442s
+user	0m31.012s
+sys	0m12.263s
