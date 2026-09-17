@@ -5,13 +5,11 @@ Before sending, check whether Kookmin University has an open-access agreement wi
 would cover or discount the APC; if it does, this request may be unnecessary.
 -->
 
-Subject: APC waiver/discount request — manuscript "Boundary and population effects under sharpening
-assignment policies" [TO CONFIRM: manuscript ID, if already assigned]
+Subject: APC waiver/discount request — manuscript "The exploration cost of boundary and population effects" [TO CONFIRM: manuscript ID, if already assigned]
 
 Dear Editorial Office,
 
-I am submitting (or have just submitted) the manuscript "Boundary and population effects under
-sharpening assignment policies" to the *Journal of Causal Inference*. I write to request a waiver or
+I am submitting (or have just submitted) the manuscript "The exploration cost of boundary and population effects" to the *Journal of Causal Inference*. I write to request a waiver or
 discount of the article processing charge (€1,050) in case the manuscript is accepted.
 
 - **Funding:** [TO CONFIRM — e.g. "The research received no external funding, and no grant or

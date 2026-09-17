@@ -10,8 +10,7 @@ Journal of Causal Inference
 
 Dear Editors,
 
-I submit the research article **"Boundary and population effects under sharpening assignment policies"**
-(short title: *When the treatment talks back*) for consideration in the *Journal of Causal Inference*.
+I submit the research article **"The exploration cost of boundary and population effects"** for consideration in the *Journal of Causal Inference*.
 
 **Question.** Systems that assign treatments adaptively, including conversational AI systems that choose
 persuasive strategies, generate logs in which the assignment policy is known but increasingly
