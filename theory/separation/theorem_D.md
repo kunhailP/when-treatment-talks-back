@@ -1,5 +1,10 @@
 # Boundary side of the separation: Theorem D
 
+> **Alignment with the manuscript.** Under the weak form of (D5), only R_n = O(nτ_n²) holds (e.g.
+> g(h) = h² gives R_n ~ 1.803·nτ_n³). R_n ~ nτ_n²κf(0)π²/6 needs the strong form φ′(0) = κ > 0. The
+> estimator is set to 0, with interval ℝ, on the event that a weight sum is zero; this event has vanishing
+> probability. Lyapunov ratios are O((nτ)⁻¹).
+>
 > **Notation.** In this file p = p_n(h) = P(A = 1 | H = h). The manuscript (`paper/tex/main_jci.tex`) writes this as e_τ(h), and reserves q_τ(h) = P(A ≠ a*(h) | H = h) = sigmoid(−|h|/τ) for the off-greedy probability. The weights are w_1 = A(1 − e_τ) and w_0 = (1 − A)e_τ; the exploration loss is nE[g q_τ].
 
 Status (2026-09-17, rev. 2): full proof written and self-checked. The audit of commit 6d111fc has been

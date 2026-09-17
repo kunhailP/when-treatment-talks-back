@@ -24,6 +24,6 @@ I understand that, as stated in the journal's APC policy, the ability to pay doe
 editorial decision.
 
 Kind regards,
-Kun Woo Park
+Kunwoo Park
 [TO CONFIRM: department], Kookmin University
 [TO CONFIRM: e-mail]

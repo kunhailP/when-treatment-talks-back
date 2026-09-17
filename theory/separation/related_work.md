@@ -88,3 +88,19 @@ Verdicts:
 
 ## Still to read in full before submission
 Koppel et al. (2025): needs a browser download from OpenReview.
+
+## Recent JCI papers (full-text check, 2026-09-17)
+
+Access: arXiv full texts, except Esterling–Brady–Schwitzgebel (abstract only). Bibliographic data from
+Crossref. Theorem numbers for Ravichandran et al. are from arXiv v1 and may differ in the JCI version.
+
+| Paper | Verdict vs (i) boundary CI at vanishing loss, (ii) same-model TV separation, (iii) information–exploration bound, (iv) common temperature | Use |
+|---|---|---|
+| Ring & Schomaker, JCI 14(1) 20250007, 2026 | (i) related (changes estimand where support exists; heuristic diagnostic, no design), (ii)–(iv) different | cited: formal counterpart for known sharpening policies |
+| Humphreys, JCI 13(1) 20240040, 2025 | related: FE estimand weights strata by p(1−p), same as overlap weights; no adaptive design or bounds | cited in boundary-estimand paragraph |
+| Ravichandran, Pashley, Libgober & Dasgupta, JCI 12(1) 20230046, 2024 | (iii) **partial overlap on the allocation formula**: budget-constrained A-optimal allocation N_j ∝ S_j/√C_j (Thm 3(a), arXiv v1); no lower bound over estimators or adaptive designs | cited at the attaining allocation; allocation not claimed as new |
+| Li & Imai, JCI 12(1) 20230072, 2024 | related: ex-ante vs ex-post ITR evaluation, variance comparison at equal allocation, no cost for off-rule assignments | cited in exploration paragraph |
+| Oganisian, JCI 14(1) 20250058, 2026 | different (Bayesian computation of SATE vs PATE) | not cited |
+| Lee, Hubbard & Schuler, JCI 14(1) 20240049, 2026 | different (binarized exposures as modified treatment policies) | not cited |
+| Azriel, Krieger & Kapelner, JCI 14(1) 20230053, 2026 | different (minimax randomization at fixed allocation) | not cited |
+| Esterling, Brady & Schwitzgebel, JCI 13(1) 20240002, 2025 | different (conceptual; abstract only) | not cited |

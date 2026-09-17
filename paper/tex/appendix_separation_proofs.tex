@@ -43,7 +43,7 @@ $s_n^2=\{\sigma_1^2(0)+\sigma_0^2(0)\}/\{2\tau f(0)\}(1+o(1))$.
 \paragraph{Step 4 (central limit theorem).} Since $0\le w_a\le1$, $w_a^4\le
 w_a$, and $\E[(Y-\bar\mu_a)^4\mid A,H]\le C(M,B)$, we get
 $\E[w_a^4(Y-\bar\mu_a)^4]\le Cm_\tau$ and $\E\xi^4\le C'm_\tau^{-3}$. The
-Lyapunov ratio $n^{-1}\E\xi^4/s_n^4\asymp(n\tau)^{-1}\to0$, so
+Lyapunov ratio $n^{-1}\E\xi^4/s_n^4=O((n\tau)^{-1})\to0$, so
 $n^{-1/2}\sum\xi_i/s_n\Rightarrow N(0,1)$. Also
 $\Var(\hat D_a)/m_\tau^2\le1/(nm_\tau)\to0$, so $\hat D_a/m_\tau\to1$ in
 probability and $m_\tau/\hat D_a-1=O_p((n\tau)^{-1/2})$. Now
@@ -55,7 +55,7 @@ $O_p((n\tau)^{-1})=o_p(s_n/\sqrt n)$, and Slutsky's lemma gives (i).
 
 \paragraph{Step 5 (variance estimator).} Write
 $\xi_{ai}=w_{ai}(Y_i-\bar\mu_a)/m_\tau$. First, $n^{-1}\sum\xi_i^2/s_n^2$ has
-mean one and variance at most $\E\xi^4/(ns_n^4)\asymp(n\tau)^{-1}$. Second,
+mean one and variance at most $\E\xi^4/(ns_n^4)=O((n\tau)^{-1})$. Second,
 \[
 \hat\psi_{1i}-\xi_{1i}=w_{1i}(Y_i-\bar\mu_1)(1/\hat D_1-1/m_\tau)+w_{1i}(\bar\mu_1-\hat m_1)/\hat D_1 .
 \]
@@ -87,7 +87,8 @@ $L_f$-Lipschitz near $0$, then
 $\E[\omega H]=\tau^2\int uK(u)\{f(\tau u)-f(0)\}du=O(\tau^3)$ up to an
 exponentially small tail, and the quadratic remainder contributes at most
 $M_2\bar f\tau^3\int u^2K/m_\tau$; the bias is $O(\tau^2)$. Differentiability of
-$c$ alone is not enough: $c(h)=1+|h|^{3/2}$ gives bias
+$c$ alone is not enough: a bounded effect equal to $c(h)=1+|h|^{3/2}$
+near zero gives bias
 $\tau^{3/2}\int|u|^{3/2}K(u)du\,(1+o(1))$.
 
 %-----------------------------------------------------------------------------
@@ -180,13 +181,13 @@ $\psi(t)=t\E b$ gives the bound. \qed
 \section{Proofs for Section~\ref{sec:temperature}}\label{app:temperature}
 
 \paragraph{Proof of Theorem~\ref{thm:common}.} Take the single cell
-$S=\{|\Delta|\ge G-\eta',a^*=j\}$, with $j$ attaining $\nu=\nu_{\eta'}$. There
-$q_\tau\le \exp(-(G-\eta')/\tau)$, so $\bar N\le n\nu \exp(-(G-\eta')/\tau)$, and the van
+$S=\{|\Delta|\ge D_{\max}-\eta',a^*=j\}$, with $j$ attaining $\nu=\nu_{\eta'}$. There
+$q_\tau\le \exp(-(D_{\max}-\eta')/\tau)$, so $\bar N\le n\nu \exp(-(D_{\max}-\eta')/\tau)$, and the van
 Trees step of Theorem~\ref{thm:info} with $K=1$ gives
-$\delta_n^2\ge \nu^2\sigma^2/(n\nu \exp(-(G-\eta')/\tau)+\sigma^2\pi^2/B^2)$. Once
+$\delta_n^2\ge \nu^2\sigma^2/(n\nu \exp(-(D_{\max}-\eta')/\tau)+\sigma^2\pi^2/B^2)$. Once
 $\delta_n^2\le \nu^2B^2/(2\pi^2)$, this forces
-$n\nu \exp(-(G-\eta')/\tau)\ge \nu^2\sigma^2/(2\delta_n^2)$, that is,
-$\tau_n\ge(G-\eta')/\log\{2n\delta_n^2/(\nu\sigma^2)\}$, where the logarithm is
+$n\nu \exp(-(D_{\max}-\eta')/\tau)\ge \nu^2\sigma^2/(2\delta_n^2)$, that is,
+$\tau_n\ge(D_{\max}-\eta')/\log\{2n\delta_n^2/(\nu\sigma^2)\}$, where the logarithm is
 positive because $2n\delta_n^2>\nu\sigma^2$. Nothing here requires
 $\delta_n\to0$. On the other hand
 \[
@@ -228,3 +229,4 @@ setting $s=\sqrt a$ there and $s=\sqrt b$ elsewhere attains the bound. With
 atoms the bound need not be attained: for $F=(0.99,0.01)$, $g=(1,100)$ and
 $\rho=36$, uniform mixing costs $1.675$ times the optimum, below $K(36)=2.042$,
 yet every admissible $\hat g$ costs at most $1.347$ times the optimum. \qed
+

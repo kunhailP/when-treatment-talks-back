@@ -1,5 +1,16 @@
 # Population side of the separation: Theorems A, B, Proposition C, Lemma R
 
+> **Alignment with the manuscript (review revision merged 2026-09-17).** The manuscript states the
+> following conditions explicitly; they are implicit here:
+> - Proposition 1 (= A′): 0 < E√g < ∞, δ_n > 0, nδ_n² > 4C, q = 1/2 where g = 0, and E[g] < ∞ for
+>   the uniform-mixing loss.
+> - Theorem 4 (= B): g = φ(|Δ|) and E[g] < ∞. The essential supremum of |Δ| is written **D_max**
+>   (G is the generation kernel).
+> - Lemma 1 (= R): F(g > 0) = 1 and 0 < a ≤ ĝ/g ≤ b < ∞. Capped designs, including a positive mass of
+>   g = 0, are treated in the limit E[1/q] → ∞.
+> - "Design variance" σ²E[1/q]/n is called the **sparse-exploration criterion** V_sp. It is an
+>   allocation criterion, not the estimator MSE.
+>
 > **Notation.** In this file p(h) is the **off-greedy** probability P(A ≠ a*(h) | H = h). The manuscript writes it as q(h) and uses e(h) = P(A = 1 | H = h) for the probability of strategy 1. The causal assumptions (consistency, iid units without interference, known sequential assignment) are stated in Section 2 of the manuscript.
 
 Status (2026-09-17, rev. 2): proofs written out in full and self-checked. One audit round (review of

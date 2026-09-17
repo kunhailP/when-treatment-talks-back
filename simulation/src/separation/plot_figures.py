@@ -1,8 +1,15 @@
-"""Draw the manuscript figures from simulation/results/separation/{phase,curve}.csv.
+"""Draw the four manuscript figures.
 
-  python plot_figures.py            # writes paper/tex/figs/fig1_separation_map.pdf, fig2_temperature_curve.pdf
+  python plot_figures.py
 
-No computation happens here beyond evaluating the saved exact moments on an (n, 1/tau) grid.
+  fig1_mechanism.pdf        exact functions of the Theorem 3 construction (no data)
+  fig2_separation_map.pdf   exact risks and loss contours from results/separation/phase.csv
+  fig3_exploration_costs.pdf closed-form design costs from results/separation/costs.csv
+  fig4_temperature_sweep.pdf fixed-n Monte Carlo and exact values from results/separation/curve.csv
+
+Figures 1 and 3 follow a review revision (source bundle based on commit df5007f); Figure 1's
+axis label bug (a tab character in "q_tau") is fixed here and the bump integral is computed with
+numpy instead of scipy.
 """
 import json
 import os
@@ -23,6 +30,60 @@ plt.rcParams.update({"font.size": 9, "axes.titlesize": 9.5, "axes.labelsize": 9,
                      "legend.fontsize": 7.5, "xtick.labelsize": 8, "ytick.labelsize": 8,
                      "pdf.fonttype": 42})
 C_POP, C_AIPW, C_BND, C_LOSS = "#b2182b", "#ef8a62", "#2166ac", "#4d4d4d"
+
+
+def figure_mechanism():
+    """Theorem 3 construction: same boundary effect, different population effect."""
+    h = np.linspace(-1, 1, 2401)
+    u1, u2, t = 0.35, 0.85, 1.0
+    b = np.where((h >= u1) & (h <= u2), np.sin(np.pi * (h - u1) / (u2 - u1)) ** 2, 0.0)
+    hh = np.linspace(u1, u2, 2_000_001)
+    theta1 = t * np.trapz(np.sin(np.pi * (hh - u1) / (u2 - u1)) ** 2, hh) / 2   # E[b(H)], H ~ U(-1,1)
+    blue, orange, green = "#17628B", "#C56523", "#437F5F"
+    fig, ax = plt.subplots(1, 2, figsize=(7.0, 3.0), constrained_layout=True)
+    for a in ax:
+        a.axvspan(u1, u2, color=orange, alpha=0.12, lw=0)
+        a.axvline(0, color="0.55", ls=":", lw=1)
+        a.set_xlabel(r"score / context $h$")
+        a.spines[["top", "right"]].set_visible(False)
+    ax[0].plot(h, t * b, color=orange, lw=2, label=r"$c^1(h)=b(h)$")
+    ax[0].plot(h, np.zeros_like(h), color=blue, lw=1.7, ls="--", label=r"$c^0(h)=0$")
+    ax[0].scatter([0], [0], color="black", s=20, zorder=5)
+    ax[0].set(xlim=(-1, 1), ylim=(-0.12, 1.28), ylabel=r"causal effect $c(h)$")
+    ax[0].set_title("(a) same boundary, different population", loc="left")
+    ax[0].text(-0.95, 0.86, r"$\beta_0^0=\beta_0^1=0$" + "\n" + rf"$\theta^0=0,\quad\theta^1={theta1:.3f}$",
+               fontsize=9)
+    ax[0].legend(loc="upper left", frameon=False, bbox_to_anchor=(0, 0.60))
+    for tau, color in ((0.2, blue), (0.1, green), (0.05, orange)):
+        ax[1].semilogy(h, 1 / (1 + np.exp(np.abs(h) / tau)), color=color, lw=1.8, label=rf"$\tau={tau:g}$")
+    ax[1].set(xlim=(-1, 1), ylim=(1e-9, 1), ylabel=r"off-greedy probability $q_\tau(h)$")
+    ax[1].set_title("(b) off-greedy probability", loc="left")
+    ax[1].legend(loc="lower center", frameon=False, ncol=3, columnspacing=0.8)
+    fig.savefig(os.path.join(FIGS, "fig1_mechanism.pdf"), dpi=300)
+    plt.close(fig)
+    return dict(u1=u1, u2=u2, t=t, theta0=0.0, theta1=float(theta1), beta0=0.0)
+
+
+def figure_costs():
+    """Closed-form exploration loss vs deployment size at a fixed sparse-exploration criterion."""
+    rows = pd.read_csv(os.path.join(RES, "costs.csv"))
+    blue, orange, green = "#17628B", "#C56523", "#437F5F"
+    fig, axes = plt.subplots(1, 2, figsize=(7.5, 3.2), constrained_layout=True)
+    for ax, delta, label in zip(axes, (0.1, 0.03), ("(a)", "(b)")):
+        sel = rows[np.isclose(rows.delta, delta)].sort_values("n")
+        for col, lab, color, marker in (("R_common_temperature", "one common temperature", orange, "o"),
+                                        ("R_uniform", "uniform mixing", blue, "s"),
+                                        ("R_optimal", "gap-based allocation", green, "^")):
+            ax.loglog(sel.n, sel[col], label=lab, color=color, marker=marker, markersize=4, lw=1.8)
+        ax.set_title(label + rf" fixed $V_{{\rm sp}}={delta:g}^2$", loc="left")
+        ax.set_xlabel(r"deployment size $n$")
+        ax.set_ylabel(r"expected cumulative loss $R_n$")
+        ax.set_ylim(25 if delta == 0.1 else 300, 1e6)
+        ax.grid(which="major", color=".9", lw=.6)
+        ax.spines[["top", "right"]].set_visible(False)
+    axes[0].legend(loc="upper left", frameon=False, fontsize=7.4)
+    fig.savefig(os.path.join(FIGS, "fig3_exploration_costs.pdf"), dpi=300)
+    plt.close(fig)
 
 
 def figure1():
@@ -69,7 +130,7 @@ def figure1():
     cb = fig.colorbar(pc, ax=axes, shrink=0.9, pad=0.01)
     cb.set_label(r"$\log_{10}$ RMSE (exact)")
     os.makedirs(FIGS, exist_ok=True)
-    fig.savefig(os.path.join(FIGS, "fig1_separation_map.pdf"), dpi=300)
+    fig.savefig(os.path.join(FIGS, "fig2_separation_map.pdf"), dpi=300)
     plt.close(fig)
 
     # numbers quoted with the figure
@@ -129,11 +190,17 @@ def figure2():
         ax.set_xlabel(r"$1/\tau$")
     fig.suptitle(rf"Common temperature, $n={n:,}$, {int(cu.reps.iloc[0]):,} replications per $\tau$",
                  fontsize=9)
-    fig.savefig(os.path.join(FIGS, "fig2_temperature_curve.pdf"), dpi=300)
+    fig.savefig(os.path.join(FIGS, "fig4_temperature_sweep.pdf"), dpi=300)
     plt.close(fig)
 
 
 if __name__ == "__main__":
+    os.makedirs(FIGS, exist_ok=True)
+    mech = figure_mechanism()
+    with open(os.path.join(RES, "fig_mechanism_numbers.json"), "w") as fh:
+        json.dump(mech, fh, indent=2)
+    print(mech)
+    figure_costs()
     print(figure1())
     if os.path.exists(os.path.join(RES, "curve.csv")):
         figure2()

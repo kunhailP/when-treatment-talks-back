@@ -69,6 +69,6 @@ Thank you for considering this submission.
 
 Sincerely,
 
-Kun Woo Park
+Kunwoo Park
 [TO CONFIRM: department], Kookmin University, Seoul, Republic of Korea
 [TO CONFIRM: e-mail]
