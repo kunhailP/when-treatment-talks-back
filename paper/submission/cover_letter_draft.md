@@ -10,7 +10,7 @@ Journal of Causal Inference
 
 Dear Editors,
 
-I submit the research article **"The exploration cost of boundary and population effects"** for consideration in the *Journal of Causal Inference*.
+I submit the research article **"The exploration cost of learning boundary and population causal effects"** for consideration in the *Journal of Causal Inference*.
 
 **Question.** Systems that assign treatments adaptively, including conversational AI systems that choose
 persuasive strategies, generate logs in which the assignment policy is known but increasingly
@@ -44,14 +44,16 @@ identifiability and statistical estimation under known assignment. These are cor
 journal. The motivating application (political persuasion by conversational AI) links causal inference
 with machine learning and political science.
 
-**Scope.** The results concern one decision per unit with a known assignment policy. The boundary
-results are one-dimensional and pointwise in the outcome law. The population-side impossibility excludes
-models in which boundary data identify the population effect. These limits are stated in the abstract
-and the introduction.
+**Scope.** The results concern one decision per unit with a known assignment policy and a score that
+is not learned from outcomes. The boundary results are one-dimensional; boundary coverage holds uniformly
+over a model with Gaussian outcomes and Lipschitz mean functions. The separation requires an operational
+cost that vanishes at the decision boundary: with a fixed cost per deviation, boundary inference under a
+common-temperature design also incurs divergent loss. The population-side impossibility excludes models in which boundary data
+identify the population effect. These limits are stated in the abstract and the introduction.
 
 **Reproducibility.** No new data were collected. Simulation code, result files with seeds and code
 commits, plain-text proofs, and the script that generates every reported number are available at
-https://github.com/kunhailP/when-treatment-talks-back ([TO CONFIRM: tagged submission version]).
+https://github.com/kunhailP/exploration-cost-boundary-population (tagged submission version jci-submission-v1).
 
 **Declarations.**
 - The manuscript has not been published previously, in any language, and is not under simultaneous
